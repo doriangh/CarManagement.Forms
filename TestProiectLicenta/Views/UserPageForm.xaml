@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TabbedPage 
+    NavigationPage.HasNavigationBar="false"
+    BackgroundColor="Black"
+    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.UserPageForm" xmlns:local="clr-namespace:TestProiectLicenta"
+    xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin">
+    
+    <ContentPage Title="Car" Icon="car_icon.png" BackgroundColor="Black" Padding="0,22,0,0" >
+        <StackLayout Spacing="0">
+            <StackLayout BackgroundColor="Black" HeightRequest="100">
+                <Grid VerticalOptions="CenterAndExpand">
+                    
+               
+<!--                    <BoxView Grid.Column="0" Color="White" VerticalOptions="Center" HorizontalOptions="Center"/>-->
+                    <controls:CircleImage Source="user_icon.png" HorizontalOptions="Center" BackgroundColor="White"  x:Name="avatar" Aspect="AspectFill">
+                        <controls:CircleImage.WidthRequest>
+                            <OnPlatform x:TypeArguments="x:Double">
+                                <On Platform="Android, iOS">55</On>
+                            </OnPlatform>
+                        </controls:CircleImage.WidthRequest>
+                        <controls:CircleImage.HeightRequest>
+                            <OnPlatform x:TypeArguments="x:Double">
+                                <On Platform="Android,iOS">55</On>
+                            </OnPlatform>
+                        </controls:CircleImage.HeightRequest>
+                    </controls:CircleImage>
+                    
+                    
+                    <StackLayout Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center">
+                        <Label Text="" TextColor="White" x:Name="name"/>
+                        <Label Text="Ford Focus" TextColor="White" FontSize="Micro"/>
+                        
+                    </StackLayout>
+                    
+                    <StackLayout Grid.Column="3" Grid.ColumnSpan="2" VerticalOptions="Center">
+                        <Label Text="Valoare estimata" TextColor="White" x:Name="value"/>
+                        <Label Text="5000eur" TextColor="Green" HorizontalTextAlignment="Center" FontSize="Micro"/>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
+            
+            <ListView x:Name="cars" ItemSelected="ViewListItemDetails" IsVisible="false" IsPullToRefreshEnabled="true" Refreshing="PullToRefreshEvent">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding FullName}" Detail="{Binding ModelYear}">
+                            <TextCell.ContextActions>
+                                <MenuItem Text="Delete" IsDestructive="true" Clicked="DeleteCarFromListButton"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            
+            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="Center" IsVisible="true" x:Name="addCar">
+                <Button Clicked="AddCarsWhenNoCarsButton" Image="add.png"/>
+                <Label Text="Add Car" TextColor="White" HorizontalOptions="Center"/>
+            </StackLayout>
+            
+        </StackLayout>
+    </ContentPage>
+    
+    
+<!--    <local:MainPage Title="Add" Icon="add-icon.png"/>-->
+    <local:AddCarPage Title="Add Car" Icon="add_icon.png"/>
+    <ContentPage Title="User" Icon="user_icon.png"/>
+    <ContentPage Title="Settings" Icon="settings_icon.png">
+        <Button Text="Sign Out" Clicked="SignOutButton"/>
+    </ContentPage>
+</TabbedPage>

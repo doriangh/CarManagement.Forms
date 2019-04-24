@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    Padding="20"
+    BackgroundColor="Black" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.RegisterFormModalPage">
+    <StackLayout>
+       
+        <Label Text="Register" TextColor="White" HorizontalOptions="Center" FontSize="50" FontAttributes="Bold"/>
+        
+        <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="Center">
+            
+            <StackLayout VerticalOptions="Center" Orientation="Horizontal" HorizontalOptions="End">
+                <Label Text="Name" TextColor="White" VerticalOptions="Center"/>
+                <Entry Keyboard="Default" Placeholder="Name" x:Name="name" WidthRequest="200"/>
+                
+            </StackLayout>
+            
+            <StackLayout VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
+                <Label Text="Age" TextColor="White" VerticalOptions="Center"/>
+                <Entry Keyboard="Numeric" Placeholder="Password" IsPassword="false" x:Name="age" WidthRequest="200"/>
+            </StackLayout>
+            
+            <StackLayout VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
+                <Label Text="Username" TextColor="White" VerticalOptions="Center"/>
+                <Entry Keyboard="Default" Placeholder="Username" IsPassword="false" x:Name="user" WidthRequest="200"/>
+            </StackLayout>
+            
+            <StackLayout VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
+                <Label Text="Password" TextColor="White" VerticalOptions="Center"/>
+                <Entry Keyboard="Default" Placeholder="Password" IsPassword="true" x:Name="pass" WidthRequest="200"/>
+            </StackLayout>
+            
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Label Text="Add Photo" TextColor="White" VerticalOptions="Center"/>
+                <Button Image="camera-icon.png" Clicked="AddUserPhotoButton"/>
+            </StackLayout>
+            
+        </StackLayout>
+
+        <Label Text="Please Enter Details" TextColor="Red" FontAttributes="Bold" HorizontalOptions="Center" IsVisible="false" x:Name="message"/>
+        <Button Text="Submit" BackgroundColor="White" Clicked="RegisterUser" VerticalOptions="EndAndExpand"/>
+        <Button Text="Cancel" BackgroundColor="Gray" Clicked="CancelButton"/>
+    </StackLayout>
+</ContentPage>
