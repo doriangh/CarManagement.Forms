@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
-using SQLite;
-using TestProiectLicenta.Interfaces.Services;
-using TestProiectLicenta.Logic;
 using TestProiectLicenta.Models;
-using TestProiectLicenta.Persistence;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace TestProiectLicenta

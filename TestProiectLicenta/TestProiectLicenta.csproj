@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -29,13 +29,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Persistence\" />
-    <Folder Include="Logic\" />
     <Folder Include="Data\" />
     <Folder Include="Views\" />
     <Folder Include="Data\Services\" />
     <Folder Include="Data\Interfaces\" />
-    <Folder Include="Data\Repository\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.iOS">

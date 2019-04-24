@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Xml;
-using TestProiectLicenta.Logic;
 using TestProiectLicenta.Models;
 using Xamarin.Forms;
 
@@ -13,7 +12,6 @@ namespace TestProiectLicenta
 
         private Car usercar;
 
-        private CarController controller = new CarController();
 
         public UserSelectedCarDetailPage(Car car)
         {

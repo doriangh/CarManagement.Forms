@@ -73,7 +73,6 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Persistence\SQLiteDB.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -201,8 +200,5 @@
     <BundleResource Include="Resources\camera_icon.png" />
     <BundleResource Include="Resources\camera_icon%402x.png" />
     <BundleResource Include="Resources\camera_icon%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Persistence\" />
   </ItemGroup>
 </Project>

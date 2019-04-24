@@ -1,15 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Net;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using Plugin.Media;
-using SQLite;
-using TestProiectLicenta.Logic;
-using TestProiectLicenta.Models;
-using TestProiectLicenta.Persistence;
-using UIKit;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace TestProiectLicenta

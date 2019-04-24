@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using SQLite;
-using TestProiectLicenta.Logic;
-using TestProiectLicenta.Models;
-using TestProiectLicenta.Persistence;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace TestProiectLicenta
 {

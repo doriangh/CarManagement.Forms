@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 using System.Xml.Linq;
-using MySql.Data.MySqlClient;
 using Plugin.Media;
-using SQLite;
-using TestProiectLicenta.Logic;
 using TestProiectLicenta.Models;
 using TestProiectLicenta.Persistence;
 using Xamarin.Forms;
@@ -21,10 +15,6 @@ namespace TestProiectLicenta
 
         string imgurId = "3998115b75eb6f3";
         string imgurSecret = "17246fb9c2e052d96773af41fdf5091b7ba71603";
-
-        MySQLOperations operations = new MySQLOperations();
-
-
         UserService service = new UserService();
 
         //string connString;
