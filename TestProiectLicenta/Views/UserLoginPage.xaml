@@ -15,6 +15,10 @@
             <Label Text="Log In" TextColor="White"/>
         </StackLayout>
         
+        <StackLayout x:Name="retry" Grid.Row="3" Grid.Column="1" HorizontalOptions="Center" IsVisible="false">
+            <Button Text="Try Again" Clicked="TryAgainButton"/>
+        </StackLayout>
+        
         <StackLayout Grid.Row="3" Grid.Column="2" HorizontalOptions="Center">
             <Button Image="add.png" Clicked="RegisterButton" BackgroundColor="Transparent"/>
             <Label Text="Sign Up" TextColor="White"/>

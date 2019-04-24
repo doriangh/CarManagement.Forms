@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Xml;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Acr.UserDialogs;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json.Linq;
-using Plugin.Media;
-using SQLite;
 using TestProiectLicenta.Models;
-using TestProiectLicenta.Persistence;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -32,39 +24,39 @@ namespace TestProiectLicenta
         {
             base.OnAppearing();
 
-            UserDialogs.Instance.Toast("Getting user details.\nHold on");
-
-            userId = await SecureStorage.GetAsync("UserId");
-
-            var user = await App.UserManager.GetUserById(Convert.ToInt32(userId));
-
-
-            name.Text = user.Name;
-            if (user.UserImage != null && user.UserImage.Contains("https://"))
+            using (UserDialogs.Instance.Loading("Getting user details.\nHold on"))
             {
-                avatar.Source = ImageSource.FromUri(new Uri(user.UserImage));
+
+                userId = await SecureStorage.GetAsync("UserId");
+
+                var user = await App.UserManager.GetUserById(Convert.ToInt32(userId));
+
+
+                name.Text = user.Name;
+                if (user.UserImage != null && user.UserImage.Contains("https://"))
+                {
+                    avatar.Source = ImageSource.FromUri(new Uri(user.UserImage));
+                }
+
+                userCars = new ObservableCollection<Car>();
+
+                var lst = await App.CarManager.GetUserCars(user.Id);
+
+                foreach (var car in lst)
+                {
+                    userCars.Add(car);
+                }
+
+                if (userCars.Count > 0)
+                {
+                    cars.IsVisible = true;
+                    addCar.IsVisible = false;
+                    cars.ItemsSource = userCars;
+                }
             }
-
-            userCars = new ObservableCollection<Car>();
-
-            var lst = await App.CarManager.GetUserCars(user.Id);
-
-            foreach (var car in lst)
-            {
-                userCars.Add(car);
-            }
-
-            if (userCars.Count > 0)
-            {
-                cars.IsVisible = true;
-                addCar.IsVisible = false;
-                cars.ItemsSource = userCars;
-            }
-
-            //UserDialogs.Instance.Loading().Dispose();
         }
 
-        async void RefreshCars()
+        async Task RefreshCars()
         {
            userCars.Clear();
 
@@ -130,12 +122,16 @@ namespace TestProiectLicenta
 
             await App.CarManager.DeleteCar(car.Id);
 
-            RefreshCars();
+            await RefreshCars();
         }
 
-        void PullToRefreshEvent(object sender, System.EventArgs e)
+        async void Handle_Refreshing(object sender, System.EventArgs e)
         {
-            RefreshCars();
+            cars.IsRefreshing = true;
+
+            await RefreshCars();
+
+            cars.IsRefreshing = false;
         }
     }
 }

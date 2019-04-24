@@ -5,6 +5,7 @@ using System.Linq;
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
 using Plugin.Fingerprint;
+using Refractored.XamForms.PullToRefresh.iOS;
 using UIKit;
 
 namespace TestProiectLicenta.iOS
@@ -25,6 +26,7 @@ namespace TestProiectLicenta.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             Rg.Plugins.Popup.Popup.Init();
+            PullToRefreshLayoutRenderer.Init();
 
             global::Xamarin.Forms.Forms.Init();
             ImageCircleRenderer.Init();

@@ -10,6 +10,7 @@ using System.IO;
 using Plugin.Fingerprint;
 using Plugin.CurrentActivity;
 using Acr.UserDialogs;
+using Refractored.XamForms.PullToRefresh.Droid;
 
 namespace TestProiectLicenta.Droid
 {
@@ -28,6 +29,8 @@ namespace TestProiectLicenta.Droid
             CrossFingerprint.SetCurrentActivityResolver(() => CrossCurrentActivity.Current.Activity);
 
             UserDialogs.Init(this);
+
+            PullToRefreshLayoutRenderer.Init();
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

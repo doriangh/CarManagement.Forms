@@ -3,7 +3,8 @@
     NavigationPage.HasNavigationBar="false"
     BackgroundColor="Black"
     xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.UserPageForm" xmlns:local="clr-namespace:TestProiectLicenta"
-    xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin">
+    xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+    xmlns:refresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh">
     
     <ContentPage Title="Car" Icon="car_icon.png" BackgroundColor="Black" Padding="0,22,0,0" >
         <StackLayout Spacing="0">
@@ -39,7 +40,9 @@
                 </Grid>
             </StackLayout>
             
-            <ListView x:Name="cars" ItemSelected="ViewListItemDetails" IsVisible="false" IsPullToRefreshEnabled="true" Refreshing="PullToRefreshEvent">
+           
+            <ListView x:Name="cars" ItemSelected="ViewListItemDetails" IsVisible="false"
+                      IsPullToRefreshEnabled="true" Refreshing="Handle_Refreshing">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding FullName}" Detail="{Binding ModelYear}">
@@ -50,6 +53,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+           
             
             
             <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="Center" IsVisible="true" x:Name="addCar">
