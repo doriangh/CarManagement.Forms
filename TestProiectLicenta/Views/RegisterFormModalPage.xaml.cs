@@ -17,10 +17,6 @@ namespace TestProiectLicenta
         string imgurSecret = "17246fb9c2e052d96773af41fdf5091b7ba71603";
         UserService service = new UserService();
 
-        //string connString;
-
-        //private ObservableCollection<User> Users;
-
         private string userPhoto;
 
         public RegisterFormModalPage()

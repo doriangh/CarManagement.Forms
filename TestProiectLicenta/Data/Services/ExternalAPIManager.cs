@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using TestProiectLicenta.Data.Interfacess;
-using TestProiectLicenta.Interfaces.Services;
 using TestProiectLicenta.Models;
 
 namespace TestProiectLicenta.Data.Services

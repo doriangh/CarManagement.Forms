@@ -13,7 +13,7 @@
                     
                
 <!--                    <BoxView Grid.Column="0" Color="White" VerticalOptions="Center" HorizontalOptions="Center"/>-->
-                    <controls:CircleImage Source="user_icon.png" HorizontalOptions="Center" BackgroundColor="White"  x:Name="avatar" Aspect="AspectFill">
+                    <controls:CircleImage Source="user_icon.png" HorizontalOptions="Center" BackgroundColor="Transparent"  x:Name="avatar" Aspect="AspectFill">
                         <controls:CircleImage.WidthRequest>
                             <OnPlatform x:TypeArguments="x:Double">
                                 <On Platform="Android, iOS">55</On>
@@ -42,7 +42,8 @@
             
            
             <ListView x:Name="cars" ItemSelected="ViewListItemDetails" IsVisible="false"
-                      IsPullToRefreshEnabled="true" Refreshing="Handle_Refreshing">
+                      IsPullToRefreshEnabled="true" Refreshing="Handle_Refreshing"
+                      BackgroundColor="White">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding FullName}" Detail="{Binding ModelYear}">
@@ -57,7 +58,7 @@
             
             
             <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="Center" IsVisible="true" x:Name="addCar">
-                <Button Clicked="AddCarsWhenNoCarsButton" Image="add.png"/>
+                <Button Clicked="AddCarsWhenNoCarsButton" Image="add.png" BackgroundColor="Transparent"/>
                 <Label Text="Add Car" TextColor="White" HorizontalOptions="Center"/>
             </StackLayout>
             

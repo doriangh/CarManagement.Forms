@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using TestProiectLicenta.Data;
 using TestProiectLicenta.Interfaces.Services;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;

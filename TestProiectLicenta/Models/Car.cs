@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using SQLite;
-
-namespace TestProiectLicenta.Models
+﻿namespace TestProiectLicenta.Models
 {
     public class Car
     {

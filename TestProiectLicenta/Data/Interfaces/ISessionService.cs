@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace TestProiectLicenta.Data.Interfaces
+﻿namespace TestProiectLicenta.Data.Interfaces
 {
     public interface ISessionService
     {

@@ -10,12 +10,12 @@
         <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="Center">
             <StackLayout VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
                 <Label Text="Username" TextColor="White" VerticalOptions="Center"/>
-                <Entry Keyboard="Default" Placeholder="Username" x:Name="user" WidthRequest="200"/>
+                <Entry Keyboard="Default" Placeholder="Username" x:Name="user" WidthRequest="200" BackgroundColor="White"/>
             </StackLayout>
             
             <StackLayout VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
                 <Label Text="Password" TextColor="White" VerticalOptions="Center"/>
-                <Entry Keyboard="Default" Placeholder="Password" IsPassword="true" x:Name="pass" WidthRequest="200"/>
+                <Entry Keyboard="Default" Placeholder="Password" IsPassword="true" x:Name="pass" WidthRequest="200" BackgroundColor="White"/>
             </StackLayout>
 
             <Label Text="Please Enter Details" TextColor="Red" FontAttributes="Bold" HorizontalOptions="Center" IsVisible="false" x:Name="message"/>

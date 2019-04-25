@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TestProiectLicenta.Models;
 
 namespace TestProiectLicenta.Data.Interfaces

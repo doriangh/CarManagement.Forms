@@ -1,5 +1,4 @@
-﻿using System;
-namespace TestProiectLicenta.Data.Interfaces
+﻿namespace TestProiectLicenta.Data.Interfaces
 {
     public interface ICarRepository
     {

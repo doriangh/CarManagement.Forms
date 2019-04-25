@@ -1,8 +1,6 @@
-﻿using System;
-using TestProiectLicenta.Data.Services;
+﻿using TestProiectLicenta.Data.Services;
 using TestProiectLicenta.Persistence;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace TestProiectLicenta
 {

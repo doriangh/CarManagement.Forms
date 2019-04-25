@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using Plugin.Fingerprint;
-using SQLite;
-using TestProiectLicenta.Interfaces.Services;
-using TestProiectLicenta.Models;
-using TestProiectLicenta.Persistence;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace TestProiectLicenta
@@ -22,7 +15,7 @@ namespace TestProiectLicenta
             InitializeComponent();
         }
 
-        protected async override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
@@ -79,7 +72,5 @@ namespace TestProiectLicenta
                 }
             }
         }
-
-
     }
 }

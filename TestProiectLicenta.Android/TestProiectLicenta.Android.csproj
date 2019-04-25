@@ -160,6 +160,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\login.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\settings_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\user_icon.png" />
+    <AndroidResource Include="Resources\drawable\camera_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
