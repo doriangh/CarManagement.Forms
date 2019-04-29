@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.AddCarFormPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.AddCarFormPage">
     <TableView Intent="Form">
         <TableRoot>
             <TableSection Title="Car">
@@ -10,7 +10,7 @@
                 <ViewCell>
                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="15,0,0,0">
                         <Label Text="Type" />
-                        <Picker Title="Select a type" SelectedItem="Select an item" x:Name="type">
+                        <Picker Title="Select a type" SelectedItem="Select an item" x:Name="type" HorizontalOptions="CenterAndExpand" WidthRequest="240">
                             <Picker.Items>
                                 <x:String>Coupe</x:String>
                                 <x:String>Sedan</x:String>
@@ -22,12 +22,13 @@
                 </ViewCell>
                 <EntryCell Label="Fuel" Placeholder="eg. Diesel" x:Name="fuel"/>
             </TableSection>
-            
-            <TableSection>
-                <ViewCell>
-                    <Button Text="Save" Clicked="SaveDataButton"/>
-                </ViewCell>
-            </TableSection>
         </TableRoot>
+        
+        <TableSection>
+            <ViewCell>
+                <Button Text="Save" Clicked="SaveDataButton"/>
+            </ViewCell>
+        </TableSection>
+        
     </TableView>
 </ContentPage>

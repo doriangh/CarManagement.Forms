@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using Plugin.Fingerprint;
 using Xamarin.Forms;
 
-namespace TestProiectLicenta
+namespace TestProiectLicenta.Views
 {
     public partial class UserLoginPage : ContentPage
     {
@@ -53,23 +54,40 @@ namespace TestProiectLicenta
 
             if (isLoggedIn)
             {
-                if (await CrossFingerprint.Current.IsAvailableAsync(true))
+                if (Application.Current.Properties.ContainsKey("FaceID"))
                 {
-                    var result = await CrossFingerprint.Current.AuthenticateAsync("Prove you have fingers");
 
-                    if (result.Authenticated)
+                    if (Convert.ToBoolean(Application.Current.Properties["FaceID"].ToString()))
                     {
-                        Debug.WriteLine(result.ErrorMessage);
-                        Debug.WriteLine(result.Status);
-                        retry.IsVisible = false;
-                        await Navigation.PushAsync(new UserPageForm());
+                        if (await CrossFingerprint.Current.IsAvailableAsync(true))
+                        {
+                            var result = await CrossFingerprint.Current.AuthenticateAsync("Prove you have fingers");
+
+                            if (result.Authenticated)
+                            {
+                                Debug.WriteLine(result.ErrorMessage);
+                                Debug.WriteLine(result.Status);
+                                retry.IsVisible = false;
+                                await Navigation.PushAsync(new UserPageForm());
+                            }
+                            else
+                            {
+                                await DisplayAlert("Authentication Error", "Could not authenticate", "OK");
+                                retry.IsVisible = true;
+                            }
+                        }
                     }
                     else
                     {
-                        await DisplayAlert("Authentication Error", "Could not authenticate", "OK");
-                        retry.IsVisible = true;
+                        await Navigation.PushAsync(new UserPageForm());
                     }
                 }
+                else
+                {
+                    Application.Current.Properties["FaceID"] = false;
+                    await Navigation.PushAsync(new UserPageForm());
+                }
+
             }
         }
     }

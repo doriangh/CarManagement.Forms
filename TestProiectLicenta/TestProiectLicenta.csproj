@@ -26,6 +26,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
     <PackageReference Include="Plugin.Fingerprint" Version="1.4.9" />
     <PackageReference Include="Refractored.XamForms.PullToRefresh" Version="2.4.1" />
+    <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.5.922" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.5.922" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.5.922" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -40,6 +43,9 @@
     </Reference>
     <Reference Include="Mono.Android">
       <HintPath>..\..\..\..\..\Library\Frameworks\Xamarin.Android.framework\Versions\9.2.0-5\lib\xamarin.android\xbuild-frameworks\MonoAndroid\v8.1\Mono.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\..\..\..\Library\Frameworks\Xamarin.Android.framework\Versions\9.2.3-0\lib\xamarin.android\xbuild-frameworks\MonoAndroid\v8.1\Mono.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

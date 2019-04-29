@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage BackgroundColor="Black" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.AddCarVINPage">
+<ContentPage BackgroundColor="Black" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.AddCarVINPage">
    <StackLayout VerticalOptions="Center" Padding="70">
         <Entry Placeholder="Enter VIN" HorizontalTextAlignment="Center" x:Name="VINField"/>
         <Label Text="VIN Must be 14 characters long!" TextColor="Red" FontAttributes="Bold" IsVisible="false"/>

@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Acr.UserDialogs;
 using Newtonsoft.Json.Linq;
 using Plugin.Media;
+using Plugin.Media.Abstractions;
 using TestProiectLicenta.Data.Interfacess;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
@@ -51,10 +55,11 @@ namespace TestProiectLicenta.Data.Services
             var memoryStream = new MemoryStream();
             file.GetStream().CopyTo(memoryStream);
 
-            File.Delete(file.Path);
-
             request.Car = await GetRecognisedCar(memoryStream.ToArray());
+            request.Car.CarImage = UploadImageImgur(file);
             request.Success = true;
+
+            File.Delete(file.Path);
 
             return request;
 
@@ -92,10 +97,11 @@ namespace TestProiectLicenta.Data.Services
             var memoryStream = new MemoryStream();
             file.GetStream().CopyTo(memoryStream);
 
-            File.Delete(file.Path);
-
             request.Car = await GetRecognisedCar(memoryStream.ToArray());
+            request.Car.CarImage = UploadImageImgur(file);
             request.Success = true;
+
+            File.Delete(file.Path);
 
             return request;
 
@@ -135,47 +141,137 @@ namespace TestProiectLicenta.Data.Services
             HttpWebResponse webResponse = null;
             StreamReader streamReader = null;
             Stream requestStream = null;
+            Car newCar;
 
-            try
+            using (UserDialogs.Instance.Loading("Looking for that image.\nHold on"))
             {
-                webRequest = (HttpWebRequest)WebRequest.Create(Constants.imageDetectionAPI);
-                webRequest.Method = "POST";
-                webRequest.Accept = "*/*";
-                webRequest.Timeout = 50000;
-                webRequest.KeepAlive = false;
-                webRequest.AllowAutoRedirect = false;
-                webRequest.AllowWriteStreamBuffering = true;
-                webRequest.ContentType = "application/octet-stream";
-                webRequest.Headers["X-Access-Token"] = "ijtnMD6yyOXofoAcLsR1abzUUmDthKwbbbA8";
+                try
+                {
+                    webRequest = (HttpWebRequest)WebRequest.Create(Constants.imageDetectionAPI);
+                    webRequest.Method = "POST";
+                    webRequest.Accept = "*/*";
+                    webRequest.Timeout = 50000;
+                    webRequest.KeepAlive = false;
+                    webRequest.AllowAutoRedirect = false;
+                    webRequest.AllowWriteStreamBuffering = true;
+                    webRequest.ContentType = "application/octet-stream";
+                    webRequest.Headers["X-Access-Token"] = "ijtnMD6yyOXofoAcLsR1abzUUmDthKwbbbA8";
 
-                requestStream = webRequest.GetRequestStream();
-                requestStream.Write(imageStream, 0, imageStream.Length);
+                    requestStream = webRequest.GetRequestStream();
+                    requestStream.Write(imageStream, 0, imageStream.Length);
 
-                requestStream.Close();
+                    requestStream.Close();
 
-                webResponse = (HttpWebResponse)webRequest.GetResponse();
-                streamReader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
-                Response = streamReader.ReadToEnd();
+                    webResponse = (HttpWebResponse)webRequest.GetResponse();
+                    streamReader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
+                    Response = streamReader.ReadToEnd();
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e);
+                }
+
+                var car = JObject.Parse(Response);
+                var userId = await SecureStorage.GetAsync("UserId");
+
+                newCar = new Car()
+                {
+                    UserId = Convert.ToInt32(userId),
+                    Make = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["make"]["name"].ToString(),
+                    Model = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["model"]["name"].ToString(),
+                    Color = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["color"]["name"].ToString(),
+                    Body = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["vehicleType"].ToString(),
+                    License = car["objects"][0]["vehicleAnnotation"]["licenseplate"]["attributes"]["system"]["string"]["name"].ToString()
+                };
             }
-            catch (Exception e)
-            {
-                Console.Write(e);
-            }
-
-            var car = JObject.Parse(Response);
-            var userId = await SecureStorage.GetAsync("UserId");
-
-            Car newCar = new Car()
-            {
-                UserId = Convert.ToInt32(userId),
-                Make = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["make"]["name"].ToString(),
-                Model = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["model"]["name"].ToString(),
-                Color = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["color"]["name"].ToString(),
-                Body = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["vehicleType"].ToString(),
-                License = car["objects"][0]["vehicleAnnotation"]["licenseplate"]["attributes"]["system"]["string"]["name"].ToString()
-            };
 
             return newCar;
+        }
+
+        public async Task<CarVinRequest> HandleTakingPicture(CarVinRequest request)
+        {
+            await CrossMedia.Current.Initialize();
+
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            {
+                request.Errors.Add("No camera");
+                request.Success = false;
+                return request;
+            }
+
+            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+            {
+                Directory = "Sample",
+                Name = "test.jpg"
+            });
+
+            if (file == null)
+            {
+                request.Errors.Add("Couldn't save/find file");
+                request.Success = false;
+                return request;
+            }
+
+            var memoryStream = new MemoryStream();
+            file.GetStream().CopyTo(memoryStream);
+
+            //request.Car = await GetRecognisedCar(memoryStream.ToArray());
+            request.Car.CarImage = UploadImageImgur(file);
+            request.Success = true;
+
+            File.Delete(file.Path);
+
+            return request;
+        }
+
+        public async Task<CarVinRequest> HandleSelectionPicture(CarVinRequest request)
+        {
+            await CrossMedia.Current.Initialize();
+
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                request.Errors.Add("Can't Access Library");
+                request.Success = false;
+                return request;
+            }
+
+            var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions { });
+
+            if (file == null)
+            {
+                request.Errors.Add("Couldn't read file");
+                request.Success = false;
+                return request;
+            }
+
+            var memoryStream = new MemoryStream();
+            file.GetStream().CopyTo(memoryStream);
+
+            //request.Car = await GetRecognisedCar(memoryStream.ToArray());
+            request.Car.CarImage = UploadImageImgur(file);
+            request.Success = true;
+
+            File.Delete(file.Path);
+
+            return request;
+        }
+
+        public string UploadImageImgur(MediaFile file)
+        {
+            using (var w = new WebClient())
+            {
+                w.Headers.Add("Authorization", "Client-ID " + Constants.imgurId);
+                var values = new NameValueCollection
+                {
+                    {"image", Convert.ToBase64String(File.ReadAllBytes(file.Path))}
+                };
+
+                byte[] response = w.UploadValues(Constants.imgurUrl, values);
+                XDocument xml = XDocument.Load(new MemoryStream(response));
+                Console.WriteLine(xml);
+
+                return xml.Root.Element("link").Value;
+            }
         }
 
     }

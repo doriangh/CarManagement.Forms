@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.AddCarMissingDetailsFormPage" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             BackgroundColor="Black">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Setup" HorizontalOptions="Center" TextColor="White" FontSize="50"/>
+            
+            <TableView Intent="Form" BackgroundColor="White" x:Name="table">
+                <TableRoot>
+                    <TableSection Title="Missing Details" x:Name="missing">
+                        
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+            
+            
+            <Button Text="Finish" BackgroundColor="Green" TextColor="White"/>
+            
+            <Button Text="Cancel" BackgroundColor="Red" TextColor="White"/>
+                    
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace TestProiectLicenta
+namespace TestProiectLicenta.Views
 {
     public partial class AddCarVINPage : ContentPage
     {

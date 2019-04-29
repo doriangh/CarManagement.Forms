@@ -27,6 +27,7 @@ namespace TestProiectLicenta.iOS
         {
             Rg.Plugins.Popup.Popup.Init();
             PullToRefreshLayoutRenderer.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 
             global::Xamarin.Forms.Forms.Init();
             ImageCircleRenderer.Init();

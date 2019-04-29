@@ -34,6 +34,6 @@
             {
                 return Make + ' ' + Model;
             } }
-        public string ImageUrl { get; set; }
+        public string CarImage { get; set; }
     }
 }

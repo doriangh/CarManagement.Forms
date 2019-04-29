@@ -6,7 +6,7 @@ using TestProiectLicenta.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace TestProiectLicenta
+namespace TestProiectLicenta.Views
 {
     public partial class UserPageForm : TabbedPage
     {
@@ -17,6 +17,8 @@ namespace TestProiectLicenta
         public UserPageForm()
         {
             InitializeComponent();
+
+            fid.IsToggled = Convert.ToBoolean(Application.Current.Properties["FaceID"]);
         }
 
         protected override async void OnAppearing()
@@ -30,8 +32,8 @@ namespace TestProiectLicenta
 
                 var user = await App.UserManager.GetUserById(Convert.ToInt32(userId));
 
-
                 name.Text = user.Name;
+
                 if (user.UserImage != null && user.UserImage.Contains("https://"))
                 {
                     avatar.Source = ImageSource.FromUri(new Uri(user.UserImage));
@@ -57,16 +59,23 @@ namespace TestProiectLicenta
 
         async Task RefreshCars()
         {
-           userCars.Clear();
-
             var lst = await App.CarManager.GetUserCars(Convert.ToInt32(userId));
 
-            foreach (var car in lst)
+            if (userCars.Count < lst.Count)
             {
-                userCars.Add(car);
-                cars.IsVisible = true;
-                addCar.IsVisible = false;
-                cars.ItemsSource = userCars;
+                foreach (var car in lst)
+                {
+                    if (userCars.Contains(car)) continue;
+                    else userCars.Add(car);
+                }
+            }
+            else if (userCars.Count > lst.Count)
+            {
+                foreach (var car in lst)
+                {
+                    if (userCars.Contains(car)) continue;
+                    else userCars.Remove(car);
+                }
             }
         }
 
@@ -119,9 +128,9 @@ namespace TestProiectLicenta
         {
             Car car = (sender as MenuItem).BindingContext as Car;
 
-            await App.CarManager.DeleteCar(car.Id);
+            userCars.Remove(car);
 
-            await RefreshCars();
+            await App.CarManager.DeleteCar(car.Id);
         }
 
         async void Handle_Refreshing(object sender, System.EventArgs e)
@@ -131,6 +140,11 @@ namespace TestProiectLicenta
             await RefreshCars();
 
             cars.IsRefreshing = false;
+        }
+
+        void Handle_Toggled(object sender, Xamarin.Forms.ToggledEventArgs e)
+        {
+            Application.Current.Properties["FaceID"] = fid.IsToggled;
         }
     }
 }

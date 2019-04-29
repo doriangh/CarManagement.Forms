@@ -24,18 +24,25 @@ namespace TestProiectLicenta
 
             //CarDetailLayout.Children.Add(new Image { Source = ImageSource.FromUri(new Uri(results.Photos[0].Src.Original)) });
 
-            String url = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + usercar.Make + "+" + usercar.Model + ("+" + usercar.ModelYear) ?? null + ("+" + usercar.Body) ?? null;
-
-            XmlTextReader reader = new XmlTextReader(url);
-
-            while (reader.Read())
+            if (usercar.CarImage == null)
             {
-                if (reader.Value.Contains("http://"))
-                {
-                    CarDetailLayout.Children.Add(new Image { Source = ImageSource.FromUri(new Uri(reader.Value.Trim())) });
-                }
-                //Console.WriteLine(reader.Value.Trim());
+                String url = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + usercar.Make + "+" + usercar.Model + ("+" + usercar.ModelYear) ?? null + ("+" + usercar.Body) ?? null;
 
+                XmlTextReader reader = new XmlTextReader(url);
+
+                while (reader.Read())
+                {
+                    if (reader.Value.Contains("http://"))
+                    {
+                        CarDetailLayout.Children.Add(new Image { Source = ImageSource.FromUri(new Uri(reader.Value.Trim())) });
+                    }
+                    //Console.WriteLine(reader.Value.Trim());
+
+                }
+            }
+            else
+            {
+                CarDetailLayout.Children.Add(new Image { Source = usercar.CarImage, Aspect = Aspect.AspectFit });
             }
 
             addVin.IsVisible |= usercar.VIN != null;

@@ -3,7 +3,7 @@ using TestProiectLicenta.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace TestProiectLicenta
+namespace TestProiectLicenta.Views
 {
     public partial class AddCarFormPage : ContentPage
     {

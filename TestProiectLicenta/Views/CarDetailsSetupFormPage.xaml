@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.CarDetailsSetupFormPage" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             BackgroundColor="Black">
+    <ContentPage.Content>
+        <StackLayout Padding="20">
+            <Label Text="Setup" HorizontalOptions="Center" TextColor="White" FontSize="50"/>
+            
+            <ImageButton HorizontalOptions="Center" WidthRequest="200" HeightRequest="200" Source="add_image.png" x:Name="image" Clicked="AddImageButton" Aspect="AspectFill"/>
+            <Label Text="We will save your car with this image. You can change it at any time. If you with to change it now, tap on the image." TextColor="Gray" FontSize="Micro" HorizontalTextAlignment="Center"/>
+            
+            
+            <TableView Intent="Form" BackgroundColor="White" x:Name="table">
+                <TableRoot>
+                    
+                    <TableSection Title="Car Info">
+                        <EntryCell Label="Make" Placeholder="eg. Ford" x:Name="make"/>
+                        <EntryCell Label="Model" Placeholder="eg. Focus" x:Name="model"/>
+                        <EntryCell Label="Year" Placeholder="eg. 2010" x:Name="year"/>
+                        
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="15,0,0,0">
+                                <Label Text="Type" />
+                                <Picker Title="Select a type" SelectedItem="Select an item" x:Name="type" HorizontalOptions="CenterAndExpand" WidthRequest="240">
+                                    <Picker.Items>
+                                        <x:String>Coupe</x:String>
+                                        <x:String>Sedan</x:String>
+                                        <x:String>Hatchback</x:String>
+                                        <x:String>SUV</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </StackLayout>
+                        </ViewCell>
+                        <EntryCell Label="Fuel" Placeholder="eg. Diesel" x:Name="fuel"/>
+                        <EntryCell Label="Odometer" Placeholder="eg. 100000KM" x:Name="odometer"/>
+                        <EntryCell Label="License" Placeholder="eg. ISXXABC" x:Name="License"/>
+                        
+                    </TableSection>
+                    
+                    <TableSection Title="Car Details">
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
+                                <Label Text="ITP Date" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                                <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019" Date="{x:Static system:DateTime.Today}" Format="D" HorizontalOptions="CenterAndExpand" WidthRequest="240"  x:Name="itp"/>
+                            </StackLayout>
+                        </ViewCell>
+                        
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
+                                <Label Text="Road Tax" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                                <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019" Date="{x:Static system:DateTime.Today}" Format="D" HorizontalOptions="CenterAndExpand" WidthRequest="240" x:Name="roadtax"/>
+                            </StackLayout>
+                        </ViewCell>
+                        
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
+                                <Label Text="Oil Change" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                                <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019" Date="{x:Static system:DateTime.Today}" Format="D" HorizontalOptions="CenterAndExpand" WidthRequest="240" x:Name="oilchange"/>
+                            </StackLayout>
+                        </ViewCell>
+                        
+                        <SwitchCell Text="Do you have winter tires on?" x:Name="wintertires"/>
+                        
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+            
+            
+            <Button Text="Submit" BackgroundColor="Green" TextColor="White" Clicked="ContinueButton"/>
+            
+            <Button Text="Cancel" BackgroundColor="Red" TextColor="White" Clicked="CancelButton"/>
+                    
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

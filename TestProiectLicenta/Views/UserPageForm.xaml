@@ -2,7 +2,7 @@
 <TabbedPage 
     NavigationPage.HasNavigationBar="false"
     BackgroundColor="Black"
-    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.UserPageForm" xmlns:local="clr-namespace:TestProiectLicenta"
+    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.UserPageForm" xmlns:local="clr-namespace:TestProiectLicenta.Views"
     xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
     xmlns:refresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh">
     
@@ -11,8 +11,6 @@
             <StackLayout BackgroundColor="Black" HeightRequest="100">
                 <Grid VerticalOptions="CenterAndExpand">
                     
-               
-<!--                    <BoxView Grid.Column="0" Color="White" VerticalOptions="Center" HorizontalOptions="Center"/>-->
                     <controls:CircleImage Source="user_icon.png" HorizontalOptions="Center" BackgroundColor="Transparent"  x:Name="avatar" Aspect="AspectFill">
                         <controls:CircleImage.WidthRequest>
                             <OnPlatform x:TypeArguments="x:Double">
@@ -65,11 +63,15 @@
         </StackLayout>
     </ContentPage>
     
-    
-<!--    <local:MainPage Title="Add" Icon="add-icon.png"/>-->
     <local:AddCarPage Title="Add Car" Icon="add_icon.png"/>
-    <ContentPage Title="User" Icon="user_icon.png"/>
+    <local:CarListPage Title="User" Icon="user_icon.png"/>
     <ContentPage Title="Settings" Icon="settings_icon.png">
-        <Button Text="Sign Out" Clicked="SignOutButton"/>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <StackLayout Orientation="Horizontal">
+                <Label Text="FaceID Login?"/>
+                <Switch IsToggled="false" Toggled="Handle_Toggled" x:Name="fid"/>
+            </StackLayout>
+            <Button Text="Sign Out" Clicked="SignOutButton"/>
+        </StackLayout>
     </ContentPage>
 </TabbedPage>

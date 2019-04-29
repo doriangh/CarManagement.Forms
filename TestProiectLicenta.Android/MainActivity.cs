@@ -26,12 +26,14 @@ namespace TestProiectLicenta.Droid
             base.OnCreate(savedInstanceState);
 
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             CrossFingerprint.SetCurrentActivityResolver(() => CrossCurrentActivity.Current.Activity);
 
             UserDialogs.Init(this);
 
             PullToRefreshLayoutRenderer.Init();
 
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

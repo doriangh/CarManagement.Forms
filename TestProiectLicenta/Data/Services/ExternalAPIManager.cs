@@ -28,5 +28,15 @@ namespace TestProiectLicenta.Data.Services
         {
             return _service.GetCarBySelectingPicture();
         }
+
+        public Task<CarVinRequest> HandleSelectionPicture(CarVinRequest request)
+        {
+            return _service.HandleSelectionPicture(request);
+        }
+
+        public Task<CarVinRequest> HandleTakingPicture(CarVinRequest request)
+        {
+            return _service.HandleTakingPicture(request);
+        }
     }
 }

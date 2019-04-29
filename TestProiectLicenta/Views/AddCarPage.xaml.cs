@@ -1,7 +1,8 @@
 ﻿using System;
+using TestProiectLicenta.Views;
 using Xamarin.Forms;
 
-namespace TestProiectLicenta
+namespace TestProiectLicenta.Views
 {
     public partial class AddCarPage : ContentPage
     {
@@ -25,9 +26,9 @@ namespace TestProiectLicenta
 
                 if (action)
                 {
-                    await App.CarManager.AddCar(request.Car);
+                    //await App.CarManager.AddCar(request.Car);
 
-                    await Navigation.PushAsync(new UserPageForm());
+                    await Navigation.PushAsync(new CarDetailsSetupFormPage(request));
                 }
                 else
                 {
@@ -50,9 +51,9 @@ namespace TestProiectLicenta
 
                 if (action)
                 {
-                    await App.CarManager.AddCar(request.Car);
+                    //await App.CarManager.AddCar(request.Car);
 
-                    await Navigation.PushAsync(new UserPageForm());
+                    await Navigation.PushAsync(new CarDetailsSetupFormPage(request));
                 }
                 else
                 {
@@ -67,7 +68,7 @@ namespace TestProiectLicenta
 
         public async void AddManuallyButtonPressed(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new AddCarFormPage());
+            await Navigation.PushAsync(new CarDetailsSetupFormPage());
         }
 
         async void AddVINButtonPressed(object sender, System.EventArgs e)
