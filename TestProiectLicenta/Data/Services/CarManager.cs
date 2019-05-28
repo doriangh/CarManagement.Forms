@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using TestProiectLicenta.Interfaces.Services;
+using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
 
 namespace TestProiectLicenta.Data.Services
 {
     public class CarManager
     {
-        readonly ICarService _service;
+        private readonly ICarService _service;
 
         public CarManager(ICarService service)
         {
@@ -40,14 +40,14 @@ namespace TestProiectLicenta.Data.Services
             return _service.DeleteCar(id);
         }
 
-        public Task UpdateCar(Car car)
+        public Task UpdateCar(int id, Car car)
         {
-            return _service.UpdateCar(car);
+            return _service.UpdateCar(id, car);
         }
 
-        public Task AddCarByVIN(JObject data, string VIN)
+        public Task AddCarByVin(JObject data, string vin)
         {
-            return _service.AddCarByVIN(data, VIN);
+            return _service.AddCarByVin(data, vin);
         }
     }
 }

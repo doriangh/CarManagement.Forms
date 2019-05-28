@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using TestProiectLicenta.Models;
@@ -10,81 +13,151 @@ namespace TestProiectLicenta.Views
 {
     public partial class UserPageForm : TabbedPage
     {
-        public string userId;
+        private string _userId;
 
-        ObservableCollection<Car> userCars;
+        private ObservableCollection<Car> _userCars;
+
+        private ObservableCollection<ListCarAttributes> _listData;
 
         public UserPageForm()
         {
             InitializeComponent();
 
-            fid.IsToggled = Convert.ToBoolean(Application.Current.Properties["FaceID"]);
+            Fid.IsToggled = Convert.ToBoolean(Application.Current.Properties["FaceID"]);
+
+            InitCars();
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
+        }
 
+        private async Task InitCars()
+        {
             using (UserDialogs.Instance.Loading("Getting user details.\nHold on"))
             {
 
-                userId = await SecureStorage.GetAsync("UserId");
+                _userId = await SecureStorage.GetAsync("UserId");
 
-                var user = await App.UserManager.GetUserById(Convert.ToInt32(userId));
+                var user = await App.UserManager.GetUserById(Convert.ToInt32(_userId));
+
+                BindingContext = user;
 
                 name.Text = user.Name;
 
                 if (user.UserImage != null && user.UserImage.Contains("https://"))
                 {
-                    avatar.Source = ImageSource.FromUri(new Uri(user.UserImage));
+                    Avatar.Source = ImageSource.FromUri(new Uri(user.UserImage));
+                    
                 }
 
-                userCars = new ObservableCollection<Car>();
+                //userCars = new ObservableCollection<Car>();
 
                 var lst = await App.CarManager.GetUserCars(user.Id);
+                var lstDetail = await App.CarDetailManager.GetCarDetails();
+
+                _listData = new ObservableCollection<ListCarAttributes>();
 
                 foreach (var car in lst)
                 {
-                    userCars.Add(car);
+                    var carDetail = lstDetail.Find(x => x.CarId == car.Id);
+                    var listItem = ConvertToListAttribute(car, carDetail);
+
+                    if (listItem != null)
+                    {
+                        _listData.Add(listItem);
+                    }
                 }
 
-                if (userCars.Count > 0)
+                if (_listData.Count > 0)
                 {
-                    cars.IsVisible = true;
-                    addCar.IsVisible = false;
-                    cars.ItemsSource = userCars;
+                    Cars.IsVisible = true;
+                    AddCar.IsVisible = false;
+                    Cars.ItemsSource = _listData;
+                    Cars.RowHeight = 200;
+                    Cars.HasUnevenRows = true;
                 }
             }
         }
 
-        async Task RefreshCars()
+        private ListCarAttributes ConvertToListAttribute(Car car, CarDetail carDetail)
         {
-            var lst = await App.CarManager.GetUserCars(Convert.ToInt32(userId));
+            //var carDetail = await App.CarDetailManager.GetCarsDetail(car.Id);
+            //var carDetail = carDetails.Find(x => x.CarId == car.Id);
 
-            if (userCars.Count < lst.Count)
+            if (carDetail != null)
             {
-                foreach (var car in lst)
+
+                var nextITP = carDetail.Itp.AddYears(2);
+
+
+                var carAttributes = new ListCarAttributes
                 {
-                    if (userCars.Contains(car)) continue;
-                    else userCars.Add(car);
+                    CarId = car.Id,
+                    FullName = car.FullName,
+                    ModelYear = car.ModelYear,
+                    RemainingItp = (carDetail.Itp.AddYears(2) - DateTime.Today).TotalDays.ToString(),
+                    RemainingRoadTax = (carDetail.RoadTax - DateTime.Today).TotalDays.ToString(),
+                    RemainingOilChange = (carDetail.OilChange - DateTime.Today).TotalDays.ToString(),
+                    RoadTaxValue = carDetail.RoadTaxValue.ToString(),
+                    InsuranceValue = carDetail.InsuranceValue.ToString(),
+                    CarImage = car.CarImage,
+                    TaxValue = carDetail.TaxValue == -1 ? "Nu putem calcula" : carDetail.TaxValue.ToString()
+                };
+
+
+                return carAttributes;
+            }
+
+            return null;
+        }
+
+        private async Task RefreshCars()
+        { 
+            var query =
+                from car in await App.CarManager.GetCarsAsync()
+                join detail in await App.CarDetailManager.GetCarDetails()
+                on car.Id equals detail.CarId
+                where car.UserId == Convert.ToInt32(_userId)
+                select car;
+
+            var carDetails = await App.CarDetailManager.GetCarDetails();
+
+            var dataQuery = query.ToList();
+
+            if (_listData.Count < dataQuery.Count)
+            {
+                foreach (var car in dataQuery)
+                {
+                    var carDetail = carDetails.Find(x => x.CarId == car.Id);
+
+                    var listCar = ConvertToListAttribute(car, carDetail);
+
+                    if (_listData.Contains(listCar)) continue;
+                    _listData.Add(listCar);
                 }
             }
-            else if (userCars.Count > lst.Count)
+            else if (_listData.Count > dataQuery.Count)
             {
-                foreach (var car in lst)
+                foreach (var listItem in _listData)
                 {
-                    if (userCars.Contains(car)) continue;
-                    else userCars.Remove(car);
+                    foreach (var car in dataQuery)
+                    {
+                        if (listItem.CarId == car.Id) continue;
+
+                        _listData.Remove(listItem);
+                    }
                 }
             }
         }
 
-        async void AddCarsWhenNoCarsButton(object sender, System.EventArgs e)
+        private async void AddCarsWhenNoCarsButton(object sender, System.EventArgs e)
         {
             await Navigation.PushAsync(new AddCarPage());
         }
 
-        async void BackButtonPressed(object sender, System.EventArgs e)
+        private async void BackButtonPressed(object sender, System.EventArgs e)
         {
             await Navigation.PopAsync();
         }
@@ -94,28 +167,36 @@ namespace TestProiectLicenta.Views
             await Navigation.PushAsync(new AddCarFormPage());
         }
 
-        async void AddVINButtonPressed(object sender, System.EventArgs e)
+        private async void AddVinButtonPressed(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new AddCarVINPage());
+            await Navigation.PushAsync(new AddCarVinPage());
         }
 
-        async void SignOutButton(object sender, System.EventArgs e)
+        private async void SignOutButton(object sender, System.EventArgs e)
         {
             SecureStorage.RemoveAll();
 
             await Navigation.PopToRootAsync();
         }
 
-        async void ViewListItemDetails(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        private async void ViewListItemDetails(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
-            var car = e.SelectedItem as Car;
+
+            if (e.SelectedItem == null) return;
+            
+
+            var listItem = e.SelectedItem as ListCarAttributes;
+
+            var car = await App.CarManager.GetCar(listItem.CarId);
 
             await Navigation.PushAsync(new UserSelectedCarDetailPage(car));
+
+            ((ListView)sender).SelectedItem = null;
         }
 
-        void ViewListItemTappedDetails(object sender, Xamarin.Forms.ItemTappedEventArgs e)
+        private void ViewListItemTappedDetails(object sender, Xamarin.Forms.ItemTappedEventArgs e)
         {
-            Car car = (Car) e.Item;
+            var car = (Car) e.Item;
 
             Console.WriteLine(car.FullName);
             Console.WriteLine(car.ModelYear);
@@ -124,27 +205,30 @@ namespace TestProiectLicenta.Views
             Console.WriteLine(e.ItemIndex);
         }
 
-        async void DeleteCarFromListButton(object sender, System.EventArgs e)
+        private async void DeleteCarFromListButton(object sender, System.EventArgs e)
         {
-            Car car = (sender as MenuItem).BindingContext as Car;
+            var listItem = ((MenuItem) sender).BindingContext as ListCarAttributes;
 
-            userCars.Remove(car);
+            var carDetail = await App.CarDetailManager.GetCarsDetail(listItem.CarId);
 
-            await App.CarManager.DeleteCar(car.Id);
+            _listData.Remove(listItem);
+
+            await App.CarManager.DeleteCar(listItem.CarId);
+            await App.CarDetailManager.DeleteCarDetail(carDetail.Id);
         }
 
-        async void Handle_Refreshing(object sender, System.EventArgs e)
+        private async void Handle_Refreshing(object sender, System.EventArgs e)
         {
-            cars.IsRefreshing = true;
+            Cars.IsRefreshing = true;
 
             await RefreshCars();
 
-            cars.IsRefreshing = false;
+            Cars.IsRefreshing = false;
         }
 
-        void Handle_Toggled(object sender, Xamarin.Forms.ToggledEventArgs e)
+        private void Handle_Toggled(object sender, ToggledEventArgs e)
         {
-            Application.Current.Properties["FaceID"] = fid.IsToggled;
+            Application.Current.Properties["FaceID"] = Fid.IsToggled;
         }
     }
 }

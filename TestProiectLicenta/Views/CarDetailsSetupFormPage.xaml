@@ -27,12 +27,27 @@
                                         <x:String>Sedan</x:String>
                                         <x:String>Hatchback</x:String>
                                         <x:String>SUV</x:String>
+                                        <x:String>Break</x:String>
                                     </Picker.Items>
                                 </Picker>
                             </StackLayout>
                         </ViewCell>
-                        <EntryCell Label="Fuel" Placeholder="eg. Diesel" x:Name="fuel"/>
-                        <EntryCell Label="Odometer" Placeholder="eg. 100000KM" x:Name="odometer"/>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="15,0,0,0">
+                                <Label Text="Fuel" />
+                                <Picker Title="Select fuel" SelectedItem="Select an item" x:Name="fuel" HorizontalOptions="CenterAndExpand" WidthRequest="240">
+                                    <Picker.Items>
+                                        <x:String>Gas</x:String>
+                                        <x:String>Diesel</x:String>
+                                        <x:String>Hybrid</x:String>
+                                        <x:String>Electric</x:String>
+                                        <x:String>GPL</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </StackLayout>
+                        </ViewCell>
+                        <EntryCell Label="Odometer" Placeholder="eg. 100000KM" x:Name="odometer" Keyboard="Numeric"/>
+                        <EntryCell Label="CC" Placeholder="eg. 1600" x:Name="cc" Keyboard="Numeric"/>
                         <EntryCell Label="License" Placeholder="eg. ISXXABC" x:Name="License"/>
                         
                     </TableSection>

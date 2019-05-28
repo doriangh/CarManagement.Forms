@@ -5,21 +5,6 @@
     
     <Grid>
         
-        <StackLayout BackgroundColor="Black" HeightRequest="100" VerticalOptions="StartAndExpand">
-                <Grid VerticalOptions="StartAndExpand">
-                    
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="AUTO"/>
-                    </Grid.ColumnDefinitions>
-                
-                </Grid>
-            </StackLayout>
-        
         <StackLayout Grid.Row="0" VerticalOptions="Start">
             <Label Text="Add a car" TextColor="White" FontSize="60" IsVisible="true" HorizontalTextAlignment="Center"/>
         </StackLayout>
@@ -37,7 +22,7 @@
         </StackLayout>
             
         <StackLayout Grid.Row="3">
-            <Button Text="Add Via VIN" BackgroundColor="Green" TextColor="White" CornerRadius="8" Clicked="AddVINButtonPressed"/>
+            <Button Text="Add Via VIN" BackgroundColor="Green" TextColor="White" CornerRadius="8" Clicked="AddVinButtonPressed"/>
             <Button Text="Add Manually" BackgroundColor="Green" TextColor="White" CornerRadius="8" Clicked="AddManuallyButtonPressed"/>
 <!--            <Button Text="Back" BackgroundColor="Gray" TextColor="White" CornerRadius="8" VerticalOptions="EndAndExpand" Clicked="BackButtonPressed"/>-->
         </StackLayout>

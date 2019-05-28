@@ -28,8 +28,6 @@
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>CFBundleName</key>
-	<string>TestProiectLicenta</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleShortVersionString</key>
@@ -42,5 +40,9 @@
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Needa da face</string>
+	<key>CFBundleName</key>
+	<string>Car Management</string>
+	<key>XSLaunchImageAssets</key>
+	<string>Assets.xcassets/LaunchImage.launchimage</string>
 </dict>
 </plist>

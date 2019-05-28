@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TestProiectLicenta.Models;
 
-namespace TestProiectLicenta.Interfaces.Services
+namespace TestProiectLicenta.Data.Interfaces
 {
     public interface IUserService
     {

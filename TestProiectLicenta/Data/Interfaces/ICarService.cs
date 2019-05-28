@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using TestProiectLicenta.Models;
 
-namespace TestProiectLicenta.Interfaces.Services
+namespace TestProiectLicenta.Data.Interfaces
 {
     public interface ICarService
     {
@@ -12,7 +12,7 @@ namespace TestProiectLicenta.Interfaces.Services
         Task<List<Car>> GetUserCars(int userId);
         Task AddCar(Car car);
         Task DeleteCar(int id);
-        Task UpdateCar(Car car);
-        Task AddCarByVIN(JObject data, string VIN);
+        Task UpdateCar(int id, Car car);
+        Task AddCarByVin(JObject data, string vin);
     }
 }

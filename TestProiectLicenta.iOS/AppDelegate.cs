@@ -6,6 +6,7 @@ using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
 using Plugin.Fingerprint;
 using Refractored.XamForms.PullToRefresh.iOS;
+using RoundedBoxView.Forms.Plugin.iOSUnified;
 using UIKit;
 
 namespace TestProiectLicenta.iOS
@@ -26,10 +27,12 @@ namespace TestProiectLicenta.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             Rg.Plugins.Popup.Popup.Init();
+            Plugin.InputKit.Platforms.iOS.Config.Init();
             PullToRefreshLayoutRenderer.Init();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 
             global::Xamarin.Forms.Forms.Init();
+            RoundedBoxViewRenderer.Init();
             ImageCircleRenderer.Init();
             LoadApplication(new App());
 

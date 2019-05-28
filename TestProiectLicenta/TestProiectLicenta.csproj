@@ -29,6 +29,9 @@
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.5.922" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.5.922" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.5.922" />
+    <PackageReference Include="Xam.Plugins.Forms.RoundedBoxView" Version="1.0.0.7" />
+    <PackageReference Include="Xamarin.Forms.InputKit" Version="3.0.11" />
+    <PackageReference Include="Xamarin.Forms.DialogKit" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -50,8 +53,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Views\MainPage.xaml.cs" />
+    <Compile Remove="Views\AddCarFormPage.xaml.cs" />
+    <Compile Remove="Views\AddCarMissingDetailsFormPage.xaml.cs" />
+    <Compile Remove="Views\CarListPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Views\MainPage.xaml" />
+    <EmbeddedResource Remove="Views\AddCarFormPage.xaml" />
+    <EmbeddedResource Remove="Views\AddCarMissingDetailsFormPage.xaml" />
   </ItemGroup>
 </Project>

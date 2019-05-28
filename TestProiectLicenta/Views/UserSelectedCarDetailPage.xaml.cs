@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Xml;
+using Rg.Plugins.Popup.Extensions;
 using TestProiectLicenta.Models;
+using TestProiectLicenta.Views;
 using Xamarin.Forms;
 
 namespace TestProiectLicenta
 {
-    public partial class UserSelectedCarDetailPage : ContentPage
-    {
-        private string fuelKey = "daefd14b-9f2b-4968-9e4d-9d4bb4af01d1";
-
+    public partial class UserSelectedCarDetailPage : CarouselPage
+    { 
         private Car usercar;
 
 
@@ -26,15 +27,15 @@ namespace TestProiectLicenta
 
             if (usercar.CarImage == null)
             {
-                String url = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + usercar.Make + "+" + usercar.Model + ("+" + usercar.ModelYear) ?? null + ("+" + usercar.Body) ?? null;
+                var url = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + usercar.Make + "+" + usercar.Model + ("+" + usercar.ModelYear) ?? null + ("+" + usercar.Body) ?? null;
 
-                XmlTextReader reader = new XmlTextReader(url);
+                var reader = new XmlTextReader(url);
 
                 while (reader.Read())
                 {
                     if (reader.Value.Contains("http://"))
                     {
-                        CarDetailLayout.Children.Add(new Image { Source = ImageSource.FromUri(new Uri(reader.Value.Trim())) });
+                        carImage.Source = ImageSource.FromUri(new Uri(reader.Value.Trim()));
                     }
                     //Console.WriteLine(reader.Value.Trim());
 
@@ -42,35 +43,73 @@ namespace TestProiectLicenta
             }
             else
             {
-                CarDetailLayout.Children.Add(new Image { Source = usercar.CarImage, Aspect = Aspect.AspectFit });
+                carImage.Source = usercar.CarImage;
             }
 
-            addVin.IsVisible |= usercar.VIN != null;
+            if (usercar.Vin == null)
+                addVin.IsVisible = true;
 
-            PropertyInfo[] properties = usercar.GetType().GetProperties();
-            foreach (var item in properties)
+
+
+            CarDetailLayout.BindingContext = usercar;
+
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            var carPrice = await GetCarPrice(usercar);
+
+            if (carPrice.Errors != null)
             {
-                if (item.GetValue(usercar, null) is null)
-                {
-                    continue;
-                }
-                CarDetailLayout.Children.Add(new Label { Text = item.Name + ": " + item.GetValue(usercar, null) });
+                price.Text = "Could not estimate car price;";
+                price.TextColor = Color.Red;
+            }
+            else
+            {
+                price.Text = carPrice.Price.ToString();
+                estimation.Text = "Value obtained from " + carPrice.Count + " cars queried.";
             }
         }
 
-        void EditCarButton(object sender, System.EventArgs e)
+        private async void EditCarButton(object sender, System.EventArgs e)
         {
-            throw new NotImplementedException();
+            await Navigation.PushAsync(new UpdateCarPage(usercar.Id));
         }
 
-        void AddVINButton(object sender, System.EventArgs e)
+        private async void AddVinButton(object sender, System.EventArgs e)
         {
-            throw new NotImplementedException();
+            var result = await Plugin.DialogKit.CrossDiaglogKit.Current.GetInputTextAsync("Enter VIN", "Please enter VIN");
+
+            if (result != null)
+            {
+                usercar.Vin = result;
+
+                await App.CarManager.UpdateCar(usercar.Id, usercar);
+            }
+
+            BindingContext = usercar;
         }
 
-        async void DeleteCarButton(object sender, System.EventArgs e)
+        private async void DeleteCarButton(object sender, System.EventArgs e)
         {
             await Navigation.PopAsync();
+        }
+
+        private static async Task<CarPriceResponse> GetCarPrice(Car car)
+        {
+            var priceDetails = new CarPriceRequest()
+            {
+                Model = car.Model,
+                Make = car.Make,
+                Cc = Convert.ToInt32(car.Cc),
+                Odometer = Convert.ToInt32(car.Odometer),
+                Year = Convert.ToInt32(car.ModelYear)
+            };
+
+            var carPrice = await App.GetCarPriceManager.GetCarPrice(priceDetails);
+            return carPrice;
+
         }
     }
 }

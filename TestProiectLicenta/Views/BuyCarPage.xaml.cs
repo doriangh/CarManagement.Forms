@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Xamarin.Forms;
 
-using Xamarin.Forms;
-
-namespace TestProiectLicenta
+namespace TestProiectLicenta.Views
 {
-    public partial class BuyCarPage : ContentPage
+    public partial class BuyCarPage : TabbedPage
     {
         public BuyCarPage()
         {

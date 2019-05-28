@@ -11,18 +11,19 @@ namespace TestProiectLicenta.Views
             InitializeComponent();
         }
 
-        async void BackButtonPressed(object sender, System.EventArgs e)
+        private async void BackButtonPressed(object sender, System.EventArgs e)
         {
             await Navigation.PopAsync();
         }
 
-        async void TakePictureButtonPressed(object sender, System.EventArgs e)
+        private async void TakePictureButtonPressed(object sender, System.EventArgs e)
         {
             var request = await App.ExternalAPIManager.GetCarByTakingPictureAsync();
 
             if (request.Success) { 
 
-                var action = await DisplayAlert("Is this your car?", String.Format("Car Make: {0}\nCar Model: {1}\nCar Color: {2}\nCar Type: {3}\n Car Licese: {4}", request.Car.Make, request.Car.Model, request.Car.Color, request.Car.Body, request.Car.License), "Yes", "No");
+                var action = await DisplayAlert("Is this your car?",
+                    $"Car Make: {request.Car.Make}\nCar Model: {request.Car.Model}\nCar Color: {request.Car.Color}\nCar Type: {request.Car.Body}\n Car Licese: {request.Car.License}", "Yes", "No");
 
                 if (action)
                 {
@@ -41,13 +42,14 @@ namespace TestProiectLicenta.Views
             }
         }
 
-        async void AddPictureButtonPressed(object sender, System.EventArgs e)
+        private async void AddPictureButtonPressed(object sender, EventArgs e)
         {
             var request = await App.ExternalAPIManager.GetCarBySelectingPicture();
 
             if (request.Success)
             {
-                var action = await DisplayAlert("Is this your car?", String.Format("Car Make: {0}\nCar Model: {1}\nCar Color: {2}\nCar Type: {3}\n Car Licese: {4}", request.Car.Make, request.Car.Model, request.Car.Color, request.Car.Body, request.Car.License), "Yes", "No");
+                var action = await DisplayAlert("Is this your car?",
+                    $"Car Make: {request.Car.Make}\nCar Model: {request.Car.Model}\nCar Color: {request.Car.Color}\nCar Type: {request.Car.Body}\n Car Licese: {request.Car.License}", "Yes", "No");
 
                 if (action)
                 {
@@ -66,14 +68,14 @@ namespace TestProiectLicenta.Views
             }
         }
 
-        public async void AddManuallyButtonPressed(object sender, System.EventArgs e)
+        private async void AddManuallyButtonPressed(object sender, System.EventArgs e)
         {
             await Navigation.PushAsync(new CarDetailsSetupFormPage());
         }
 
-        async void AddVINButtonPressed(object sender, System.EventArgs e)
+        private async void AddVinButtonPressed(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new AddCarVINPage());
+            await Navigation.PushAsync(new AddCarVinPage());
         }
     }
 }

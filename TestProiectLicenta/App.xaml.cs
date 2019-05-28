@@ -1,5 +1,4 @@
 ﻿using TestProiectLicenta.Data.Services;
-using TestProiectLicenta.Persistence;
 using TestProiectLicenta.Views;
 using Xamarin.Forms;
 
@@ -9,8 +8,9 @@ namespace TestProiectLicenta
     {
         public static UserManager UserManager { get; set; }
         public static CarManager CarManager { get; set; }
-        public static ExternalAPIManager ExternalAPIManager { get; set; }
+        public static ExternalApiManager ExternalAPIManager { get; set; }
         public static CarDetailManager CarDetailManager { get; set; }
+        public static GetCarPriceManager GetCarPriceManager { get; set; }
 
         public App()
         {
@@ -18,12 +18,13 @@ namespace TestProiectLicenta
 
             UserManager = new UserManager(new UserService());
             CarManager = new CarManager(new CarService());
-            ExternalAPIManager = new ExternalAPIManager(new ExternalAPIService());
+            ExternalAPIManager = new ExternalApiManager(new ExternalApiService());
             CarDetailManager = new CarDetailManager(new CarDetailService());
+            GetCarPriceManager = new GetCarPriceManager(new GetCarPriceService());
 
             MainPage = new NavigationPage(new UserLoginPage())
             {
-                BarBackgroundColor = Color.Black
+                BackgroundColor = Color.Black
             };
 
             //MainPage = new NavigationPage(new CarListPage());

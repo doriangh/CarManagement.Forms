@@ -23,17 +23,14 @@
         public string Made { get; set; }
         public string Color { get; set; }
         public string Fuel { get; set; }
-        public string CC { get; set; }
+        public string Cc { get; set; }
         public string Power { get; set; }
         public string Emissions { get; set; }
         public string Odometer { get; set; }
         //public List<string> Equipment { get; set; }
-        public string VIN { get; set; }
+        public string Vin { get; set; }
         public string License { get; set; }
-        public string FullName { get
-            {
-                return Make + ' ' + Model;
-            } }
+        public string FullName => Make + ' ' + Model;
         public string CarImage { get; set; }
     }
 }

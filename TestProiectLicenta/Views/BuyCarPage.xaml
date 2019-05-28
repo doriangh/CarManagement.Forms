@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage 
-    BackgroundColor="Black"
-    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.BuyCarPage">
-   <Grid HorizontalOptions="Center" Padding="20">
-        
-        <StackLayout Grid.Row="0">
-            <Label Text="Buy a car" TextColor="White" FontSize="60"/>
-        </StackLayout>
-        
-        <StackLayout Grid.Row="1">
-            <Label Text="Image" TextColor="White" HorizontalOptions="Center"/>
-            <Label Text="Search Via Photo" TextColor="White" HorizontalOptions="Center"/>
-        </StackLayout>
+<TabbedPage 
+    BackgroundColor="White"
+    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.BuyCarPage">
+    
+    <ContentPage Title="Home" Icon="car_icon">
+        <StackLayout Spacing="0">
+            <StackLayout>
+                <SearchBar Placeholder="eg. Ford Focus 2010"/>
+            </StackLayout>
             
-        <StackLayout Grid.Row="2">
-            <Button Text="Buy Manually" BackgroundColor="Green" TextColor="White" CornerRadius="8"/>
-            <Button Text="Buy Via VIN" BackgroundColor="Green" TextColor="White" CornerRadius="8"/>
-            <Button Text="Back" BackgroundColor="Gray" TextColor="White" CornerRadius="8" VerticalOptions="EndAndExpand"/>
+            <ListView>
+                
+            </ListView>
+            
+            <StackLayout Orientation="Horizontal" BackgroundColor="lightgray">
+                <Button Text="Add a car" HorizontalOptions="CenterAndExpand"/>
+                <BoxView Color="Black" WidthRequest="1"/>
+                <Button Text="Save search" HorizontalOptions="CenterAndExpand"/>
+                <BoxView Color="Black" WidthRequest="1"/>
+                <Button Text="Filter" HorizontalOptions="CenterAndExpand"/>
+                <BoxView Color="Black" WidthRequest="1"/>
+                <Button Text="Clear" HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
         </StackLayout>
-        
-    </Grid>
-</ContentPage>
+    </ContentPage>
+</TabbedPage>

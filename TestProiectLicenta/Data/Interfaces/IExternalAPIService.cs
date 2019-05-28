@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using TestProiectLicenta.Models;
 
-namespace TestProiectLicenta.Data.Interfacess
+namespace TestProiectLicenta.Data.Interfaces
 {
-    public interface IExternalAPIService
+    public interface IExternalApiService
     {
-        Task<JObject> GetCarByVIN(string VIN);
+        Task<CarVinRequest> GetCarByVin(string vin);
         Task<CarVinRequest> GetCarBySelectingPicture();
         Task<CarVinRequest> GetCarByTakingPictureAsync();
         Task<CarVinRequest> HandleSelectionPicture(CarVinRequest request);

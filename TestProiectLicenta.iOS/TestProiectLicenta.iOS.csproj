@@ -118,6 +118,7 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -169,6 +170,18 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms">
       <Version>2.4.5.922</Version>
     </PackageReference>
+    <PackageReference Include="Xam.Plugins.Forms.RoundedBoxView">
+      <Version>1.0.0.7</Version>
+    </PackageReference>
+    <PackageReference Include="Rg.Plugins.Popup">
+      <Version>1.1.5.188</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms.InputKit">
+      <Version>3.0.11</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms.DialogKit">
+      <Version>1.5.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -210,5 +223,26 @@
     <BundleResource Include="Resources\camera_icon%402x.png" />
     <BundleResource Include="Resources\camera_icon%403x.png" />
     <BundleResource Include="Resources\add_image.png" />
+    <BundleResource Include="Resources\step1.png" />
+    <BundleResource Include="Resources\step2.png" />
+    <BundleResource Include="Resources\step3.png" />
+    <BundleResource Include="Resources\number2.png" />
+    <BundleResource Include="Resources\number1.png" />
+    <BundleResource Include="Resources\number3.png" />
+    <BundleResource Include="Resources\back.png" />
+    <BundleResource Include="Resources\icon_add.png" />
+    <BundleResource Include="Resources\new_car_icon.png" />
+    <BundleResource Include="Resources\new_car_icon%402x.png" />
+    <BundleResource Include="Resources\new_car_icon%403x.png" />
+    <BundleResource Include="Resources\new_add_icon.png" />
+    <BundleResource Include="Resources\new_add_icon%402x.png" />
+    <BundleResource Include="Resources\new_add_icon%403x.png" />
+    <BundleResource Include="Resources\new_settings_icon.png" />
+    <BundleResource Include="Resources\new_settings_icon%402x.png" />
+    <BundleResource Include="Resources\new_settings_icon%403x.png" />
+    <BundleResource Include="Resources\new_user_icon.png" />
+    <BundleResource Include="Resources\new_user_icon%402x.png" />
+    <BundleResource Include="Resources\new_user_icon%403x.png" />
+    <BundleResource Include="Resources\face_id.png" />
   </ItemGroup>
 </Project>

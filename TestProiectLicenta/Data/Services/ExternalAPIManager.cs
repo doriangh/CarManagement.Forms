@@ -1,22 +1,21 @@
 ﻿using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using TestProiectLicenta.Data.Interfacess;
+using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
 
 namespace TestProiectLicenta.Data.Services
 {
-    public class ExternalAPIManager
+    public class ExternalApiManager
     {
-        IExternalAPIService _service;
+        private readonly IExternalApiService _service;
 
-        public ExternalAPIManager(IExternalAPIService service)
+        public ExternalApiManager(IExternalApiService service)
         {
             _service = service;
         }
 
-        public Task<JObject> GetCarByVIN(string VIN)
+        public Task<CarVinRequest> GetCarByVin(string vin)
         {
-            return _service.GetCarByVIN(VIN);
+            return _service.GetCarByVin(vin);
         }
 
         public Task<CarVinRequest> GetCarByTakingPictureAsync()

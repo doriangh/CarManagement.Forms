@@ -2,9 +2,9 @@
 
 namespace TestProiectLicenta.Views
 {
-    public partial class AddCarVINPage : ContentPage
+    public partial class AddCarVinPage : ContentPage
     {
-        public AddCarVINPage()
+        public AddCarVinPage()
         {
             InitializeComponent();
         }
@@ -12,17 +12,30 @@ namespace TestProiectLicenta.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
+
+            error.IsVisible = false;
         }
 
-        async void FindCarVINButton(object sender, System.EventArgs e)
+        private async void FindCarVinButton(object sender, System.EventArgs e)
         {
-            string VIN = VINField.Text;
+            var vin = VINField.Text;
 
-            var data = await App.ExternalAPIManager.GetCarByVIN(VIN);
+            if (vin != null)
+            {
 
-            await App.CarManager.AddCarByVIN(data, VIN);
+                var data = await App.ExternalAPIManager.GetCarByVin(vin);
 
-            await Navigation.PushAsync(new UserPageForm());
+                await Navigation.PushAsync(new CarDetailsSetupFormPage(data));
+            }
+            else if (vin.Length > 14 || vin.Length < 14)
+            {
+                error.IsVisible = true;
+            }
+            else
+            {
+                error.Text = "Please enter VIN";
+                error.IsVisible = true;
+            }
         }
     }
 }

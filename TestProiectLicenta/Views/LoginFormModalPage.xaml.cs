@@ -8,7 +8,7 @@ namespace TestProiectLicenta
 {
     public partial class LoginFormModalPage : ContentPage
     {
-        User userObj;
+        private User _userObj;
 
         public LoginFormModalPage()
         {
@@ -20,27 +20,27 @@ namespace TestProiectLicenta
             base.OnAppearing();
         }
 
-        async void UserLogInButton(object sender, System.EventArgs e)
+        private async void UserLogInButton(object sender, System.EventArgs e)
         {
             if (user.Text != null && pass.Text != null)
             {
                 var username = user.Text;
                 var password = Encrypt(pass.Text);
 
-                userObj = await App.UserManager.GetUserByUsername(username);
+                _userObj = await App.UserManager.GetUserByUsername(username);
 
-                if (userObj is null)
+                if (_userObj is null)
                 {
                     message.Text = "User not found!";
                     message.IsVisible = true;
                     return;
                 }
         
-                if(userObj.Password == password)
+                if(_userObj.Password == password)
                 {
                     Console.WriteLine(username + ' ' + pass.Text + ' ' + password);
 
-                    await App.UserManager.LogIn(userObj.Username, userObj.Password);
+                    await App.UserManager.LogIn(_userObj.Username, _userObj.Password);
 
                     //await SecureStorage.SetAsync("session_key", session.Key);
                     await Navigation.PopModalAsync();
@@ -49,7 +49,6 @@ namespace TestProiectLicenta
                 {
                     message.Text = "Password incorrect";
                     message.IsVisible = true;
-                    return;
                 }
 
             }
@@ -59,17 +58,17 @@ namespace TestProiectLicenta
             }
         }
 
-        async void CancelButton(object sender, System.EventArgs e)
+        private async void CancelButton(object sender, System.EventArgs e)
         {
             await Navigation.PopModalAsync();
         }
 
-        static string Encrypt(string value)
+        private static string Encrypt(string value)
         {
-            using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
+            using (var md5 = new MD5CryptoServiceProvider())
             {
-                UTF8Encoding utf8 = new UTF8Encoding();
-                byte[] data = md5.ComputeHash(utf8.GetBytes(value));
+                var utf8 = new UTF8Encoding();
+                var data = md5.ComputeHash(utf8.GetBytes(value));
                 return Convert.ToBase64String(data);
             }
         }

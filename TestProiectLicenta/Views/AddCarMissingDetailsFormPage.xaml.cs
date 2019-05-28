@@ -8,7 +8,7 @@ namespace TestProiectLicenta.Views
 {
     public partial class AddCarMissingDetailsFormPage : ContentPage
     {
-        CarVinRequest _request;
+        private readonly CarVinRequest _request;
 
         public AddCarMissingDetailsFormPage(CarVinRequest request)
         {
@@ -21,14 +21,13 @@ namespace TestProiectLicenta.Views
         {
             base.OnAppearing();
 
-            PropertyInfo[] properties = _request.Car.GetType().GetProperties();
+            var properties = _request.Car.GetType().GetProperties();
             foreach (var item in properties)
             {
                 if (item.GetValue(_request.Car, null) is null)
                 {
                     missing.Add(new EntryCell { Text = item.Name, Placeholder = "eg. " + item.Name });
                 }
-                continue;
             }
         }
     }

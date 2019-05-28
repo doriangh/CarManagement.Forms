@@ -5,15 +5,15 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using TestProiectLicenta.Interfaces.Services;
+using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
 
-namespace TestProiectLicenta.Persistence
+namespace TestProiectLicenta.Data.Services
 {
     public class UserService : IUserService
     {
-        readonly HttpClient _client;
+        private readonly HttpClient _client;
 
         public UserService()
         {
@@ -31,16 +31,14 @@ namespace TestProiectLicenta.Persistence
             var json = JsonConvert.SerializeObject(session);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = null;
-
-            response = await _client.PostAsync(Constants.webAPI + "Session", content);
+            var response = await _client.PostAsync(Constants.webAPI + "Session", content);
 
             if (response.IsSuccessStatusCode)
             {
                 var newContent = await response.Content.ReadAsStringAsync();
                 var responseJson =  JsonConvert.DeserializeObject<Session>(newContent);
 
-                if (responseJson.Success == true)
+                if (responseJson.Success)
                 {
                     await SecureStorage.SetAsync("UserId", responseJson.UserId.ToString());
                     await SecureStorage.SetAsync("session_key", responseJson.Key);
@@ -53,9 +51,7 @@ namespace TestProiectLicenta.Persistence
             var json = JsonConvert.SerializeObject(user);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = null;
-
-            response = await _client.PostAsync(Constants.webAPI + "Users", content);
+            var response = await _client.PostAsync(Constants.webAPI + "Users", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -77,12 +73,9 @@ namespace TestProiectLicenta.Persistence
         {
             var response = await _client.GetAsync(string.Format(Constants.webAPI + "Users/{0}", id));
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<User>(content);
-            }
-            return null;
+            if (!response.IsSuccessStatusCode) return null;
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<User>(content);
         }
 
         public async Task<User> GetUserByUsername(string username)
@@ -124,9 +117,7 @@ namespace TestProiectLicenta.Persistence
             var json = JsonConvert.SerializeObject(user);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = null;
-
-            response = await _client.PutAsync(Constants.webAPI + "Users", content);
+            var response = await _client.PutAsync(Constants.webAPI + "Users", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -146,11 +137,7 @@ namespace TestProiectLicenta.Persistence
 
             var response = await _client.GetAsync(string.Format(Constants.webAPI + "Session?UserId={0}&Key={1}", userId, sessionKey));
 
-            if (response.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            return false;
+            return response.IsSuccessStatusCode;
         }
     }
 }

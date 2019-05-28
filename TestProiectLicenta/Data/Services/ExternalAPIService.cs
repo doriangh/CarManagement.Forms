@@ -12,17 +12,17 @@ using Acr.UserDialogs;
 using Newtonsoft.Json.Linq;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
-using TestProiectLicenta.Data.Interfacess;
+using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
 
 namespace TestProiectLicenta.Data.Services
 {
-    public class ExternalAPIService : IExternalAPIService
+    public class ExternalApiService : IExternalApiService
     {
-        readonly HttpClient _client;
+        private readonly HttpClient _client;
 
-        public ExternalAPIService()
+        public ExternalApiService()
         {
             _client = new HttpClient();
         }
@@ -43,7 +43,7 @@ namespace TestProiectLicenta.Data.Services
                 return request;
             }
 
-            var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions { });
+            var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions());
 
             if (file == null)
             {
@@ -81,7 +81,7 @@ namespace TestProiectLicenta.Data.Services
                 return request;
             }
 
-            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
             {
                 Directory = "Sample",
                 Name = "test.jpg"
@@ -107,10 +107,16 @@ namespace TestProiectLicenta.Data.Services
 
         }
 
-        public async Task<JObject> GetCarByVIN(string VIN)
+        public async Task<CarVinRequest> GetCarByVin(string vin)
         {
-            string id = VIN;
-            string test = String.Format("{0}|{1}|{2}", id, Constants.vinApiKey, Constants.vinSecretKey);
+
+            var request = new CarVinRequest
+            {
+                Errors = new List<string>()
+            };
+
+            var id = vin;
+            var test = $"{id}|decode|{Constants.vinApiKey}|{Constants.vinSecretKey}";
 
             var dataHash = Encoding.ASCII.GetBytes(test);
 
@@ -126,28 +132,65 @@ namespace TestProiectLicenta.Data.Services
 
             var client = new HttpClient();
 
-            var response = await client.GetStringAsync(string.Format("{0}/{1}/{2}/decode/{3}.json", Constants.vinUrl, Constants.vinApiKey, controlSum, VIN));
+            var response = await client.GetStringAsync($"{Constants.vinUrl}/{Constants.vinApiKey}/{controlSum}/decode/{vin}.json");
 
             client.Dispose();
 
-            return JObject.Parse(response);
+            if (response == null)
+            {
+                request.Errors.Add("Could not get data");
+                request.Success = false;
+                return request;
+            }
 
+            var data = JObject.Parse(response);
+
+            var car = new Car();
+
+            foreach (var item in data["decode"])
+            {
+                car.Make = car.Make ?? (item["label"].ToString() == "Make" ? item["value"].ToString() : null);
+                car.Manufacturer = car.Manufacturer ?? (item["label"].ToString() == "Manufacturer" ? item["value"].ToString() : null);
+                car.Plant = car.Plant ?? (item["label"].ToString() == "Manufacturer Address" ? item["value"].ToString() : null);
+                car.ModelYear = car.ModelYear ?? (item["label"].ToString() == "Model Year" ? item["value"].ToString() : null);
+                car.Model = car.Model ?? (item["label"].ToString() == "Model" ? item["value"].ToString() : null);
+                car.Body = car.Body ?? (item["label"].ToString() == "Body" ? item["value"].ToString() : null);
+                car.Drive = car.Drive ?? (item["label"].ToString() == "Drive" ? item["value"].ToString() : null);
+                car.NumberofSeats = car.NumberofSeats ?? (item["label"].ToString() == "Number of Seats" ? item["value"].ToString() : null);
+                car.NumberofDoors = car.NumberofDoors ?? (item["label"].ToString() == "Number of Doors" ? item["value"].ToString() : null);
+                car.Steering = car.Steering ?? (item["label"].ToString() == "Steering" ? item["value"].ToString() : null);
+                car.Cc = car.Cc ?? (item["label"].ToString() == "Engine Displacement (ccm)" ? item["value"].ToString() : null);
+                car.EngineCylinders = car.EngineCylinders ?? (item["label"].ToString() == "Engine Cylinders" ? item["value"].ToString() : null);
+                car.Transmission = car.Transmission ?? (item["label"].ToString() == "Transmission" ? item["value"].ToString() : null);
+                car.NumberofGears = car.NumberofGears ?? (item["label"].ToString() == "Number of Gears" ? item["value"].ToString() : null);
+                car.Color = car.Color ?? (item["label"].ToString() == "Color" ? item["value"].ToString() : null);
+                car.Engine = car.Engine ?? (item["label"].ToString() == "Engine (full)" ? item["value"].ToString() : null);
+                car.Fuel = car.Fuel ?? (item["label"].ToString() == "Fuel Type - Primary" ? item["value"].ToString() : null);
+                car.Power = car.Power ?? (item["label"].ToString() == "Engine Power (kW)" ? item["value"].ToString() : null);
+                car.Made = car.Made ?? (item["label"].ToString() == "Made" ? item["value"].ToString() : null);
+                car.Emissions = car.Emissions ?? (item["label"].ToString() == "Emission Standard" ? item["value"].ToString() : null);
+                //Odometer = data["decode"][2]["value"].ToString()
+            }
+
+            car.Vin = vin;
+            var userId = await SecureStorage.GetAsync("UserId");
+            car.UserId = Convert.ToInt32(userId);
+
+            request.Car = car;
+            request.Success = true;
+            return request;
         }
 
-        public async Task<Car> GetRecognisedCar(byte[] imageStream)
+        private static async Task<Car> GetRecognisedCar(byte[] imageStream)
         {
-            string Response = null;
-            HttpWebRequest webRequest = null;
-            HttpWebResponse webResponse = null;
-            StreamReader streamReader = null;
-            Stream requestStream = null;
+            string response = null;
             Car newCar;
 
             using (UserDialogs.Instance.Loading("Looking for that image.\nHold on"))
             {
                 try
                 {
-                    webRequest = (HttpWebRequest)WebRequest.Create(Constants.imageDetectionAPI);
+                    var webRequest = (HttpWebRequest)WebRequest.Create(Constants.imageDetectionAPI);
                     webRequest.Method = "POST";
                     webRequest.Accept = "*/*";
                     webRequest.Timeout = 50000;
@@ -157,21 +200,21 @@ namespace TestProiectLicenta.Data.Services
                     webRequest.ContentType = "application/octet-stream";
                     webRequest.Headers["X-Access-Token"] = "ijtnMD6yyOXofoAcLsR1abzUUmDthKwbbbA8";
 
-                    requestStream = webRequest.GetRequestStream();
+                    var requestStream = webRequest.GetRequestStream();
                     requestStream.Write(imageStream, 0, imageStream.Length);
 
                     requestStream.Close();
 
-                    webResponse = (HttpWebResponse)webRequest.GetResponse();
-                    streamReader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
-                    Response = streamReader.ReadToEnd();
+                    var webResponse = (HttpWebResponse)webRequest.GetResponse();
+                    var streamReader = new StreamReader(webResponse.GetResponseStream() ?? throw new InvalidOperationException(), Encoding.UTF8);
+                    response = streamReader.ReadToEnd();
                 }
                 catch (Exception e)
                 {
                     Console.Write(e);
                 }
 
-                var car = JObject.Parse(Response);
+                var car = JObject.Parse(response);
                 var userId = await SecureStorage.GetAsync("UserId");
 
                 newCar = new Car()
@@ -235,7 +278,7 @@ namespace TestProiectLicenta.Data.Services
                 return request;
             }
 
-            var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions { });
+            var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions());
 
             if (file == null)
             {
@@ -256,7 +299,7 @@ namespace TestProiectLicenta.Data.Services
             return request;
         }
 
-        public string UploadImageImgur(MediaFile file)
+        private static string UploadImageImgur(MediaFile file)
         {
             using (var w = new WebClient())
             {
@@ -266,12 +309,17 @@ namespace TestProiectLicenta.Data.Services
                     {"image", Convert.ToBase64String(File.ReadAllBytes(file.Path))}
                 };
 
-                byte[] response = w.UploadValues(Constants.imgurUrl, values);
-                XDocument xml = XDocument.Load(new MemoryStream(response));
+                var response = w.UploadValues(Constants.imgurUrl, values);
+                var xml = XDocument.Load(new MemoryStream(response));
                 Console.WriteLine(xml);
 
                 return xml.Root.Element("link").Value;
             }
+        }
+
+        public void GetPictureForCar()
+        {
+
         }
 
     }

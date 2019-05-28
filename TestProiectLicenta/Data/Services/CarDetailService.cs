@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
@@ -12,7 +11,7 @@ namespace TestProiectLicenta.Data.Services
 {
     public class CarDetailService : ICarDetailService
     {
-        HttpClient _client;
+        private readonly HttpClient _client;
 
         public CarDetailService()
         {
@@ -24,9 +23,7 @@ namespace TestProiectLicenta.Data.Services
             var json = JsonConvert.SerializeObject(carDetail);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = null;
-
-            response = await _client.PostAsync(Constants.webAPI + "CarDetails", content);
+            var response = await _client.PostAsync(Constants.webAPI + "CarDetails", content);
             if (response.IsSuccessStatusCode)
             {
                 Debug.WriteLine("Car successfully saved");
@@ -46,36 +43,45 @@ namespace TestProiectLicenta.Data.Services
         public async Task<CarDetail> GetCarDetail(int carDetailId)
         {
             var response = await _client.GetAsync(string.Format(Constants.webAPI + "CarDetails/{0}", carDetailId));
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var car = JsonConvert.DeserializeObject<CarDetail>(content);
-                return car;
-            }
-            return null;
+            if (!response.IsSuccessStatusCode) return null;
+            var content = await response.Content.ReadAsStringAsync();
+            var car = JsonConvert.DeserializeObject<CarDetail>(content);
+            return car;
         }
 
         public async Task<List<CarDetail>> GetCarDetails()
         {
             var response = await _client.GetAsync(Constants.webAPI + "CarDetails");
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var cars = JsonConvert.DeserializeObject<List<CarDetail>>(content);
-                return cars;
-            }
-            return null;
+            if (!response.IsSuccessStatusCode) return null;
+            var content = await response.Content.ReadAsStringAsync();
+            var cars = JsonConvert.DeserializeObject<List<CarDetail>>(content);
+            return cars;
         }
 
         public async Task<CarDetail> GetCarsDetail(int carId)
         {
-            var response = await _client.GetAsync(string.Format(Constants.webAPI + "CarDetails/Car/{0}", carId));
-            if (response.IsSuccessStatusCode)
+            //var response = await _client.GetAsync(string.Format(Constants.webAPI + "CarDetails/Car/{0}", carId));
+            //if (response.IsSuccessStatusCode)
+            //{
+
+            //    var content = await response.Content.ReadAsStringAsync();
+            //    if (content != "[]")
+            //    {
+            //        var cars = JsonConvert.DeserializeObject<CarDetail>(content);
+            //        return cars;
+            //    }
+            //    return null;
+            //}
+            //return null;
+
+            var allCarDetails = await GetCarDetails();
+
+            foreach (var carDetail in allCarDetails)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var cars = JsonConvert.DeserializeObject<CarDetail>(content);
-                return cars;
+                if (carDetail.CarId == carId)
+                    return carDetail;
             }
+
             return null;
         }
 
@@ -84,9 +90,7 @@ namespace TestProiectLicenta.Data.Services
             var json = JsonConvert.SerializeObject(carDetail);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = null;
-
-            response = await _client.PutAsync(Constants.webAPI + "Cars", content);
+            var response = await _client.PutAsync(Constants.webAPI + "Cars", content);
             if (response.IsSuccessStatusCode)
             {
                 Debug.WriteLine("Car successfully updated");

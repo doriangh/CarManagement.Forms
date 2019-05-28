@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
@@ -8,7 +7,7 @@ namespace TestProiectLicenta.Data.Services
 {
     public class CarDetailManager
     {
-        ICarDetailService _service;
+        private readonly ICarDetailService _service;
 
         public CarDetailManager(ICarDetailService service)
         {
