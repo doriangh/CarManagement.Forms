@@ -54,5 +54,4 @@ namespace TestProiectLicenta.Data.Services
             return _service.CheckLogIn();
         }
     }
-
 }

@@ -36,7 +36,7 @@ namespace TestProiectLicenta.Data.Services
             if (response.IsSuccessStatusCode)
             {
                 var newContent = await response.Content.ReadAsStringAsync();
-                var responseJson =  JsonConvert.DeserializeObject<Session>(newContent);
+                var responseJson = JsonConvert.DeserializeObject<Session>(newContent);
 
                 if (responseJson.Success)
                 {
@@ -53,20 +53,14 @@ namespace TestProiectLicenta.Data.Services
 
             var response = await _client.PostAsync(Constants.webAPI + "Users", content);
 
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("User successfully saved");
-            }
+            if (response.IsSuccessStatusCode) Debug.WriteLine("User successfully saved");
         }
 
         public async Task DeleteUser(int id)
         {
             var response = await _client.DeleteAsync(string.Format(Constants.webAPI + "Users/{0}", id));
 
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("User deleted");
-            }
+            if (response.IsSuccessStatusCode) Debug.WriteLine("User deleted");
         }
 
         public async Task<User> GetUserById(int id)
@@ -82,12 +76,8 @@ namespace TestProiectLicenta.Data.Services
         {
             var users = await GetUsersAsync();
             foreach (var user in users)
-            {
                 if (user.Username == username)
-                {
                     return user;
-                }
-            }
             return null;
         }
 
@@ -98,18 +88,12 @@ namespace TestProiectLicenta.Data.Services
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<User>>(content);
-                foreach (var user in users)
-                {
-                    Console.WriteLine(user.Name);
-                }
+                foreach (var user in users) Console.WriteLine(user.Name);
                 return users;
             }
-            else
-            {
-                Console.WriteLine("Error");
-                return null;
-            }
 
+            Console.WriteLine("Error");
+            return null;
         }
 
         public async Task UpdateUser(User user)
@@ -119,10 +103,7 @@ namespace TestProiectLicenta.Data.Services
 
             var response = await _client.PutAsync(Constants.webAPI + "Users", content);
 
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("User successfully saved");
-            }
+            if (response.IsSuccessStatusCode) Debug.WriteLine("User successfully saved");
         }
 
         public async Task<bool> CheckLogIn()
@@ -130,12 +111,11 @@ namespace TestProiectLicenta.Data.Services
             var sessionKey = await SecureStorage.GetAsync("session_key");
             var userId = await SecureStorage.GetAsync("UserId");
 
-            if (sessionKey == null || userId == null)
-            {
-                return false;
-            }
+            if (sessionKey == null || userId == null) return false;
 
-            var response = await _client.GetAsync(string.Format(Constants.webAPI + "Session?UserId={0}&Key={1}", userId, sessionKey));
+            var response =
+                await _client.GetAsync(string.Format(Constants.webAPI + "Session?UserId={0}&Key={1}", userId,
+                    sessionKey));
 
             return response.IsSuccessStatusCode;
         }

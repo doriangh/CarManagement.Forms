@@ -1,23 +1,25 @@
-﻿using System;
-
+﻿using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using System.IO;
-using Plugin.Fingerprint;
+using Android.Runtime;
+using FFImageLoading.Forms.Platform;
 using Plugin.CurrentActivity;
-using Acr.UserDialogs;
+using Plugin.Fingerprint;
+using Plugin.InputKit.Platforms.Droid;
 using Refractored.XamForms.PullToRefresh.Droid;
+using Rg.Plugins.Popup;
 using RoundedBoxView.Forms.Plugin.Droid;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
+using Platform = Xamarin.Essentials.Platform;
+using Resource = TestProiectLicenta.Droid.Resources.Resource;
 
 namespace TestProiectLicenta.Droid
 {
-   
-    [Activity(Label = "Car Management", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    [Activity(Label = "Car Management", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true,
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    public class MainActivity : FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -26,8 +28,8 @@ namespace TestProiectLicenta.Droid
 
             base.OnCreate(savedInstanceState);
 
-            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
-            Plugin.InputKit.Platforms.Droid.Config.Init(this, savedInstanceState);
+            Popup.Init(this, savedInstanceState);
+            Config.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             CrossFingerprint.SetCurrentActivityResolver(() => CrossCurrentActivity.Current.Activity);
 
@@ -35,16 +37,18 @@ namespace TestProiectLicenta.Droid
 
             PullToRefreshLayoutRenderer.Init();
 
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
+            CachedImageRenderer.Init(true);
 
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Platform.Init(this, savedInstanceState);
+            Forms.Init(this, savedInstanceState);
             RoundedBoxViewRenderer.Init();
             LoadApplication(new App());
         }
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
+            [GeneratedEnum] Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }

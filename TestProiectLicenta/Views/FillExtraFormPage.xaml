@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.FillExtraFormPage" xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TestProiectLicenta.Views.FillExtraFormPage" xmlns:system="clr-namespace:System;assembly=mscorlib">
     <ContentPage.Content>
-        <ScrollView>    
+        <ScrollView>
             <StackLayout Padding="20">
                 <StackLayout Orientation="Horizontal">
-                    <Image Source="number2" WidthRequest="100"/>
-                    <Label Text="Fill in extra details" VerticalOptions="Center" FontSize="30" HorizontalOptions="EndAndExpand"/>
+                    <Image Source="number2" WidthRequest="100" />
+                    <Label Text="Fill in extra details" VerticalOptions="Center" FontSize="30"
+                           HorizontalOptions="EndAndExpand" />
                 </StackLayout>
                 <StackLayout>
-                    <ImageButton HorizontalOptions="Center" WidthRequest="200" HeightRequest="150" Source="add_image.png" x:Name="image" Aspect="AspectFill"/>
-                    <Label Text="We will save your car with this image. You can change it at any time. If you with to change it now, tap on the image." TextColor="Gray" FontSize="15" HorizontalTextAlignment="Center"/>
-                    
-                    
+                    <ImageButton HorizontalOptions="Center" WidthRequest="200" HeightRequest="150"
+                                 Source="add_image.png" x:Name="image" Aspect="AspectFill" Clicked="AddImageButton"/>
+                    <Label
+                        Text="We will save your car with this image. You can change it at any time. If you with to change it now, tap on the image."
+                        TextColor="Gray" FontSize="15" HorizontalTextAlignment="Center" />
+
+
                     <TableView Intent="Form" BackgroundColor="White" x:Name="table">
                         <TableRoot>
-                            
+
                             <TableSection Title="Car Info">
-                                <EntryCell Label="Make" Placeholder="eg. Ford" x:Name="make"/>
-                                <EntryCell Label="Model" Placeholder="eg. Focus" x:Name="model"/>
+                                <EntryCell Label="Make" Placeholder="eg. Ford" x:Name="make" />
+                                <EntryCell Label="Model" Placeholder="eg. Focus" x:Name="model" />
                                 <EntryCell Label="Year" Placeholder="eg. 2010" x:Name="year" />
-                                
+
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="15,0,0,0">
                                         <Label Text="Type" />
-                                        <Picker Title="Select a type" SelectedItem="Select an item" x:Name="type" HorizontalOptions="CenterAndExpand" WidthRequest="240">
+                                        <Picker Title="Select a type" SelectedItem="Select an item" x:Name="type"
+                                                HorizontalOptions="CenterAndExpand" WidthRequest="240">
                                             <Picker.Items>
                                                 <x:String>Coupe</x:String>
                                                 <x:String>Sedan</x:String>
@@ -37,7 +44,9 @@
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="15,0,0,0">
                                         <Label Text="Fuel" />
-                                        <Picker Title="Select fuel" SelectedItem="Select an item" x:Name="fuel" HorizontalOptions="CenterAndExpand" WidthRequest="240" SelectedIndexChanged="Handle_SelectedIndexChanged">
+                                        <Picker Title="Select fuel" SelectedItem="Select an item" x:Name="fuel"
+                                                HorizontalOptions="CenterAndExpand" WidthRequest="240"
+                                                SelectedIndexChanged="Handle_SelectedIndexChanged">
                                             <Picker.Items>
                                                 <x:String>Gas</x:String>
                                                 <x:String>Diesel</x:String>
@@ -48,46 +57,58 @@
                                         </Picker>
                                     </StackLayout>
                                 </ViewCell>
-                                <EntryCell Label="Odometer" Placeholder="eg. 100000KM" x:Name="odometer" Keyboard="Numeric"/>
-                                <EntryCell Label="CC" Placeholder="eg. 1600" x:Name="cc" Keyboard="Numeric"/>
-                                <EntryCell Label="License" Placeholder="eg. ISXXABC" x:Name="License"/>
-                                
+                                <EntryCell Label="Odometer" Placeholder="eg. 100000KM" x:Name="odometer"
+                                           Keyboard="Numeric" />
+                                <EntryCell Label="CC" Placeholder="eg. 1600" x:Name="cc" Keyboard="Numeric" />
+                                <EntryCell Label="License" Placeholder="eg. ISXXABC" x:Name="License" />
+
                             </TableSection>
-                            
+
                             <TableSection Title="Car Details">
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
-                                        <Label Text="ITP Date" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
-                                        <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019" Date="{x:Static system:DateTime.Today}" Format="D" HorizontalOptions="CenterAndExpand" WidthRequest="240"  x:Name="itp"/>
+                                        <Label Text="ITP Date" HorizontalOptions="StartAndExpand"
+                                               VerticalOptions="Center" />
+                                        <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019"
+                                                    Date="{x:Static system:DateTime.Today}" Format="D"
+                                                    HorizontalOptions="CenterAndExpand" WidthRequest="240" x:Name="itp" />
                                     </StackLayout>
                                 </ViewCell>
-                                
+
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
-                                        <Label Text="Road Tax" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
-                                        <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019" Date="{x:Static system:DateTime.Today}" Format="D" HorizontalOptions="CenterAndExpand" WidthRequest="240" x:Name="roadtax"/>
+                                        <Label Text="Road Tax" HorizontalOptions="StartAndExpand"
+                                               VerticalOptions="Center" />
+                                        <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019"
+                                                    Date="{x:Static system:DateTime.Today}" Format="D"
+                                                    HorizontalOptions="CenterAndExpand" WidthRequest="240"
+                                                    x:Name="roadtax" />
                                     </StackLayout>
                                 </ViewCell>
-                                
+
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
-                                        <Label Text="Oil Change" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
-                                        <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019" Date="{x:Static system:DateTime.Today}" Format="D" HorizontalOptions="CenterAndExpand" WidthRequest="240" x:Name="oilchange"/>
+                                        <Label Text="Oil Change" HorizontalOptions="StartAndExpand"
+                                               VerticalOptions="Center" />
+                                        <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019"
+                                                    Date="{x:Static system:DateTime.Today}" Format="D"
+                                                    HorizontalOptions="CenterAndExpand" WidthRequest="240"
+                                                    x:Name="oilchange" />
                                     </StackLayout>
                                 </ViewCell>
-                                
-                                <SwitchCell Text="Do you have winter tires on?" x:Name="wintertires"/>
-                                
+
+                                <SwitchCell Text="Do you have winter tires on?" x:Name="wintertires" />
+
                             </TableSection>
                         </TableRoot>
                     </TableView>
-                    
-                    <Button Text="Continue" BackgroundColor="Green" TextColor="White" Clicked="Continue_button"/>
-                    
-                    <Button Text="Cancel" BackgroundColor="Red" TextColor="White"/>
-                            
+
+                    <Button Text="Continue" BackgroundColor="Green" TextColor="White" Clicked="ContinueButton" />
+
+                    <Button Text="Cancel" BackgroundColor="Red" TextColor="White" />
+
                 </StackLayout>
-                
+
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

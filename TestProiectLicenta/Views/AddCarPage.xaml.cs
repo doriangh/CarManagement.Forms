@@ -1,5 +1,4 @@
 ﻿using System;
-using TestProiectLicenta.Views;
 using Xamarin.Forms;
 
 namespace TestProiectLicenta.Views
@@ -11,30 +10,29 @@ namespace TestProiectLicenta.Views
             InitializeComponent();
         }
 
-        private async void BackButtonPressed(object sender, System.EventArgs e)
+        private async void BackButtonPressed(object sender, EventArgs e)
         {
             await Navigation.PopAsync();
         }
 
-        private async void TakePictureButtonPressed(object sender, System.EventArgs e)
+        private async void TakePictureButtonPressed(object sender, EventArgs e)
         {
             var request = await App.ExternalAPIManager.GetCarByTakingPictureAsync();
 
-            if (request.Success) { 
-
+            if (request.Success)
+            {
                 var action = await DisplayAlert("Is this your car?",
-                    $"Car Make: {request.Car.Make}\nCar Model: {request.Car.Model}\nCar Color: {request.Car.Color}\nCar Type: {request.Car.Body}\n Car Licese: {request.Car.License}", "Yes", "No");
+                    $"Car Make: {request.Car.Make}\nCar Model: {request.Car.Model}\nCar Color: {request.Car.Color}\nCar Type: {request.Car.Body}\n Car Licese: {request.Car.License}",
+                    "Yes", "No");
 
                 if (action)
-                {
                     //await App.CarManager.AddCar(request.Car);
 
                     await Navigation.PushAsync(new CarDetailsSetupFormPage(request));
-                }
                 else
-                {
-                    await DisplayAlert("Sorry", "Please try again. For the best results, make sure there is enough light, the License plate is clearly visible, and your car takes up most of the image.", "OK");
-                }
+                    await DisplayAlert("Sorry",
+                        "Please try again. For the best results, make sure there is enough light, the License plate is clearly visible, and your car takes up most of the image.",
+                        "OK");
             }
             else
             {
@@ -49,18 +47,17 @@ namespace TestProiectLicenta.Views
             if (request.Success)
             {
                 var action = await DisplayAlert("Is this your car?",
-                    $"Car Make: {request.Car.Make}\nCar Model: {request.Car.Model}\nCar Color: {request.Car.Color}\nCar Type: {request.Car.Body}\n Car Licese: {request.Car.License}", "Yes", "No");
+                    $"Car Make: {request.Car.Make}\nCar Model: {request.Car.Model}\nCar Color: {request.Car.Color}\nCar Type: {request.Car.Body}\n Car License: {request.Car.License}",
+                    "Yes", "No");
 
                 if (action)
-                {
                     //await App.CarManager.AddCar(request.Car);
 
                     await Navigation.PushAsync(new CarDetailsSetupFormPage(request));
-                }
                 else
-                {
-                    await DisplayAlert("Sorry", "Please try again. For the best results, make sure there is enough light, the License plate is clearly visible, and your car takes up most of the image.", "OK");
-                }
+                    await DisplayAlert("Sorry",
+                        "Please try again. For the best results, make sure there is enough light, the License plate is clearly visible, and your car takes up most of the image.",
+                        "OK");
             }
             else
             {
@@ -68,12 +65,12 @@ namespace TestProiectLicenta.Views
             }
         }
 
-        private async void AddManuallyButtonPressed(object sender, System.EventArgs e)
+        private async void AddManuallyButtonPressed(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new CarDetailsSetupFormPage());
         }
 
-        private async void AddVinButtonPressed(object sender, System.EventArgs e)
+        private async void AddVinButtonPressed(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AddCarVinPage());
         }

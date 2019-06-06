@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -28,7 +26,6 @@ namespace TestProiectLicenta.Data.Services
             var recvContent = await response.Content.ReadAsStringAsync();
             var price = JsonConvert.DeserializeObject<CarPriceResponse>(recvContent);
             return price;
-
         }
     }
 }

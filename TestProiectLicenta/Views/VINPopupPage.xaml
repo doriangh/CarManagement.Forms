@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
-             xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
-             x:Class="TestProiectLicenta.Views.VinPopupPage">
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
+                 x:Class="TestProiectLicenta.Views.VinPopupPage">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation
             PositionIn="Center"
@@ -14,26 +15,28 @@
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="true"/>
+            HasBackgroundAnimation="true" />
     </pages:PopupPage.Animation>
-    
+
     <StackLayout BackgroundColor="White"
-        VerticalOptions="Center"
-        HorizontalOptions="Center"
-        WidthRequest="200"
-        Padding="20">
-        <Label HorizontalTextAlignment="Center" FontSize="20" Text="Enter your VIN" HorizontalOptions="Center"/>
-        
-        <Entry Placeholder="Enter VIN"/>
-        
+                 VerticalOptions="Center"
+                 HorizontalOptions="Center"
+                 WidthRequest="200"
+                 Padding="20">
+        <Label HorizontalTextAlignment="Center" FontSize="32" Text="Enter your VIN" HorizontalOptions="Center"  Margin="0,0,0,50"/>
+
+        <Entry Placeholder="Enter VIN" x:Name="vinEntry"/>
+
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-            <Button Text="Cancel" BackgroundColor="Red" TextColor="White" WidthRequest="100" Clicked="Cancel_Button"/>
-            <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="100"/>
+            <Button Text="Cancel" BackgroundColor="Transparent" BorderColor="Black" BorderWidth="0.4" TextColor="Black" WidthRequest="100" Clicked="Cancel_Button" />
+            <Button Text="Submit" BackgroundColor="Transparent" BorderColor="Green" BorderWidth="0.4" TextColor="Green" WidthRequest="100" Clicked="Handle_Clicked"/>
         </StackLayout>
-        
-              <Label HorizontalTextAlignment="Center" Font="13" Text="
+
+        <Label HorizontalTextAlignment="Center" Font="11" TextColor="Gray" WidthRequest="190"
+               Text="
 The VIN will be used to decode your car's data.
 Also, it is easier to find the VIN using this app.
-       " HorizontalOptions="Center"/>
+       "
+               HorizontalOptions="Center" />
     </StackLayout>
 </pages:PopupPage>

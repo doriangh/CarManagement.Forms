@@ -54,32 +54,23 @@ namespace TestProiectLicenta.Data.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync(Constants.webAPI + "Cars", content);
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("Car successfully saved");
-            }  
+            if (response.IsSuccessStatusCode) Debug.WriteLine("Car successfully saved");
         }
 
         public async Task DeleteCar(int id)
         {
             var response = await _client.DeleteAsync(string.Format(Constants.webAPI + "Cars/{0}", id));
 
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("Car successfully deleted");
-            }
+            if (response.IsSuccessStatusCode) Debug.WriteLine("Car successfully deleted");
         }
 
-        public async Task UpdateCar(int carId, Car car)
+        public async Task<bool> UpdateCar(int carId, Car car)
         {
             var json = JsonConvert.SerializeObject(car);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PutAsync(string.Format(Constants.webAPI + "Cars?carId={0}", car.Id), content);
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("Car successfully updated");
-            }
+            var response = await _client.PutAsync(string.Format(Constants.webAPI + "Cars?carId={0}", carId), content);
+            return response.IsSuccessStatusCode; /*Debug.WriteLine("Car successfully updated");*/
         }
 
         public async Task AddCarByVin(JObject data, string vin)
@@ -120,10 +111,7 @@ namespace TestProiectLicenta.Data.Services
 
             var response = await _client.PostAsync(Constants.webAPI + "Cars", content);
 
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("Car successfully added");
-            }
+            if (response.IsSuccessStatusCode) Debug.WriteLine("Car successfully added");
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
+using Acr.UserDialogs;
+using TestProiectLicenta.Models;
 using Xamarin.Forms;
 
 namespace TestProiectLicenta.Views
@@ -8,141 +8,166 @@ namespace TestProiectLicenta.Views
     public partial class UpdateCarPage : ContentPage
     {
         private readonly int _carId;
+        private Car car;
 
         public UpdateCarPage(int id)
         {
             _carId = id;
 
             CreateForm();
+
             InitializeComponent();
         }
 
         private async void CreateForm()
         {
-
-            var car = await App.CarManager.GetCar(_carId);
+            car = await App.CarManager.GetCar(_carId);
             var carDetails = await App.CarDetailManager.GetCarsDetail(_carId);
 
 
-            if (car.Make != null)
-                Weknow.Add(new EntryCell { Label = "Make", Text = car.Make });
-            else
-                Wedont.Add(new EntryCell { Label = "Make", Placeholder = "Eg. Ford" });
+            var entryList = new List<EntryCell>
+            {
+                new EntryCell { Label = "Make", Text = car.Make, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Manufacturer", Text = car.Manufacturer, Placeholder = "Eg. Ford Werke AG" },
+                new EntryCell { Label = "Plant", Text = car.Plant, Placeholder = "Eg. Koeln-Niehl" },
+                new EntryCell { Label = "Model Year", Text = car.ModelYear, Placeholder = "Eg. 2010" },
+                new EntryCell { Label = "Sequential Number", Text = car.SequentialNumber, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Model", Text = car.Model, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Body", Text = car.Body, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Drive", Text = car.Drive, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Number of Seats", Text = car.NumberofSeats, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Number of Doors", Text = car.NumberofDoors, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Steering", Text = car.Steering, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Engine Displacement", Text = car.EngineDisplacement, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Engine Cylinders", Text = car.EngineCylinders, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Number of Gears", Text = car.NumberofGears, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Engine", Text = car.Engine, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Date of Manufacture", Text = car.Made, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Color", Text = car.Color, Placeholder = "Eg. Blue" },
+                new EntryCell { Label = "Fuel", Text = car.Fuel, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Cubic Centimeters", Text = car.Cc, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Power", Text = car.Power, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Emissions", Text = car.Emissions, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Odometer", Text = car.Odometer, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "VIN", Text = car.Vin, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "License Plate", Text = car.License, Placeholder = "Eg. Ford" }
+            };
 
-            if (car.Manufacturer != null)
-                Weknow.Add(new EntryCell { Label = "Manufacturer", Text = car.Manufacturer });
-            else
-                Wedont.Add(new EntryCell { Label = "Manufacturer", Placeholder = "Eg. Ford Werke AG" });
+            foreach (var item in entryList)
+            {
+                if (item.Text != null)
+                    Weknow.Add(item);
+                else
+                    Wedont.Add(item);
+            }
+        }
 
-            if (car.Plant != null)
-                Weknow.Add(new EntryCell { Label = "Plant", Text = car.Plant });
-            else
-                Wedont.Add(new EntryCell { Label = "Plant", Placeholder = "Eg. Koeln-Niehl" });
+        async void SaveDataButton(object sender, System.EventArgs e)
+        {
+            var updatedCar = new Car();
 
-            if (car.ModelYear != null)
-                Weknow.Add(new EntryCell { Label = "ModelYear", Text = car.ModelYear});
-            else
-                Wedont.Add(new EntryCell { Label = "ModelYear", Placeholder = "Eg. 2010" });
+            var allEntries = new List<Cell>();
 
-            if (car.SequentialNumber != null)
-                Weknow.Add(new EntryCell { Label = "SequentialNumber", Text = car.SequentialNumber });
-            else
-                Wedont.Add(new EntryCell { Label = "SequentialNumber", Placeholder = "" });
+            foreach (var item in Weknow)
+            {
+                allEntries.Add(item);
+            }
 
-            if (car.Model != null)
-                Weknow.Add(new EntryCell { Label = "Model", Text = car.Model });
-            else
-                Wedont.Add(new EntryCell { Label = "Model", Placeholder = "Eg. Focus" });
+            foreach (var item in Wedont)
+            {
+                allEntries.Add(item);
+            }
 
-            if (car.Body != null)
-                Weknow.Add(new EntryCell { Label = "Body", Text = car.Body });
-            else
-                Wedont.Add(new EntryCell { Label = "Body", Placeholder = "Eg. Hatchback" });
 
-            if (car.Drive != null)
-                Weknow.Add(new EntryCell { Label = "Drive", Text = car.Drive });
-            else
-                Wedont.Add(new EntryCell { Label = "Drive", Placeholder = "Eg. Front wheel" });
+            foreach (EntryCell cell in allEntries)
+            {
+                switch (cell.Label)
+                {
+                    case "Make":
+                        updatedCar.Make = cell.Text;
+                        break;
+                    case "Model Year":
+                        updatedCar.ModelYear = cell.Text;
+                        break;
+                    case "Model":
+                        updatedCar.Model = cell.Text;
+                        break;
+                    case "Body":
+                        updatedCar.Body = cell.Text;
+                        break;
+                    case "Fuel":
+                        updatedCar.Fuel = cell.Text;
+                        break;
+                    case "Odometer":
+                        updatedCar.Odometer = cell.Text;
+                        break;
+                    case "VIN":
+                        updatedCar.Vin = cell.Text;
+                        break;
+                    case "Manufacturer":
+                        updatedCar.Manufacturer = cell.Text;
+                        break;
+                    case "Plant":
+                        updatedCar.Plant = cell.Text;
+                        break;
+                    case "Sequential Number":
+                        updatedCar.SequentialNumber = cell.Text;
+                        break;
+                    case "Drive":
+                        updatedCar.Drive = cell.Text;
+                        break;
+                    case "Number of Seats":
+                        updatedCar.NumberofSeats = cell.Text;
+                        break;
+                    case "Number of Doors":
+                        updatedCar.NumberofDoors = cell.Text;
+                        break;
+                    case "Steering":
+                        updatedCar.Steering = cell.Text;
+                        break;
+                    case "Engine Displacement":
+                        updatedCar.EngineDisplacement = cell.Text;
+                        break;
+                    case "Engine Cylinders":
+                        updatedCar.EngineCylinders = cell.Text;
+                        break;
+                    case "Number of Gears":
+                        updatedCar.NumberofGears = cell.Text;
+                        break;
+                    case "Engine":
+                        updatedCar.Engine = cell.Text;
+                        break;
+                    case "Date of Manufacture":
+                        updatedCar.Made = cell.Text;
+                        break;
+                    case "Color":
+                        updatedCar.Color = cell.Text;
+                        break;
+                    case "Cubic Centimeters":
+                        updatedCar.Cc = cell.Text;
+                        break;
+                    case "Power":
+                        updatedCar.Power = cell.Text;
+                        break;
+                    case "Emissions":
+                        updatedCar.Emissions = cell.Text;
+                        break;
+                    case "License Plate":
+                        updatedCar.License = cell.Text;
+                        break;
+                    default:
+                        break;
+                }
+            }
 
-            if (car.NumberofSeats != null)
-                Weknow.Add(new EntryCell { Label = "NumberofSeats", Text = car.NumberofSeats });
-            else
-                Wedont.Add(new EntryCell { Label = "NumberofSeats", Placeholder = "Eg. 5" });
+            updatedCar.CarImage = car.CarImage;
 
-            if (car.NumberofDoors != null)
-                Weknow.Add(new EntryCell { Label = "NumberofDoors", Text = car.NumberofDoors });
+            var success = await App.CarManager.UpdateCar(_carId, updatedCar);
+            if (success)
+                UserDialogs.Instance.Toast(" Car successfully updated");
             else
-                Wedont.Add(new EntryCell { Label = "NumberofDoors", Placeholder = "Eg. 5" });
-
-            if (car.Steering != null)
-                Weknow.Add(new EntryCell { Label = "Steering", Text = car.Steering });
-            else
-                Wedont.Add(new EntryCell { Label = "Steering", Placeholder = "Eg. Left hand side" });
-
-            if (car.EngineDisplacement != null)
-                Weknow.Add(new EntryCell { Label = "EngineDisplacement", Text = car.EngineDisplacement });
-            else
-                Wedont.Add(new EntryCell { Label = "EngineDisplacement", Placeholder = "" });
-
-            if (car.EngineCylinders != null)
-                Weknow.Add(new EntryCell { Label = "EngineCylinders", Text = car.EngineCylinders });
-            else
-                Wedont.Add(new EntryCell { Label = "EngineCylinders", Placeholder = "Eg. 4" });
-
-            if (car.NumberofGears != null)
-                Weknow.Add(new EntryCell { Label = "NumberofGears", Text = car.NumberofGears });
-            else
-                Wedont.Add(new EntryCell { Label = "NumberofGears", Placeholder = "Eg. 6" });
-
-            if (car.Engine != null)
-                Weknow.Add(new EntryCell { Label = "Engine", Text = car.Engine });
-            else
-                Wedont.Add(new EntryCell { Label = "Engine", Placeholder = "Eg. Ingenium" });
-
-            if (car.Made != null)
-                Weknow.Add(new EntryCell { Label = "Made", Text = car.Made });
-            else
-                Wedont.Add(new EntryCell { Label = "Made", Placeholder = "Date of manufacture" });
-
-            if (car.Color != null)
-                Weknow.Add(new EntryCell { Label = "Color", Text = car.Color });
-            else
-                Wedont.Add(new EntryCell { Label = "Color", Placeholder = "Eg. Blue" });
-
-            if (car.Fuel != null)
-                Weknow.Add(new EntryCell { Label = "Fuel", Text = car.Fuel });
-            else
-                Wedont.Add(new EntryCell { Label = "Fuel", Placeholder = "Eg. Diesel" });
-
-            if (car.Cc != null)
-                Weknow.Add(new EntryCell { Label = "CC", Text = car.Cc });
-            else
-                Wedont.Add(new EntryCell { Label = "CC", Placeholder = "Eg. 2000" });
-
-            if (car.Power != null)
-                Weknow.Add(new EntryCell { Label = "Power", Text = car.Power });
-            else
-                Wedont.Add(new EntryCell { Label = "Power", Placeholder = "Eg. 89" });
-
-            if (car.Emissions != null)
-                Weknow.Add(new EntryCell { Label = "Emissions", Text = car.Emissions });
-            else
-                Wedont.Add(new EntryCell { Label = "Emissions", Placeholder = "Eg. Euro 5" });
-
-            if (car.Odometer != null)
-                Weknow.Add(new EntryCell { Label = "Odometer", Text = car.Odometer });
-            else
-                Wedont.Add(new EntryCell { Label = "Odometer", Placeholder = "Eg. 123456" });
-
-            if (car.Vin != null)
-                Weknow.Add(new EntryCell { Label = "VIN", Text = car.Vin });
-            else
-                Wedont.Add(new EntryCell { Label = "VIN", Placeholder = "17 Characters" });
-
-            if (car.License != null)
-                Weknow.Add(new EntryCell { Label = "License", Text = car.License });
-            else
-                Wedont.Add(new EntryCell { Label = "License", Placeholder = "Eg. B123ABC" });
+                UserDialogs.Instance.Toast(" Error updating");
+            await Navigation.PopAsync();
         }
     }
 }

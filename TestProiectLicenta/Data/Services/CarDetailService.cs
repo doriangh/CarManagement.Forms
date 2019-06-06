@@ -24,20 +24,14 @@ namespace TestProiectLicenta.Data.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync(Constants.webAPI + "CarDetails", content);
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("Car successfully saved");
-            }
+            if (response.IsSuccessStatusCode) Debug.WriteLine("Car successfully saved");
         }
 
         public async Task DeleteCarDetail(int id)
         {
             var response = await _client.DeleteAsync(string.Format(Constants.webAPI + "CarDetails/{0}", id));
 
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("Car successfully deleted");
-            }
+            if (response.IsSuccessStatusCode) Debug.WriteLine("Car successfully deleted");
         }
 
         public async Task<CarDetail> GetCarDetail(int carDetailId)
@@ -77,10 +71,8 @@ namespace TestProiectLicenta.Data.Services
             var allCarDetails = await GetCarDetails();
 
             foreach (var carDetail in allCarDetails)
-            {
                 if (carDetail.CarId == carId)
                     return carDetail;
-            }
 
             return null;
         }
@@ -91,10 +83,7 @@ namespace TestProiectLicenta.Data.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PutAsync(Constants.webAPI + "Cars", content);
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("Car successfully updated");
-            }
+            if (response.IsSuccessStatusCode) Debug.WriteLine("Car successfully updated");
         }
     }
 }

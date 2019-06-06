@@ -4,18 +4,18 @@ using System.IO;
 using System.Net;
 using System.Xml.Linq;
 using Plugin.Media;
+using Plugin.Media.Abstractions;
 using TestProiectLicenta.Data.Services;
 using TestProiectLicenta.Models;
 using Xamarin.Forms;
 
-namespace TestProiectLicenta
+namespace TestProiectLicenta.Views
 {
     public partial class RegisterFormModalPage : ContentPage
     {
-
-        string imgurId = "3998115b75eb6f3";
-        string imgurSecret = "17246fb9c2e052d96773af41fdf5091b7ba71603";
-        UserService service = new UserService();
+        private readonly string imgurId = "3998115b75eb6f3";
+        private string imgurSecret = "17246fb9c2e052d96773af41fdf5091b7ba71603";
+        private UserService service = new UserService();
 
         private string userPhoto;
 
@@ -29,11 +29,9 @@ namespace TestProiectLicenta
             base.OnAppearing();
         }
 
-        private async void RegisterUser(object sender, System.EventArgs e)
+        private async void RegisterUser(object sender, EventArgs e)
         {
-            if (await App.UserManager.GetUserByUsername(user.Text) != null){
-                return;
-            }
+            if (await App.UserManager.GetUserByUsername(user.Text) != null) return;
 
             var newUser = new User
             {
@@ -51,12 +49,12 @@ namespace TestProiectLicenta
             await Navigation.PopModalAsync();
         }
 
-        private async void CancelButton(object sender, System.EventArgs e)
+        private async void CancelButton(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
         }
 
-        private async void AddUserPhotoButton(object sender, System.EventArgs e)
+        private async void AddUserPhotoButton(object sender, EventArgs e)
         {
             await CrossMedia.Current.Initialize();
 
@@ -66,18 +64,15 @@ namespace TestProiectLicenta
                 return;
             }
 
-            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
             {
                 Directory = "Sample",
                 Name = "test.jpg",
-                DefaultCamera = Plugin.Media.Abstractions.CameraDevice.Front,
+                DefaultCamera = CameraDevice.Front,
                 RotateImage = false
             });
 
-            if (file == null)
-            {
-                return;
-            }
+            if (file == null) return;
 
             await DisplayAlert("File Location", file.Path, "OK");
 
@@ -102,12 +97,9 @@ namespace TestProiectLicenta
             //file.GetStream().CopyTo(memoryStream);
 
 
-
-
             //userPhoto = memoryStream.ToArray();
 
             File.Delete(file.Path);
-
         }
     }
 }

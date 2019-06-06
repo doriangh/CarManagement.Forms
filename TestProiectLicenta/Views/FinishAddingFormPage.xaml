@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.FinishAddingFormPage">
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TestProiectLicenta.Views.FinishAddingFormPage">
     <StackLayout Padding="20">
         <StackLayout Orientation="Horizontal">
-            <Image Source="number3" WidthRequest="100"/>
-            <Label Text="Verify data" VerticalOptions="Center" FontSize="50" HorizontalOptions="EndAndExpand"/>
+            <Image Source="number3" WidthRequest="100" />
+            <Label Text="Verify data" VerticalOptions="Center" FontSize="50" HorizontalOptions="EndAndExpand" />
         </StackLayout>
-       
-        <Button Text="Submit" BackgroundColor="Green" TextColor="White" VerticalOptions="EndAndExpand" Clicked="Submit_Button"/>
-        <Button Text="Go Back" BackgroundColor="Red" TextColor="White" VerticalOptions="End"/>
+
+        <Button Text="Submit" BackgroundColor="Green" TextColor="White" VerticalOptions="EndAndExpand"
+                Clicked="Submit_Button" />
+        <Button Text="Go Back" BackgroundColor="Red" TextColor="White" VerticalOptions="End" />
     </StackLayout>
 </ContentPage>

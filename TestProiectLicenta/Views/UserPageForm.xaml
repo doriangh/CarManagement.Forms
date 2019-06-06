@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TabbedPage 
-    NavigationPage.HasNavigationBar="False"
+
+<TabbedPage
+    NavigationPage.HasBackButton="False"
     BackgroundColor="Black"
-    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.UserPageForm" xmlns:local="clr-namespace:TestProiectLicenta.Views"
+    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TestProiectLicenta.Views.UserPageForm" xmlns:local="clr-namespace:TestProiectLicenta.Views"
     xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
     xmlns:refresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh">
-
     
-    <ContentPage Icon="new_car_icon" Title="Cars" BackgroundColor="Black" 
-                 Padding="0,20,0,0" >
+    <NavigationPage.TitleView >
+        <StackLayout Orientation="Horizontal" Padding="17,0,0,0">
+            <StackLayout HorizontalOptions="Start" Orientation="Horizontal" VerticalOptions="Start">
+                <controls:CircleImage 
+                          Source="new_user_icon.png"
+                          HorizontalOptions="Center"
+                          BackgroundColor="Transparent"
+                          x:Name="topAvatar"
+                          Aspect="AspectFill">
+                    <controls:CircleImage.WidthRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android, iOS">40</On>
+                        </OnPlatform>
+                    </controls:CircleImage.WidthRequest>
+                    <controls:CircleImage.HeightRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android,iOS">40</On>
+                        </OnPlatform>
+                    </controls:CircleImage.HeightRequest>
+                </controls:CircleImage>
+                
+                <Label x:Name="navName" TextColor="Black" VerticalOptions="Center" FontAttributes="Bold"/>
+            </StackLayout>
+            
+            <StackLayout HorizontalOptions="EndAndExpand" VerticalOptions="Start">
+                <Label Text="Valoare Estimata" FontSize="Small" HorizontalOptions="Center"/>
+                <Label Text="3000€" TextColor="Green" FontSize="Medium" HorizontalOptions="Center"/>
+            </StackLayout>
+            
+            <ImageButton Source="search_car" Clicked="Search_Car_Button"/>
+        </StackLayout>
+    </NavigationPage.TitleView>
+    
+    <ContentPage Icon="new_car_icon" Title="Cars">
         
-        <StackLayout Spacing="0">
-            <StackLayout BackgroundColor="Black" HeightRequest="125">
-                <Grid VerticalOptions="CenterAndExpand" >
+        <StackLayout Spacing="0" BackgroundColor="Black">
+            <StackLayout BackgroundColor="Black" HeightRequest="100" IsVisible="false">
+                <Grid VerticalOptions="CenterAndExpand">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -22,10 +55,10 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <controls:CircleImage Grid.Column="0"
-                                          Source="new_user_icon.png" 
-                                          HorizontalOptions="Center" 
-                                          BackgroundColor="Transparent"  
-                                          x:Name="Avatar" 
+                                          Source="new_user_icon.png"
+                                          HorizontalOptions="Center"
+                                          BackgroundColor="Transparent"
+                                          x:Name="Avatar"
                                           Aspect="AspectFill">
                         <controls:CircleImage.WidthRequest>
                             <OnPlatform x:TypeArguments="x:Double">
@@ -38,54 +71,38 @@
                             </OnPlatform>
                         </controls:CircleImage.HeightRequest>
                     </controls:CircleImage>
-                    
-                    
-                    <StackLayout Grid.Column="1" Grid.ColumnSpan="2" 
+
+
+                    <StackLayout Grid.Column="1" Grid.ColumnSpan="2"
                                  VerticalOptions="Center">
-                        <Label TextColor="White" x:Name="name"/>
-                        <Label Text="Ford Focus" TextColor="White" 
-                               FontSize="Micro"/>
-                        
+                        <Label TextColor="White" x:Name="name" />
+                        <Label Text="Ford Focus" TextColor="White"
+                               FontSize="Micro" />
+
                     </StackLayout>
-                    
-                    <StackLayout Grid.Column="3" Grid.ColumnSpan="2" 
+
+                    <StackLayout Grid.Column="3" Grid.ColumnSpan="2"
                                  VerticalOptions="Center">
-                        <Label Text="Valoare estimata" TextColor="White" 
-                               x:Name="Value"/>
-                        <Label Text="5000eur" TextColor="Green" 
-                               HorizontalTextAlignment="Center" 
-                               FontSize="Micro"/>
+                        <Label Text="Valoare estimata" TextColor="White"
+                               x:Name="Value" />
+                        <Label Text="5000eur" TextColor="Green"
+                               HorizontalTextAlignment="Center"
+                               FontSize="Micro" />
                     </StackLayout>
                 </Grid>
             </StackLayout>
-            
            
-           <!-- <ListView x:Name="cars" ItemSelected="ViewListItemDetails" IsVisible="false"
-                      IsPullToRefreshEnabled="true" Refreshing="Handle_Refreshing"
-                      BackgroundColor="White">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding FullName}" Detail="{Binding ModelYear}">
-                            <TextCell.ContextActions>
-                                <MenuItem Text="Delete" IsDestructive="true" Clicked="DeleteCarFromListButton"/>
-                            </TextCell.ContextActions>
-                        </TextCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>-->
-            
-            <ListView x:Name="Cars" ItemSelected="ViewListItemDetails" 
-                      IsVisible="false" 
-                      IsPullToRefreshEnabled="true" 
-                      Refreshing="Handle_Refreshing" 
+            <ListView x:Name="Cars" ItemSelected="ViewListItemDetails"
+                      IsVisible="false"
+                      IsPullToRefreshEnabled="true"
+                      Refreshing="Handle_Refreshing"
                       BackgroundColor="White">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid Padding="0,0,0,20">
+                            <Grid>
 
                                 <Grid.RowDefinitions>
-                                    <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
@@ -96,65 +113,71 @@
                                 </Grid.ColumnDefinitions>
                                 <StackLayout Grid.Row="0" Grid.ColumnSpan="3">
                                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="0,10,0,0">
-                                        <Label Text="{Binding FullName}" FontSize="Large" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
-                                        <Label Text="{Binding ModelYear}" FontSize="Small" TextColor="Gray" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding FullName}" FontSize="Large"
+                                               HorizontalTextAlignment="Center" VerticalOptions="Center" />
+                                        <Label Text="{Binding ModelYear}" FontSize="Small" TextColor="Gray"
+                                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                        <Label Text="{Binding CarPrice}" FontSize="Medium" TextColor="Green"
+                                               HorizontalOptions="End" VerticalOptions="Center"/>
                                     </StackLayout>
-                                    
-                                    <BoxView HeightRequest="1" Color="Gray"/>
+
+                                    <BoxView HeightRequest="1" Color="Gray" />
                                 </StackLayout>
-                                <Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Source="{Binding CarImage}"/>
                                 
+                                <Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" HorizontalOptions="Center"
+                                       VerticalOptions="Center" Source="{Binding CarImage}" />
+
                                 <StackLayout Grid.Column="1" Grid.Row="1" x:Name="first">
-                                    <Label Text="ITP" FontSize="Micro" TextColor="Gray"/>
-                                    <Label Text="{Binding RemainingItp}" TextColor="Red" FontSize="Medium"/>
-                                    <Label Text="Road Tax" FontSize="Micro" TextColor="Gray"/>
-                                    <Label Text="{Binding RemainingRoadTax}" TextColor="Green" FontSize="Medium"/>
+                                    <Label Text="ITP" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="{Binding RemainingItp}" TextColor="Red" FontSize="Medium" />
+                                    <Label Text="Road Tax" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="{Binding RemainingRoadTax}" TextColor="Green" FontSize="Medium" />
                                     <!--<Label Text="Winter Tires" FontSize="Micro" TextColor="Gray"/>
                                     <Label Text="Trebuie schimbate in 10 zile" FontSize="Medium"/>
                                     <Label Text="Oil Change" FontSize="Micro" TextColor="Gray"/>
                                     <Label Text="Mai sunt 1254KM pana la schimb" FontSize="Medium"/>-->
                                 </StackLayout>
-                                
+
                                 <StackLayout Grid.Column="2" Grid.Row="1" x:Name="second">
-                                    <Label Text="Insurance Value" FontSize="Micro" TextColor="gray"/>
-                                    <Label Text="128 RON" FontSize="Medium"/>
-                                    <Label Text="Road Tax Value" FontSize="Micro" TextColor="Gray"/>
-                                    <Label Text="84 RON" FontSize="Medium"/>
-                                    <Label Text="Tax Value" FontSize="Micro" TextColor="Gray"/>
-                                    <Label Text="{Binding TaxValue}" FontSize="Medium"/>
+                                    <Label Text="Insurance Value" FontSize="Micro" TextColor="gray" />
+                                    <Label Text="128 RON" FontSize="Medium" />
+                                    <Label Text="Road Tax Value" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="84 RON" FontSize="Medium" />
+                                    <Label Text="Tax Value" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="{Binding TaxValue}" FontSize="Medium" />
                                 </StackLayout>
-                               
+
                             </Grid>
-                                
+
                             <ViewCell.ContextActions>
-                                <MenuItem Text="Delete" IsDestructive="true" Clicked="DeleteCarFromListButton"/>
+                                <MenuItem Text="Delete" IsDestructive="true" Clicked="DeleteCarFromListButton" />
                             </ViewCell.ContextActions>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            
+
             <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="Center" IsVisible="true" x:Name="AddCar">
-                <Button Clicked="AddCarsWhenNoCarsButton" Image="add.png" BackgroundColor="Transparent"/>
-                <Label Text="Add Car" TextColor="White" HorizontalOptions="Center"/>
+                <Button Clicked="AddCarsWhenNoCarsButton" Image="add.png" BackgroundColor="Transparent" />
+                <Label Text="Add Car" TextColor="White" HorizontalOptions="Center" />
             </StackLayout>
-            
+
         </StackLayout>
     </ContentPage>
-    
-    <local:AddCarPage Title="Add Car" Icon="new_add_icon"/>
-<!--    <local:CarListPage Title="User" Icon="user_icon.png"/>-->
-    <local:ChooseMethodFormPage Title="New Page Test" Icon="new_user_icon"/>
+
+    <local:AddCarPage Title="Add Car" Icon="new_add_icon" />
+    <!--    <local:CarListPage Title="User" Icon="user_icon.png"/>-->
+    <local:ChooseMethodFormPage Title="New Page Test" Icon="new_user_icon" />
     <ContentPage Title="Settings" Icon="new_settings_icon.png">
         <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
             <StackLayout Orientation="Horizontal">
                 <StackLayout Orientation="Horizontal">
-                    <Image Source="face_id"/>
-                    <Label Text="FaceID Login?"/>
+                    <Image Source="face_id" />
+                    <Label Text="FaceID Login?" />
                 </StackLayout>
-                <Switch IsToggled="false" Toggled="Handle_Toggled" x:Name="Fid"/>
+                <Switch IsToggled="false" Toggled="Handle_Toggled" x:Name="Fid" />
             </StackLayout>
-            <Button Text="Sign Out" Clicked="SignOutButton"/>
+            <Button Text="Sign Out" Clicked="SignOutButton" />
         </StackLayout>
     </ContentPage>
 </TabbedPage>

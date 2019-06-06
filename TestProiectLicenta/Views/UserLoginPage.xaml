@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage 
+
+<ContentPage
     NavigationPage.HasNavigationBar="False"
     Padding="20"
-    BackgroundColor="Black" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.UserLoginPage"
+    BackgroundColor="Black" xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.UserLoginPage"
     xmlns:abstractions="clr-namespace:RoundedBoxView.Forms.Plugin.Abstractions;assembly=RoundedBoxView.Forms.Plugin.Abstractions">
-            
+
     <ContentPage.Content>
-        <ScrollView>
+        <StackLayout>
+            <ScrollView VerticalOptions="FillAndExpand">
+                <StackLayout>
+
+                    <StackLayout VerticalOptions="StartAndExpand">
+                        <Image Source="introCar.png" WidthRequest="200" HeightRequest="200" BackgroundColor="Transparent" />
+                        <Label Text="Car Management" TextColor="Cyan" HorizontalOptions="Center" FontSize="40"
+                               FontAttributes="Bold" />
+                    </StackLayout>
+
+                    <StackLayout VerticalOptions="CenterAndExpand">
+                        <Label Text="Please Enter Details" TextColor="Red" FontAttributes="Bold" HorizontalOptions="Center"
+                               IsVisible="false" x:Name="Message" />
+                        <Entry Placeholder="Username" x:Name="User" HorizontalOptions="Center" WidthRequest="300"
+                               HeightRequest="60" />
+                        <Entry Placeholder="Password" IsPassword="true" x:Name="Pass" HorizontalOptions="Center"
+                               WidthRequest="300" HeightRequest="60" />
+                        <Button Text="Log In" TextColor="White" HorizontalOptions="Center"
+                                BackgroundColor="Green" WidthRequest="300" Clicked="UserLogInButton" />
+                        <Button Text="Try Again" Clicked="TryAgainButton" IsVisible="false" x:Name="Retry" />
+                    </StackLayout>
+
+                </StackLayout>
+            </ScrollView>
             <StackLayout>
-          
-                <StackLayout VerticalOptions="StartAndExpand">
-                    <Image Source="introCar.png" WidthRequest="200" HeightRequest="200" BackgroundColor="Transparent"/>
-                    <Label Text="Car Management" TextColor="Cyan" HorizontalOptions="Center" FontSize="40" FontAttributes="Bold"/>
-                </StackLayout>
-                
-                <StackLayout VerticalOptions="CenterAndExpand">
-                    <Label Text="Please Enter Details" TextColor="Red" FontAttributes="Bold" HorizontalOptions="Center" IsVisible="false" x:Name="Message"/>
-                    <Entry Placeholder="Username" x:Name="User" HorizontalOptions="Center" WidthRequest="300" HeightRequest="60"/>
-                    <Entry Placeholder="Password" IsPassword="true" x:Name="Pass" HorizontalOptions="Center" WidthRequest="300" HeightRequest="60"/>
-                    <Button Text="Log In" TextColor="White" HorizontalOptions="Center" BorderRadius="22" BackgroundColor="Green" WidthRequest="300" Clicked="UserLogInButton"/>
-                    <Button Text="Try Again" Clicked="TryAgainButton" IsVisible="false" x:Name="Retry"/>
-                </StackLayout>
-                
-                <StackLayout VerticalOptions="EndAndExpand"> 
-                    <Button Text="Create New Account" Clicked="RegisterButton" HorizontalOptions="StartAndExpand" BackgroundColor="Transparent" TextColor="Gray"/>
-                </StackLayout>
-                
+                <Button Text="Create New Account" Clicked="RegisterButton" HorizontalOptions="StartAndExpand"
+                        BackgroundColor="Transparent" />
             </StackLayout>
-        </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

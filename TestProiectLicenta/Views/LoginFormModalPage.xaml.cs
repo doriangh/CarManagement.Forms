@@ -4,7 +4,7 @@ using System.Text;
 using TestProiectLicenta.Models;
 using Xamarin.Forms;
 
-namespace TestProiectLicenta
+namespace TestProiectLicenta.Views
 {
     public partial class LoginFormModalPage : ContentPage
     {
@@ -20,7 +20,7 @@ namespace TestProiectLicenta
             base.OnAppearing();
         }
 
-        private async void UserLogInButton(object sender, System.EventArgs e)
+        private async void UserLogInButton(object sender, EventArgs e)
         {
             if (user.Text != null && pass.Text != null)
             {
@@ -35,8 +35,8 @@ namespace TestProiectLicenta
                     message.IsVisible = true;
                     return;
                 }
-        
-                if(_userObj.Password == password)
+
+                if (_userObj.Password == password)
                 {
                     Console.WriteLine(username + ' ' + pass.Text + ' ' + password);
 
@@ -50,7 +50,6 @@ namespace TestProiectLicenta
                     message.Text = "Password incorrect";
                     message.IsVisible = true;
                 }
-
             }
             else
             {
@@ -58,7 +57,7 @@ namespace TestProiectLicenta
             }
         }
 
-        private async void CancelButton(object sender, System.EventArgs e)
+        private async void CancelButton(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
         }

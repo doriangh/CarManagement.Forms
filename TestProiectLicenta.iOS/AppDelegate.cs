@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿using FFImageLoading.Forms.Platform;
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
-using Plugin.Fingerprint;
+using Plugin.InputKit.Platforms.iOS;
 using Refractored.XamForms.PullToRefresh.iOS;
+using Rg.Plugins.Popup;
 using RoundedBoxView.Forms.Plugin.iOSUnified;
 using UIKit;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
 namespace TestProiectLicenta.iOS
 {
@@ -15,7 +15,7 @@ namespace TestProiectLicenta.iOS
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
     [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public class AppDelegate : FormsApplicationDelegate
     {
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
@@ -26,17 +26,17 @@ namespace TestProiectLicenta.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            Rg.Plugins.Popup.Popup.Init();
-            Plugin.InputKit.Platforms.iOS.Config.Init();
+            Popup.Init();
+            Config.Init();
             PullToRefreshLayoutRenderer.Init();
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+            CachedImageRenderer.Init();
 
-            global::Xamarin.Forms.Forms.Init();
+            Forms.Init();
             RoundedBoxViewRenderer.Init();
             ImageCircleRenderer.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
-        } 
+        }
     }
 }

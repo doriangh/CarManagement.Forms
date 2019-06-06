@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage 
+
+<ContentPage
     Padding="20"
-    BackgroundColor="Black" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.AddCarPage">
-    
+    BackgroundColor="Black" xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.AddCarPage">
+
     <Grid>
-        
+
         <StackLayout Grid.Row="0" VerticalOptions="Start">
-            <Label Text="Add a car" TextColor="White" FontSize="60" IsVisible="true" HorizontalTextAlignment="Center"/>
+            <Label Text="Add a car" TextColor="White" FontSize="60" IsVisible="true" HorizontalTextAlignment="Center" />
         </StackLayout>
-        
+
         <StackLayout Grid.Row="1">
             <Label HorizontalTextAlignment="Center" FontSize="15"
-            Text="You can add up to as many cars as you like. After you have added a car you can edit its details, view info, and even search with a different option for the same car, to add more details!" TextColor="White"/>
+                   Text="You can add up to as many cars as you like. After you have added a car you can edit its details, view info, and even search with a different option for the same car, to add more details!"
+                   TextColor="White" />
         </StackLayout>
-        
+
         <StackLayout Grid.Row="2">
-<!--            <Label Text="Search via Photo" TextColor="White" HorizontalOptions="Center" FontSize="50"/>-->
-            <Button Text="Take a Photo" TextColor="White" BackgroundColor="Green" CornerRadius="8" Clicked="TakePictureButtonPressed"/>
-            <Button Text="Search a Photo" TextColor="White" BackgroundColor="Green" CornerRadius="8" Clicked="AddPictureButtonPressed"/>
-            <Label Text="Please note that in order to get the most detail out of your car, we recommend using both the Take Photo function and the VIN Search. Adding via Photo also adds an image to the added car." TextColor="Gray" HorizontalTextAlignment="Center" FontSize="10"/>
+            <!--            <Label Text="Search via Photo" TextColor="White" HorizontalOptions="Center" FontSize="50"/>-->
+            <Button Text="Take a Photo" TextColor="White" BackgroundColor="Green" CornerRadius="8"
+                    Clicked="TakePictureButtonPressed" />
+            <Button Text="Search a Photo" TextColor="White" BackgroundColor="Green" CornerRadius="8"
+                    Clicked="AddPictureButtonPressed" />
+            <Label
+                Text="Please note that in order to get the most detail out of your car, we recommend using both the Take Photo function and the VIN Search. Adding via Photo also adds an image to the added car."
+                TextColor="Gray" HorizontalTextAlignment="Center" FontSize="10" />
         </StackLayout>
-            
+
         <StackLayout Grid.Row="3">
-            <Button Text="Add Via VIN" BackgroundColor="Green" TextColor="White" CornerRadius="8" Clicked="AddVinButtonPressed"/>
-            <Button Text="Add Manually" BackgroundColor="Green" TextColor="White" CornerRadius="8" Clicked="AddManuallyButtonPressed"/>
-<!--            <Button Text="Back" BackgroundColor="Gray" TextColor="White" CornerRadius="8" VerticalOptions="EndAndExpand" Clicked="BackButtonPressed"/>-->
+            <Button Text="Add Via VIN" BackgroundColor="Green" TextColor="White" CornerRadius="8"
+                    Clicked="AddVinButtonPressed" />
+            <Button Text="Add Manually" BackgroundColor="Green" TextColor="White" CornerRadius="8"
+                    Clicked="AddManuallyButtonPressed" />
+            <!--            <Button Text="Back" BackgroundColor="Gray" TextColor="White" CornerRadius="8" VerticalOptions="EndAndExpand" Clicked="BackButtonPressed"/>-->
         </StackLayout>
-        
+
     </Grid>
-    
+
 </ContentPage>

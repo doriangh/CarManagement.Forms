@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TabbedPage 
+
+<TabbedPage
     BackgroundColor="White"
-    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.BuyCarPage">
-    
+    Title="Marketplace"
+    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TestProiectLicenta.Views.BuyCarPage">
+
     <ContentPage Title="Home" Icon="car_icon">
         <StackLayout Spacing="0">
-            <StackLayout>
-                <SearchBar Placeholder="eg. Ford Focus 2010"/>
-            </StackLayout>
-            
-            <ListView>
+
+            <ListView HorizontalOptions="FillAndExpand">
                 
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Placeholder="eg. Ford Focus 2010" />
+                    </StackLayout>
+                </ListView.Header>
+                
+                
+                <ListView.Footer>
+                    <StackLayout Orientation="Horizontal" BackgroundColor="lightgray">
+                        <Button Text="Add a car" HorizontalOptions="CenterAndExpand" />
+                        <BoxView Color="Black" WidthRequest="1" />
+                        <Button Text="Save search" HorizontalOptions="CenterAndExpand" />
+                        <BoxView Color="Black" WidthRequest="1" />
+                        <Button Text="Filter" HorizontalOptions="CenterAndExpand" />
+                        <BoxView Color="Black" WidthRequest="1" />
+                        <Button Text="Clear" HorizontalOptions="CenterAndExpand" />
+                    </StackLayout>
+                </ListView.Footer>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        
+                        
+                        <TextCell Text="fa"/>
+                        
+                        <!--<ViewCell>
+                            <Label Text="ads"/>
+                        </ViewCell>-->
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
-            
-            <StackLayout Orientation="Horizontal" BackgroundColor="lightgray">
-                <Button Text="Add a car" HorizontalOptions="CenterAndExpand"/>
-                <BoxView Color="Black" WidthRequest="1"/>
-                <Button Text="Save search" HorizontalOptions="CenterAndExpand"/>
-                <BoxView Color="Black" WidthRequest="1"/>
-                <Button Text="Filter" HorizontalOptions="CenterAndExpand"/>
-                <BoxView Color="Black" WidthRequest="1"/>
-                <Button Text="Clear" HorizontalOptions="CenterAndExpand"/>
-            </StackLayout>
         </StackLayout>
     </ContentPage>
 </TabbedPage>

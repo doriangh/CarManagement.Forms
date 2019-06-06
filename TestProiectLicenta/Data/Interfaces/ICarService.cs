@@ -12,7 +12,7 @@ namespace TestProiectLicenta.Data.Interfaces
         Task<List<Car>> GetUserCars(int userId);
         Task AddCar(Car car);
         Task DeleteCar(int id);
-        Task UpdateCar(int id, Car car);
+        Task<bool> UpdateCar(int id, Car car);
         Task AddCarByVin(JObject data, string vin);
     }
 }

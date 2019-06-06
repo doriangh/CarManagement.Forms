@@ -40,7 +40,7 @@ namespace TestProiectLicenta.Data.Services
             return _service.DeleteCar(id);
         }
 
-        public Task UpdateCar(int id, Car car)
+        public Task<bool> UpdateCar(int id, Car car)
         {
             return _service.UpdateCar(id, car);
         }

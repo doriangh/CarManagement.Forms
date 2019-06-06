@@ -244,5 +244,20 @@
     <BundleResource Include="Resources\new_user_icon%402x.png" />
     <BundleResource Include="Resources\new_user_icon%403x.png" />
     <BundleResource Include="Resources\face_id.png" />
+    <BundleResource Include="Resources\add_vin_toolbar.png" />
+    <BundleResource Include="Resources\add_vin_toolbar%402x.png" />
+    <BundleResource Include="Resources\add_vin_toolbar%403x.png" />
+    <BundleResource Include="Resources\delete_car_toolbar.png" />
+    <BundleResource Include="Resources\delete_car_toolbar%402x.png" />
+    <BundleResource Include="Resources\delete_car_toolbar%403x.png" />
+    <BundleResource Include="Resources\edit_car_toolbar.png" />
+    <BundleResource Include="Resources\edit_car_toolbar%402x.png" />
+    <BundleResource Include="Resources\edit_car_toolbar%403x.png" />
+    <BundleResource Include="Resources\sell_car_toolbar.png" />
+    <BundleResource Include="Resources\sell_car_toolbar%402x.png" />
+    <BundleResource Include="Resources\sell_car_toolbar%403x.png" />
+    <BundleResource Include="Resources\search_car.png" />
+    <BundleResource Include="Resources\search_car%402x.png" />
+    <BundleResource Include="Resources\search_car%403x.png" />
   </ItemGroup>
 </Project>

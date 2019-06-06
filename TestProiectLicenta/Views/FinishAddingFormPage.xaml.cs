@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Xamarin.Forms;
 
 namespace TestProiectLicenta.Views
@@ -12,7 +10,7 @@ namespace TestProiectLicenta.Views
             InitializeComponent();
         }
 
-        private async void Submit_Button(object sender, System.EventArgs e)
+        private async void Submit_Button(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new UserPageForm());
         }

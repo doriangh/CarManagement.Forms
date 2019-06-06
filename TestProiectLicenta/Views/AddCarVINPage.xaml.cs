@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 
 namespace TestProiectLicenta.Views
 {
@@ -16,13 +17,12 @@ namespace TestProiectLicenta.Views
             error.IsVisible = false;
         }
 
-        private async void FindCarVinButton(object sender, System.EventArgs e)
+        private async void FindCarVinButton(object sender, EventArgs e)
         {
             var vin = VINField.Text;
 
             if (vin != null)
             {
-
                 var data = await App.ExternalAPIManager.GetCarByVin(vin);
 
                 await Navigation.PushAsync(new CarDetailsSetupFormPage(data));

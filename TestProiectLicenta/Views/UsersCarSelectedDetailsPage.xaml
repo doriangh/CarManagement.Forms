@@ -1,37 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.UsersCarSelectedDetailsPage">
-    
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TestProiectLicenta.Views.UsersCarSelectedDetailsPage">
+
     <Grid Padding="20,0,0,0" x:Name="Grid">
-        
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="AUTO"/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition Height="AUTO" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        
-        
-        <Label Grid.Row="0" Grid.ColumnSpan="4" Text="{Binding FullName, FallbackValue=Loading...}" FontAttributes="Bold" FontSize="40" VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
-        
-        <Label Grid.Row="1" Grid.Column="0" Text="Power" FontSize="Large" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-        <Label Grid.Row="1" Grid.Column="1" Text="1230" VerticalTextAlignment="Center"/>
-        
-        <Label Grid.Row="1" Grid.Column="2" Text="Drive" FontSize="Large" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-        <Label Grid.Row="1" Grid.Column="3" Text="hah" VerticalTextAlignment="Center"/>
-        
+
+
+        <Label Grid.Row="0" Grid.ColumnSpan="4" Text="{Binding FullName, FallbackValue=Loading...}"
+               FontAttributes="Bold" FontSize="40" VerticalOptions="Center" HorizontalOptions="Center"
+               HorizontalTextAlignment="Center" />
+
+        <Label Grid.Row="1" Grid.Column="0" Text="Power" FontSize="Large" FontAttributes="Bold"
+               VerticalTextAlignment="Center" />
+        <Label Grid.Row="1" Grid.Column="1" Text="1230" VerticalTextAlignment="Center" />
+
+        <Label Grid.Row="1" Grid.Column="2" Text="Drive" FontSize="Large" FontAttributes="Bold"
+               VerticalTextAlignment="Center" />
+        <Label Grid.Row="1" Grid.Column="3" Text="hah" VerticalTextAlignment="Center" />
+
     </Grid>
 </ContentPage>
-
 
 
 <!--public class Car

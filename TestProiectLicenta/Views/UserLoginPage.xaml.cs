@@ -12,8 +12,8 @@ namespace TestProiectLicenta.Views
 {
     public partial class UserLoginPage : ContentPage
     {
-        public int UserId;
         private User _userObj;
+        public int UserId;
 
         public UserLoginPage()
         {
@@ -27,22 +27,21 @@ namespace TestProiectLicenta.Views
             await CheckIfLoggedIn();
         }
 
-        private async void LoginButton(object sender, System.EventArgs e)
+        private async void LoginButton(object sender, EventArgs e)
         {
-
             var loginForm = new LoginFormModalPage();
 
             await Navigation.PushModalAsync(loginForm);
         }
 
-        private async void RegisterButton(object sender, System.EventArgs e)
+        private async void RegisterButton(object sender, EventArgs e)
         {
             var registerPage = new RegisterFormModalPage();
 
             await Navigation.PushModalAsync(registerPage);
         }
 
-        private async void TryAgainButton(object sender, System.EventArgs e)
+        private async void TryAgainButton(object sender, EventArgs e)
         {
             await CheckIfLoggedIn();
         }
@@ -60,7 +59,6 @@ namespace TestProiectLicenta.Views
             {
                 if (Application.Current.Properties.ContainsKey("FaceID"))
                 {
-
                     if (Convert.ToBoolean(Application.Current.Properties["FaceID"].ToString()))
                     {
                         if (await CrossFingerprint.Current.IsAvailableAsync(true))
@@ -91,11 +89,10 @@ namespace TestProiectLicenta.Views
                     Application.Current.Properties["FaceID"] = false;
                     await Navigation.PushAsync(new UserPageForm());
                 }
-
             }
         }
 
-        private async void UserLogInButton(object sender, System.EventArgs e)
+        private async void UserLogInButton(object sender, EventArgs e)
         {
             if (User.Text != null && Pass.Text != null)
             {
@@ -112,20 +109,19 @@ namespace TestProiectLicenta.Views
                 }
 
                 if (_userObj.Password == password)
-                { 
+                {
                     using (UserDialogs.Instance.Loading("Logging you in.\nHold on"))
                     {
                         await App.UserManager.LogIn(_userObj.Username, _userObj.Password);
                     }
+
                     await Navigation.PushAsync(new UserPageForm());
                 }
                 else
                 {
                     Message.Text = "Password incorrect";
                     Message.IsVisible = true;
-                    return;
                 }
-
             }
             else
             {
@@ -133,7 +129,7 @@ namespace TestProiectLicenta.Views
             }
         }
 
-        private async void CancelButton(object sender, System.EventArgs e)
+        private async void CancelButton(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
         }

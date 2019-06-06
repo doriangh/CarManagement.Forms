@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.Serialization;
 using System.Xml;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
@@ -17,7 +15,7 @@ namespace TestProiectLicenta.Views
         {
             InitializeComponent();
 
-            if (car == null) 
+            if (car == null)
 
                 _carRequest = new CarVinRequest
                 {
@@ -45,9 +43,10 @@ namespace TestProiectLicenta.Views
             cc.Text = _carRequest.Car.Cc;
         }
 
-        private async void AddImageButton(object sender, System.EventArgs e)
+        private async void AddImageButton(object sender, EventArgs e)
         {
-            var action = await DisplayActionSheet("How would you like to add the image?", "Cancel", null, "Take Photo", "Select Photo");
+            var action = await DisplayActionSheet("How would you like to add the image?", "Cancel", null, "Take Photo",
+                "Select Photo");
 
             switch (action)
             {
@@ -56,13 +55,9 @@ namespace TestProiectLicenta.Views
                     _carRequest = await App.ExternalAPIManager.HandleTakingPicture(_carRequest);
 
                     if (_carRequest.Success)
-                    {
                         image.Source = _carRequest.Car.CarImage;
-                    }
                     else
-                    {
                         await DisplayAlert("Error", _carRequest.Errors[0], "OK");
-                    }
 
                     break;
                 }
@@ -72,27 +67,22 @@ namespace TestProiectLicenta.Views
                     _carRequest = await App.ExternalAPIManager.HandleSelectionPicture(_carRequest);
 
                     if (_carRequest.Success)
-                    {
                         image.Source = _carRequest.Car.CarImage;
-                    }
                     else
-                    {
                         await DisplayAlert("Error", _carRequest.Errors[0], "OK");
-                    }
 
                     break;
                 }
             }
         }
 
-        private async void CancelButton(object sender, System.EventArgs e)
+        private async void CancelButton(object sender, EventArgs e)
         {
             await Navigation.PopAsync();
         }
 
-        private async void ContinueButton(object sender, System.EventArgs e)
+        private async void ContinueButton(object sender, EventArgs e)
         {
-
             _carRequest.Car.Make = make.Text;
             _carRequest.Car.Model = model.Text;
             _carRequest.Car.ModelYear = year.Text;
@@ -103,20 +93,17 @@ namespace TestProiectLicenta.Views
 
             if (_carRequest.Car.CarImage == null)
             {
-                var url = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + _carRequest.Car.Make + "+" + _carRequest.Car.Model + ("+" + _carRequest.Car.ModelYear) ?? null + ("+" + _carRequest.Car.Body) ?? null;
+                var url = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + _carRequest.Car.Make + "+" +
+                          _carRequest.Car.Model + "+" + _carRequest.Car.ModelYear ??
+                          null + "+" + _carRequest.Car.Body ?? null;
 
                 var reader = new XmlTextReader(url);
 
                 while (reader.Read())
-                {
                     if (reader.Value.Contains("http://"))
-                    {
                         //carImage.Source = ImageSource.FromUri(new Uri(reader.Value.Trim()));
                         _carRequest.Car.CarImage = reader.Value.Trim();
-                    }
-                    //Console.WriteLine(reader.Value.Trim());
-
-                }
+                //Console.WriteLine(reader.Value.Trim());
             }
 
             var userId = await SecureStorage.GetAsync("UserId");
@@ -148,31 +135,18 @@ namespace TestProiectLicenta.Views
 
         private static int CalculateTax(CarVinRequest car)
         {
-            if (Convert.ToInt32(car.Car.Cc) == 0)
-            {
-                return Convert.ToInt32(0);
-            }
+            if (Convert.ToInt32(car.Car.Cc) == 0) return Convert.ToInt32(0);
             if (Convert.ToInt32(car.Car.Cc) <= 1600)
-            {
                 return Convert.ToInt32(car.Car.Cc) / 200 * 8;
-            }
-            else if (Convert.ToInt32(car.Car.Cc) <= 2000)
-            {
+            if (Convert.ToInt32(car.Car.Cc) <= 2000)
                 return Convert.ToInt32(car.Car.Cc) / 200 * 18;
-            }
-            else if (Convert.ToInt32(car.Car.Cc) <= 2600)
-            {
+            if (Convert.ToInt32(car.Car.Cc) <= 2600)
                 return Convert.ToInt32(car.Car.Cc) / 200 * 72;
-            }
-            else if (Convert.ToInt32(car.Car.Cc) <= 3000)
-            {
+            if (Convert.ToInt32(car.Car.Cc) <= 3000)
                 return Convert.ToInt32(car.Car.Cc) / 200 * 144;
-            }
-            else if (Convert.ToInt32(car.Car.Cc) > 3001)
-            {
+            if (Convert.ToInt32(car.Car.Cc) > 3001)
                 return Convert.ToInt32(car.Car.Cc) / 200 * 290;
-            }
-            else return -1;
+            return -1;
         }
     }
 }

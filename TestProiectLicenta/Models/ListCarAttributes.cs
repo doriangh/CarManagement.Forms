@@ -1,5 +1,4 @@
-﻿using System;
-namespace TestProiectLicenta.Models
+﻿namespace TestProiectLicenta.Models
 {
     public class ListCarAttributes
     {

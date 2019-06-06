@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using TestProiectLicenta.Models;
 
 namespace TestProiectLicenta.Data.Interfaces

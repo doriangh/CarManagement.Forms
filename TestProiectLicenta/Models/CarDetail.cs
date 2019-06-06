@@ -11,7 +11,7 @@ namespace TestProiectLicenta.Models
         public bool WinterTires { get; set; }
         public DateTime OilChange { get; set; }
         public int InsuranceValue { get; set; }
-        public int RoadTaxValue { get; set;}
+        public int RoadTaxValue { get; set; }
         public int TaxValue { get; set; }
     }
 }

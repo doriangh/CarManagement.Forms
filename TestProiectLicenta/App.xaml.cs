@@ -4,14 +4,8 @@ using Xamarin.Forms;
 
 namespace TestProiectLicenta
 {
-    public partial class App : Application
+    public partial class App
     {
-        public static UserManager UserManager { get; set; }
-        public static CarManager CarManager { get; set; }
-        public static ExternalApiManager ExternalAPIManager { get; set; }
-        public static CarDetailManager CarDetailManager { get; set; }
-        public static GetCarPriceManager GetCarPriceManager { get; set; }
-
         public App()
         {
             InitializeComponent();
@@ -29,6 +23,12 @@ namespace TestProiectLicenta
 
             //MainPage = new NavigationPage(new CarListPage());
         }
+
+        public static UserManager UserManager { get; set; }
+        public static CarManager CarManager { get; set; }
+        public static ExternalApiManager ExternalAPIManager { get; set; }
+        public static CarDetailManager CarDetailManager { get; set; }
+        public static GetCarPriceManager GetCarPriceManager { get; set; }
 
         protected override void OnStart()
         {

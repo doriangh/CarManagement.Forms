@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
 

@@ -6,7 +6,6 @@ namespace TestProiectLicenta.Data.Interfaces
 {
     public interface IUserService
     {
-
         Task LogIn(string username, string password);
         Task<List<User>> GetUsersAsync();
         Task<User> GetUserById(int id);
@@ -15,6 +14,5 @@ namespace TestProiectLicenta.Data.Interfaces
         Task UpdateUser(User user);
         Task<User> GetUserByUsername(string username);
         Task<bool> CheckLogIn();
-
     }
 }

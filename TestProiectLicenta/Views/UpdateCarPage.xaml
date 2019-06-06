@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.UpdateCarPage">
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TestProiectLicenta.Views.UpdateCarPage">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Clicked="SaveDataButton"/>
+    </ContentPage.ToolbarItems>
+    
+    
     <ContentPage.Content>
         <StackLayout>
-          <TableView Intent="Form" BackgroundColor="White" x:Name="Table">
+            <TableView Intent="Form" BackgroundColor="White" x:Name="Table">
                 <TableRoot>
-                    
-                    <TableSection Title="What we know" x:Name="Weknow">
-                    </TableSection>
-                    
-                    <TableSection Title="What we don't know" x:Name="Wedont">
-                    </TableSection>
+
+                    <TableSection Title="What we know" x:Name="Weknow" />
+
+                    <TableSection Title="What we don't know" x:Name="Wedont" />
                 </TableRoot>
             </TableView>
         </StackLayout>
