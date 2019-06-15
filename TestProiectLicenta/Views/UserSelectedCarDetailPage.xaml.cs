@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Xml;
+using Plugin.Connectivity;
 using Plugin.DialogKit;
 using Rg.Plugins.Popup.Extensions;
 using TestProiectLicenta.Models;
@@ -8,7 +9,7 @@ using Xamarin.Forms;
 
 namespace TestProiectLicenta.Views
 {
-    public partial class UserSelectedCarDetailPage : CarouselPage
+    public partial class UserSelectedCarDetailPage : ContentPage
     {
         private readonly Car usercar;
 
@@ -18,36 +19,12 @@ namespace TestProiectLicenta.Views
             InitializeComponent();
             usercar = car;
 
-            //var user = new PexelsClient("563492ad6f9170000100000100b4df8ef66f4f218c4eb57e60ac194d");
-
-            //var results = user.SearchAsync(usercar.FullName + usercar.ModelYear).Result;
-
-            //CarDetailLayout.Children.Add(new Image { Source = ImageSource.FromUri(new Uri(results.Photos[0].Src.Original)) });
-
-            if (usercar.CarImage == null)
-            {
-                var url = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + usercar.Make + "+" +
-                          usercar.Model + "+" + usercar.ModelYear ?? null + "+" + usercar.Body ?? null;
-
-                var reader = new XmlTextReader(url);
-
-                while (reader.Read())
-                    if (reader.Value.Contains("http://"))
-                        carImage.Source = ImageSource.FromUri(new Uri(reader.Value.Trim()));
-                //Console.WriteLine(reader.Value.Trim());
-            }
-            else
-            {
-                carImage.Source = usercar.CarImage;
-            }
+            CarDetailLayout.BindingContext = usercar;
 
             if (usercar.Vin == null)
                 addVin.IsEnabled = true;
             else
-                addVin.IsEnabled = false;                   
-
-
-            CarDetailLayout.BindingContext = usercar;
+                addVin.IsEnabled = false;
         }
 
         protected override async void OnAppearing()
@@ -56,20 +33,38 @@ namespace TestProiectLicenta.Views
 
             if (usercar.CarPrice == null)
             {
-                var carPrice = await GetCarPrice(usercar);
-
-                if (carPrice.Errors != null && carPrice.Errors.Count > 0)
+                if (CrossConnectivity.Current.IsConnected)
                 {
-                    price.Text = "Could not estimate car price";
-                    price.TextColor = Color.Red;
+                    var carPrice = await GetCarPrice(usercar);
+
+                    if (carPrice.Errors != null && carPrice.Errors.Count > 0)
+                    {
+                        priceLoading.IsRunning = false;
+                        priceLoading.IsVisible = false;
+                        price.Text = "Could not estimate car price";
+                        price.TextColor = Color.Red;
+                    }
+                    else
+                    {
+                        priceLoading.IsRunning = false;
+                        priceLoading.IsVisible = false;
+                        price.Text = carPrice.Price.ToString() + " EUR";
+                    }
                 }
                 else
                 {
-                    price.Text = carPrice.Price.ToString() + "EUR";
+                    priceLoading.IsRunning = false;
+                    priceLoading.IsVisible = false;
+                    price.Text = "No internet connection";
+                    price.TextColor = Color.Red;
                 }
             }
             else
-                price.Text = usercar.CarPrice + "EUR"; 
+            {
+                priceLoading.IsRunning = false;
+                priceLoading.IsVisible = false;
+                price.Text = usercar.CarPrice + " EUR";
+            }
         }
 
         private async void EditCarButton(object sender, EventArgs e)
@@ -80,16 +75,6 @@ namespace TestProiectLicenta.Views
         private async void AddVinButton(object sender, EventArgs e)
         {
             await Navigation.PushPopupAsync(new VinPopupPage(usercar));
-
-            //var result = await CrossDiaglogKit.Current.GetInputTextAsync("Enter VIN", "Please enter VIN");
-
-            //if (result != null)
-            //{
-            //    usercar.Vin = result;
-
-            //    await App.CarManager.UpdateCar(usercar.Id, usercar);
-            //}
-
             BindingContext = usercar;
         }
 
@@ -103,14 +88,26 @@ namespace TestProiectLicenta.Views
             var priceDetails = new CarPriceRequest
             {
                 Model = car.Model.Replace(" ", ""),
-                Make = car.Make.Replace(" ",""),
+                Make = car.Make.Replace(" ", ""),
                 Cc = Convert.ToInt32(car.Cc),
                 Odometer = Convert.ToInt32(car.Odometer),
-                Year = Convert.ToInt32(car.ModelYear)
+                Year = Convert.ToInt32(car.ModelYear),
+                Power = Convert.ToInt32(car.Power),
+                Fuel = car.Fuel
             };
 
             var carPrice = await App.GetCarPriceManager.GetCarPrice(priceDetails);
             return carPrice;
+        }
+
+        async void CloseModalButton(object sender, System.EventArgs e)
+        {
+            await Navigation.PopModalAsync();
+        }
+
+        async void Sell_Car_Button(object sender, System.EventArgs e)
+        {
+            await Navigation.PushModalAsync(new NavigationPage(new SellDetailsModalPage(usercar)));
         }
     }
 }

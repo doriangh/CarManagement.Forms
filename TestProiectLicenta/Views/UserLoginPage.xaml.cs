@@ -27,13 +27,6 @@ namespace TestProiectLicenta.Views
             await CheckIfLoggedIn();
         }
 
-        private async void LoginButton(object sender, EventArgs e)
-        {
-            var loginForm = new LoginFormModalPage();
-
-            await Navigation.PushModalAsync(loginForm);
-        }
-
         private async void RegisterButton(object sender, EventArgs e)
         {
             var registerPage = new RegisterFormModalPage();

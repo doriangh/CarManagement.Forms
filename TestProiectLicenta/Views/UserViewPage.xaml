@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+            Title="User Details"
+            xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.UserViewPage"
+            xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin">
+    
+    <StackLayout>
+        <StackLayout Padding="0,20,0,0" >
+            <controls:CircleImage 
+                          Source="new_user_icon.png"
+                          HorizontalOptions="Center"
+                          BackgroundColor="Transparent"
+                          x:Name="topAvatar"
+                          Aspect="AspectFill">
+                    <controls:CircleImage.WidthRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android, iOS">80</On>
+                        </OnPlatform>
+                    </controls:CircleImage.WidthRequest>
+                    <controls:CircleImage.HeightRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android,iOS">80</On>
+                        </OnPlatform>
+                    </controls:CircleImage.HeightRequest>
+            </controls:CircleImage>    
+            <StackLayout HorizontalOptions="CenterAndExpand">
+                <Label Text="{Binding Name}" VerticalOptions="CenterAndExpand" HorizontalOptions="EndAndExpand" FontAttributes="Bold" FontSize="30" x:Name="username"/>
+    <!--            <Label Text="{Binding Address}" VerticalOptions="Center" HorizontalOptions="Center" x:Name="address"/>-->
+            </StackLayout>
+            
+        </StackLayout>
+        
+        <Label Text="{Binding Address}" HorizontalTextAlignment="Center" x:Name="address"/>
+        
+        <BoxView Color="Gray" HeightRequest="1"/>
+        
+        <TableView Intent="Settings" BackgroundColor="White" x:Name="Table">
+            <TableRoot>
+
+                <TableSection Title="Usage info">
+                    <EntryCell Label="Cars entered" Text="10" HorizontalTextAlignment="End" x:Name="carCount"/>
+                    <EntryCell Label="Total amount of cars in garage" Text="100.000" HorizontalTextAlignment="End" x:Name="carAmount"/>
+                </TableSection>
+                
+                <TableSection Title="Account Settings">
+                    <ViewCell>
+                        <StackLayout>
+                            <Button Text="Change Password"/>
+                            <Button Text="Change Image"/>
+                            <Button Text="Add Phone Number" Clicked="Add_Phone_Number_Button"/>
+                            <Button Text="Add address" Clicked="Add_Address_Button"/>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                
+                
+            </TableRoot>
+        </TableView>
+        
+        
+    </StackLayout>
+</ContentPage>

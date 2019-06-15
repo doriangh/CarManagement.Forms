@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Acr.UserDialogs;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
@@ -30,12 +31,12 @@ namespace TestProiectLicenta.Data.Services
 
         public async Task<CarVinRequest> GetCarBySelectingPicture()
         {
-            await CrossMedia.Current.Initialize();
-
             var request = new CarVinRequest
             {
                 Errors = new List<string>()
             };
+             
+            await CrossMedia.Current.Initialize();
 
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
@@ -46,21 +47,25 @@ namespace TestProiectLicenta.Data.Services
 
             var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions());
 
-            if (file == null)
+            using (UserDialogs.Instance.Loading("Finding out what car you have..."))
             {
-                request.Errors.Add("Couldn't read file");
-                request.Success = false;
-                return request;
+
+                if (file == null)
+                {
+                    request.Errors.Add("Couldn't read file");
+                    request.Success = false;
+                    return request;
+                }
+
+                var memoryStream = new MemoryStream();
+                file.GetStream().CopyTo(memoryStream);
+
+                request.Car = await GetRecognisedCar(memoryStream.ToArray());
+                request.Car.CarImage = UploadImageImgur(file);
+                request.Success = true;
+
+                File.Delete(file.Path);
             }
-
-            var memoryStream = new MemoryStream();
-            file.GetStream().CopyTo(memoryStream);
-
-            request.Car = await GetRecognisedCar(memoryStream.ToArray());
-            request.Car.CarImage = UploadImageImgur(file);
-            request.Success = true;
-
-            File.Delete(file.Path);
 
             return request;
         }
@@ -87,21 +92,24 @@ namespace TestProiectLicenta.Data.Services
                 Name = "test.jpg"
             });
 
-            if (file == null)
+            using (UserDialogs.Instance.Loading("Finding out what car you have..."))
             {
-                request.Errors.Add("Couldn't save/find file");
-                request.Success = false;
-                return request;
+                if (file == null)
+                {   
+                    request.Errors.Add("Couldn't save/find file");
+                    request.Success = false;
+                    return request;
+                }
+
+                var memoryStream = new MemoryStream();
+                file.GetStream().CopyTo(memoryStream);
+
+                request.Car = await GetRecognisedCar(memoryStream.ToArray());
+                request.Car.CarImage = UploadImageImgur(file);
+                request.Success = true;
+
+                File.Delete(file.Path);
             }
-
-            var memoryStream = new MemoryStream();
-            file.GetStream().CopyTo(memoryStream);
-
-            request.Car = await GetRecognisedCar(memoryStream.ToArray());
-            request.Car.CarImage = UploadImageImgur(file);
-            request.Success = true;
-
-            File.Delete(file.Path);
 
             return request;
         }
@@ -211,21 +219,25 @@ namespace TestProiectLicenta.Data.Services
                 Name = "test.jpg"
             });
 
-            if (file == null)
+            using (UserDialogs.Instance.Loading("Uploading image..."))
             {
-                request.Errors.Add("Couldn't save/find file");
-                request.Success = false;
-                return request;
+
+                if (file == null)
+                {
+                    request.Errors.Add("Couldn't save/find file");
+                    request.Success = false;
+                    return request;
+                }
+
+                var memoryStream = new MemoryStream();
+                file.GetStream().CopyTo(memoryStream);
+
+                //request.Car = await GetRecognisedCar(memoryStream.ToArray());
+                request.Car.CarImage = UploadImageImgur(file);
+                request.Success = true;
+
+                File.Delete(file.Path);
             }
-
-            var memoryStream = new MemoryStream();
-            file.GetStream().CopyTo(memoryStream);
-
-            //request.Car = await GetRecognisedCar(memoryStream.ToArray());
-            request.Car.CarImage = UploadImageImgur(file);
-            request.Success = true;
-
-            File.Delete(file.Path);
 
             return request;
         }
@@ -241,23 +253,26 @@ namespace TestProiectLicenta.Data.Services
                 return request;
             }
 
-            var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions());
-
-            if (file == null)
+            using (UserDialogs.Instance.Loading("Uploading image..."))
             {
-                request.Errors.Add("Couldn't read file");
-                request.Success = false;
-                return request;
+                var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions());
+
+                if (file == null)
+                {
+                    request.Errors.Add("Couldn't read file");
+                    request.Success = false;
+                    return request;
+                }
+
+                var memoryStream = new MemoryStream();
+                file.GetStream().CopyTo(memoryStream);
+
+                //request.Car = await GetRecognisedCar(memoryStream.ToArray());
+                request.Car.CarImage = UploadImageImgur(file);
+                request.Success = true;
+
+                File.Delete(file.Path);
             }
-
-            var memoryStream = new MemoryStream();
-            file.GetStream().CopyTo(memoryStream);
-
-            //request.Car = await GetRecognisedCar(memoryStream.ToArray());
-            request.Car.CarImage = UploadImageImgur(file);
-            request.Success = true;
-
-            File.Delete(file.Path);
 
             return request;
         }
@@ -316,7 +331,7 @@ namespace TestProiectLicenta.Data.Services
             return newCar;
         }
 
-        private static string UploadImageImgur(MediaFile file)
+        public string UploadImageImgur(MediaFile file)
         {
             using (var w = new WebClient())
             {
@@ -337,5 +352,6 @@ namespace TestProiectLicenta.Data.Services
         public void GetPictureForCar()
         {
         }
+
     }
 }

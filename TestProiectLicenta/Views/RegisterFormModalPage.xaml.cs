@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Xml.Linq;
+using Acr.UserDialogs;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using TestProiectLicenta.Data.Services;
@@ -74,23 +75,11 @@ namespace TestProiectLicenta.Views
 
             if (file == null) return;
 
-            await DisplayAlert("File Location", file.Path, "OK");
+            //await DisplayAlert("File Location", file.Path, "OK");
 
-            using (var w = new WebClient())
+            using (UserDialogs.Instance.Loading("Uploading Image"))
             {
-                w.Headers.Add("Authorization", "Client-ID " + imgurId);
-                var values = new NameValueCollection
-                {
-                    {"image", Convert.ToBase64String(File.ReadAllBytes(file.Path))}
-                };
-
-                var response = w.UploadValues("https://api.imgur.com/3/upload.xml", values);
-                var xml = XDocument.Load(new MemoryStream(response));
-                Console.WriteLine(xml);
-
-                await DisplayAlert("Link", "Link is here: " + xml.Root.Element("link").Value, "OK");
-
-                userPhoto = xml.Root.Element("link").Value;
+                userPhoto = App.ExternalAPIManager.UploadImageImgur(file); 
             }
 
             //var memoryStream = new MemoryStream();

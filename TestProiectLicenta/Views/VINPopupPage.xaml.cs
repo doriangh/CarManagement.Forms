@@ -10,12 +10,11 @@ namespace TestProiectLicenta.Views
     {
         Car _car;
 
-        public VinPopupPage(Car car)
+        public VinPopupPage(Car car = null)
         { 
             InitializeComponent();
 
             _car = car;
-
         }
 
         private async void Cancel_Button(object sender, EventArgs e)
@@ -25,14 +24,25 @@ namespace TestProiectLicenta.Views
 
         async void Handle_Clicked(object sender, System.EventArgs e)
         {
-            _car.Vin = vinEntry.Text;
-            var success = await App.CarManager.UpdateCar(_car.Id, _car);
-            if (success)
-                UserDialogs.Instance.Toast("Succesfully updated VIN");
+            if (_car != null)
+            {
+                _car.Vin = vinEntry.Text;
+                var success = await App.CarManager.UpdateCar(_car.Id, _car);
+                if (success)
+                    UserDialogs.Instance.Toast("Succesfully updated VIN");
+                else
+                    UserDialogs.Instance.Toast("Error updating");
+                await Navigation.PopPopupAsync();
+            }
             else
-                UserDialogs.Instance.Toast("Error updating");
-            await Navigation.PopPopupAsync();
-
+            {
+                var newCar = await App.ExternalAPIManager.GetCarByVin(vinEntry.Text);
+                if (newCar.Success)
+                {
+                    await Navigation.PushAsync(new FillExtraFormPage(newCar));
+                    await Navigation.PopPopupAsync();
+                }
+            }
         }
     }
 }

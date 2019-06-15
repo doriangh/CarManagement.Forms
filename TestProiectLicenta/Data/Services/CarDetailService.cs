@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MonkeyCache.FileStore;
 using Newtonsoft.Json;
+using Plugin.Connectivity;
 using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
 
@@ -36,19 +39,31 @@ namespace TestProiectLicenta.Data.Services
 
         public async Task<CarDetail> GetCarDetail(int carDetailId)
         {
-            var response = await _client.GetAsync(string.Format(Constants.webAPI + "CarDetails/{0}", carDetailId));
+            var url = string.Format(Constants.webAPI + "CarDetails/{0}", carDetailId);
+
+            if (!CrossConnectivity.Current.IsConnected && !Barrel.Current.IsExpired(url))
+                return Barrel.Current.Get<CarDetail>(key: url);
+
+            var response = await _client.GetAsync(url);
             if (!response.IsSuccessStatusCode) return null;
             var content = await response.Content.ReadAsStringAsync();
             var car = JsonConvert.DeserializeObject<CarDetail>(content);
+            Barrel.Current.Add(key: url, data: car, expireIn: TimeSpan.FromDays(1));
             return car;
         }
 
         public async Task<List<CarDetail>> GetCarDetails()
         {
+            var url = Constants.webAPI + "CarDetails";
+
+            if (!CrossConnectivity.Current.IsConnected && !Barrel.Current.IsExpired(url))
+                return Barrel.Current.Get<List<CarDetail>>(key: url);
+               
             var response = await _client.GetAsync(Constants.webAPI + "CarDetails");
             if (!response.IsSuccessStatusCode) return null;
             var content = await response.Content.ReadAsStringAsync();
             var cars = JsonConvert.DeserializeObject<List<CarDetail>>(content);
+            Barrel.Current.Add(key: url, data: cars, expireIn: TimeSpan.FromDays(1));
             return cars;
         }
 

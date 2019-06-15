@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Acr.UserDialogs;
 using Rg.Plugins.Popup.Extensions;
 using TestProiectLicenta.Models;
 using Xamarin.Forms;
@@ -14,6 +12,11 @@ namespace TestProiectLicenta.Views
             InitializeComponent();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+        }
+
         private async void Add_Manually_Button(object sender, System.EventArgs e)
         {
             await Navigation.PushAsync(new FillExtraFormPage());
@@ -21,12 +24,7 @@ namespace TestProiectLicenta.Views
 
         private async void Add_VIN_Button(object sender, System.EventArgs e)
         {
-            //await Navigation.PushPopupAsync(new VINPopupPage());
-
-            var result = await Plugin.DialogKit.CrossDiaglogKit.Current.GetInputTextAsync("Enter VIN", "Please enter VIN");
-
-            if (result != null)
-                ((Button) sender).Text = result;
+            await Navigation.PushPopupAsync(new VinPopupPage());
         }
 
 
@@ -34,10 +32,7 @@ namespace TestProiectLicenta.Views
         {
             CarVinRequest request; 
 
-            using (UserDialogs.Instance.Loading("Recognising Car\n Please wait!"))
-            {
-                request = await App.ExternalAPIManager.GetCarByTakingPictureAsync();
-            }
+            request = await App.ExternalAPIManager.GetCarByTakingPictureAsync();
 
             if (request.Success)
             {
@@ -64,10 +59,7 @@ namespace TestProiectLicenta.Views
         {
             CarVinRequest request;
 
-            using (UserDialogs.Instance.Loading("Recognising Car\n Please wait!"))
-            {
-                request = await App.ExternalAPIManager.GetCarBySelectingPicture();
-            }
+            request = await App.ExternalAPIManager.GetCarBySelectingPicture();
 
             if (request.Success)
             {

@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<CarouselPage
+<ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="TestProiectLicenta.Views.UserSelectedCarDetailPage">
-    <ContentPage>
-        <ContentPage.ToolbarItems>
-            <ToolbarItem Name="Add Vin" Icon="add_vin_toolbar" Activated="AddVinButton" x:Name="addVin"/>
-            <ToolbarItem Name="Edit" Icon="edit_car_toolbar" Activated="EditCarButton"/>
-            <ToolbarItem Name="Sell" Icon="sell_car_toolbar"/>
-            <ToolbarItem Name="Delete" Icon="delete_car_toolbar" IsDestructive="true" Activated="DeleteCarButton"/>
-        </ContentPage.ToolbarItems>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="Add Vin" Icon="add_vin_toolbar" Activated="AddVinButton" x:Name="addVin"/>
+        <ToolbarItem Name="Edit" Icon="edit_car_toolbar" Activated="EditCarButton"/>
+        <ToolbarItem Name="Sell" Icon="sell_car_toolbar" Activated="Sell_Car_Button"/>
+        <ToolbarItem Name="Delete" Icon="delete_car_toolbar" IsDestructive="true" Activated="DeleteCarButton"/>
+        <ToolbarItem Name="Close" Activated="CloseModalButton"/>
+    </ContentPage.ToolbarItems>
         
-        <ContentPage.Content>
-            <StackLayout x:Name="CarDetailLayout">
-
-                <Grid>
-
-                    <Image HeightRequest="200" HorizontalOptions="FillAndExpand" Aspect="AspectFill" x:Name="carImage" />
-                    <!--                    <ImageButton Source="back" HeightRequest="2" WidthRequest="2" />-->
-                    <!--<BoxView Color="Red" WidthRequest="414" HeightRequest="200" VerticalOptions="CenterAndExpand"/>-->
-                </Grid>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout x:Name="CarDetailLayout" Padding="0,20,0,0">
 
                 <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="40" HorizontalOptions="Center"
-                       HorizontalTextAlignment="Center" />
+                       HorizontalTextAlignment="Center"/>
 
-                <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" Padding="0,20,0,0">
                     <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
                     <Label Text="Car Details" TextColor="Gray" FontAttributes="Italic" />
                     <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center" HorizontalOptions="EndAndExpand" />
@@ -32,51 +26,127 @@
                 </StackLayout>
 
                 <StackLayout Padding="20">
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="Model Year:" FontAttributes="Bold" FontSize="15" />
-                        <Label Text="{Binding ModelYear, FallbackValue='Enter a model year'}"
-                               HorizontalOptions="EndAndExpand" FontSize="15" VerticalOptions="CenterAndExpand"
-                               VerticalTextAlignment="Center" />
-                    </StackLayout>
-
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="Runs On:" FontAttributes="Bold" FontSize="15" />
-                        <Label Text="{Binding Fuel, FallbackValue='Enter fuel'}" HorizontalOptions="EndAndExpand"
-                               FontSize="15" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" />
-                    </StackLayout>
-
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="Color:" FontAttributes="Bold" FontSize="15" />
-                        <Label Text="{Binding Color, FallbackValue='Enter color'}" HorizontalOptions="EndAndExpand"
-                               FontSize="15" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" />
-                    </StackLayout>
-
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="License Plate:" FontAttributes="Bold" FontSize="15" />
-                        <Label Text="{Binding License, FallbackValue='No License Number'}"
-                               HorizontalOptions="EndAndExpand" FontSize="15" VerticalOptions="CenterAndExpand"
-                               VerticalTextAlignment="Center" />
-                    </StackLayout>
-
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="VIN:" FontAttributes="Bold" FontSize="15" />
-                        <Label Text="{Binding Vin, FallbackValue='Enter a VIN'}" HorizontalOptions="EndAndExpand"
-                               FontSize="15" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" />
-                    </StackLayout>
-
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="Estimated Price:" FontAttributes="Bold" FontSize="15" />
-                        <StackLayout HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand">
-                            <Label HorizontalOptions="EndAndExpand" FontSize="15" VerticalOptions="CenterAndExpand"
-                                   VerticalTextAlignment="Center" x:Name="price"/>
+                    
+                    <Frame>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Model Year:" FontAttributes="Bold" FontSize="15" />
+                            <Label Text="{Binding ModelYear, FallbackValue='Enter a model year'}"
+                                   HorizontalOptions="EndAndExpand" FontSize="15" VerticalOptions="CenterAndExpand"
+                                   VerticalTextAlignment="Center" />
                         </StackLayout>
-                    </StackLayout>
+                    </Frame>
+                    
+                    <Frame>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Runs On:" FontAttributes="Bold" FontSize="15" />
+                            <Label Text="{Binding Fuel, FallbackValue='Enter fuel'}" HorizontalOptions="EndAndExpand"
+                                   FontSize="15" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" />
+                        </StackLayout>
+                    </Frame>
+                    
+                    <Frame>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Color:" FontAttributes="Bold" FontSize="15" />
+                            <Label Text="{Binding Color, FallbackValue='Enter color'}" HorizontalOptions="EndAndExpand"
+                                   FontSize="15" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" />
+                        </StackLayout>
+                    </Frame>
+                    
+                    <Frame>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="License Plate:" FontAttributes="Bold" FontSize="15" />
+                            <Label Text="{Binding License, FallbackValue='No License Number'}"
+                                   HorizontalOptions="EndAndExpand" FontSize="15" VerticalOptions="CenterAndExpand"
+                                   VerticalTextAlignment="Center" />
+                        </StackLayout>
+                    </Frame>
+                        
+                    <Frame>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="VIN:" FontAttributes="Bold" FontSize="15" />
+                            <Label Text="{Binding Vin, FallbackValue='Enter a VIN'}" HorizontalOptions="EndAndExpand"
+                                   FontSize="15" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" />
+                        </StackLayout>
+                    </Frame>
+                    
+                    <Frame OutlineColor="Green">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Estimated Price:" FontAttributes="Bold" FontSize="15" />
+                            <StackLayout HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand">
+                                <Label HorizontalOptions="EndAndExpand" FontSize="15" VerticalOptions="CenterAndExpand"
+                                       VerticalTextAlignment="Center" x:Name="price"/>
+                                <ActivityIndicator IsRunning="true" x:Name="priceLoading"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
                    
+                    <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                        <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
+                        <Label Text="More Details" TextColor="Gray" FontAttributes="Italic" />
+                        <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center" HorizontalOptions="EndAndExpand" />
+                    </StackLayout>
+                    
+                    <Frame>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Manufacturer:"/>
+                                <Label Text="{Binding Manufacturer}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Plant:"/>
+                                <Label Text="{Binding Plant}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Engine:"/>
+                                <Label Text="{Binding Engine}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Power:"/>
+                                <Label Text="{Binding Power}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Cubic Centimeters:"/>
+                                <Label Text="{Binding Cc}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Odometer:"/>
+                                <Label Text="{Binding Odometer}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Number of Gears:"/>
+                                <Label Text="{Binding NumberofGears}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Cylinders:"/>
+                                <Label Text="{Binding EngineCylinders}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Number of Seats:"/>
+                                <Label Text="{Binding NumberofSeats}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Number of Doors:"/>
+                                <Label Text="{Binding NumberofDoors}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center"/>
+                            <StackLayout Orientation="Horizontal" Padding="0,20,0,20">
+                                <Label Text="Body:"/>
+                                <Label Text="{Binding Body}" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
                 </StackLayout>
                 <BoxView Color="Gray" HeightRequest="1" VerticalOptions="Center" />
             </StackLayout>
-        </ContentPage.Content>
-
-    </ContentPage>
-
-</CarouselPage>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

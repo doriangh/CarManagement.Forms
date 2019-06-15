@@ -30,7 +30,7 @@ namespace TestProiectLicenta.Data.Services
             return _service.GetUserCars(userId);
         }
 
-        public Task AddCar(Car car)
+        public Task<bool> AddCar(Car car)
         {
             return _service.AddCar(car);
         }

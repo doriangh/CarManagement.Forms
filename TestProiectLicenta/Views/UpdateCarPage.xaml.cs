@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Acr.UserDialogs;
 using TestProiectLicenta.Models;
 using Xamarin.Forms;
@@ -14,12 +15,19 @@ namespace TestProiectLicenta.Views
         {
             _carId = id;
 
-            CreateForm();
+           
 
             InitializeComponent();
         }
 
-        private async void CreateForm()
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            await CreateForm();
+        }
+
+        private async Task CreateForm()
         {
             car = await App.CarManager.GetCar(_carId);
             var carDetails = await App.CarDetailManager.GetCarsDetail(_carId);

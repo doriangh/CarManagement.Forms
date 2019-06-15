@@ -1,46 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<TabbedPage
+<ContentPage
     BackgroundColor="White"
     Title="Marketplace"
     xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="TestProiectLicenta.Views.BuyCarPage">
+    
+    <StackLayout Spacing="0">
 
-    <ContentPage Title="Home" Icon="car_icon">
-        <StackLayout Spacing="0">
-
-            <ListView HorizontalOptions="FillAndExpand">
-                
-                <ListView.Header>
-                    <StackLayout>
-                        <SearchBar Placeholder="eg. Ford Focus 2010" />
-                    </StackLayout>
-                </ListView.Header>
-                
-                
-                <ListView.Footer>
-                    <StackLayout Orientation="Horizontal" BackgroundColor="lightgray">
-                        <Button Text="Add a car" HorizontalOptions="CenterAndExpand" />
+        <ListView HorizontalOptions="FillAndExpand" IsPullToRefreshEnabled="true" x:Name="list" Refreshing="Handle_Refreshing" RowHeight="200">
+            
+            <ListView.Header>
+                <Grid RowSpacing="0">
+                    <SearchBar Grid.Row="0" Placeholder="eg. Ford Focus 2010" x:Name="search" TextChanged="User_Search_Car_Button"/>
+                    <StackLayout Grid.Row="1" Orientation="Horizontal" BackgroundColor="lightgray">
+                        <Button Text="Add a car" HorizontalOptions="CenterAndExpand" Clicked="User_Add_Car_Button" />
                         <BoxView Color="Black" WidthRequest="1" />
                         <Button Text="Save search" HorizontalOptions="CenterAndExpand" />
                         <BoxView Color="Black" WidthRequest="1" />
-                        <Button Text="Filter" HorizontalOptions="CenterAndExpand" />
+                        <Button Text="Filter" HorizontalOptions="CenterAndExpand" Clicked="Filter_List_Button"/>
                         <BoxView Color="Black" WidthRequest="1" />
-                        <Button Text="Clear" HorizontalOptions="CenterAndExpand" />
+                        <Button Text="Clear" HorizontalOptions="CenterAndExpand" Clicked="Clear_Button" />
                     </StackLayout>
-                </ListView.Footer>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        
-                        
-                        <TextCell Text="fa"/>
-                        
-                        <!--<ViewCell>
-                            <Label Text="ads"/>
-                        </ViewCell>-->
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
-    </ContentPage>
-</TabbedPage>
+                </Grid>
+            </ListView.Header>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="Center">
+                                    <StackLayout Orientation="Horizontal" Padding="0,10,0,0">
+                                        <Label Text="{Binding FullName}" FontSize="Large"
+                                               HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start"/>
+                                        <Label Text="{Binding ModelYear}" FontSize="Small" TextColor="Gray" HorizontalOptions="StartAndExpand"
+                                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                        <Label Text="{Binding CarPrice, StringFormat='{0} EUR'}" FontSize="Medium" HorizontalOptions="End" TextColor="Green" VerticalOptions="Center"/>
+                                    </StackLayout>
+<!--                                    <Image Source="{Binding CarImage}"/>-->
+                                </StackLayout>
+                                
+                                <Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" HorizontalOptions="Center"
+                                       VerticalOptions="Center" Source="{Binding CarImage}" />
+                                       
+                            
+<!--                                <BoxView Color="Red" Grid.RowSpan="2" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"/>-->
+                                <StackLayout Grid.Column="1" Grid.Row="1" x:Name="first">
+                                    <Label Text="Odometer" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="{Binding Odometer}" TextColor="Red" FontSize="Medium" />
+                                    <Label Text="Cc" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="{Binding Cc}" TextColor="Green" FontSize="Medium" />
+                                </StackLayout>
+
+                                <StackLayout Grid.Column="2" Grid.Row="1" x:Name="second">
+                                    <Label Text="Fuel" FontSize="Micro" TextColor="gray" />
+                                    <Label Text="{Binding Fuel}" FontSize="Medium" />
+                                    <Label Text="Power" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="{Binding Power}" FontSize="Medium" />
+                                </StackLayout>
+
+                            </Grid>
+
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Delete" IsDestructive="true" />
+                            </ViewCell.ContextActions>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+            
+            <!--<ListView.Footer>
+                <StackLayout Orientation="Horizontal" BackgroundColor="lightgray">
+                    <Button Text="Add a car" HorizontalOptions="CenterAndExpand" />
+                    <BoxView Color="Black" WidthRequest="1" />
+                    <Button Text="Save search" HorizontalOptions="CenterAndExpand" />
+                    <BoxView Color="Black" WidthRequest="1" />
+                    <Button Text="Filter" HorizontalOptions="CenterAndExpand" />
+                    <BoxView Color="Black" WidthRequest="1" />
+                    <Button Text="Clear" HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+            </ListView.Footer>-->
+            
+        </ListView>
+    </StackLayout>
+
+</ContentPage>

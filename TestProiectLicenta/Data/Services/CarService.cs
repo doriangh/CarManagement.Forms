@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MonkeyCache.FileStore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Plugin.Connectivity;
 using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
@@ -32,29 +34,43 @@ namespace TestProiectLicenta.Data.Services
 
         public async Task<Car> GetCar(int carId)
         {
-            var response = await _client.GetAsync(string.Format(Constants.webAPI + "Cars/{0}", carId));
+            var url = string.Format(Constants.webAPI + "Cars/{0}", carId);
+
+            if (!CrossConnectivity.Current.IsConnected && !Barrel.Current.IsExpired(url))
+                return Barrel.Current.Get<Car>(key: url);
+                
+
+            var response = await _client.GetAsync(url);
             if (!response.IsSuccessStatusCode) return null;
             var content = await response.Content.ReadAsStringAsync();
             var car = JsonConvert.DeserializeObject<Car>(content);
+            Barrel.Current.Add(key: url, data: car, expireIn: TimeSpan.FromDays(1));
             return car;
         }
 
         public async Task<List<Car>> GetUserCars(int userId)
         {
-            var response = await _client.GetAsync(string.Format(Constants.webAPI + "Cars/?id={0}", userId));
+            var url = string.Format(Constants.webAPI + "Cars/?id={0}", userId);
+
+            if (!CrossConnectivity.Current.IsConnected && !Barrel.Current.IsExpired(url))
+                return Barrel.Current.Get<List<Car>>(key: url);
+                
+            var response = await _client.GetAsync(url);
             if (!response.IsSuccessStatusCode) return null;
             var content = await response.Content.ReadAsStringAsync();
             var cars = JsonConvert.DeserializeObject<List<Car>>(content);
+            Barrel.Current.Add(key: url, data: cars, expireIn: TimeSpan.FromDays(1));
             return cars;
         }
 
-        public async Task AddCar(Car car)
+        public async Task<bool> AddCar(Car car)
         {
             var json = JsonConvert.SerializeObject(car);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync(Constants.webAPI + "Cars", content);
-            if (response.IsSuccessStatusCode) Debug.WriteLine("Car successfully saved");
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
 
         public async Task DeleteCar(int id)

@@ -2,14 +2,44 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProiectLicenta.Views.FinishAddingFormPage">
-    <StackLayout Padding="20">
-        <StackLayout Orientation="Horizontal">
-            <Image Source="number3" WidthRequest="100" />
-            <Label Text="Verify data" VerticalOptions="Center" FontSize="50" HorizontalOptions="EndAndExpand" />
-        </StackLayout>
+    <ScrollView>
+        <StackLayout Padding="20">
+            <StackLayout Orientation="Horizontal">
+                <Image Source="number3" WidthRequest="100" />
+                <Label Text="Verify data" VerticalOptions="Center" FontSize="50" HorizontalOptions="EndAndExpand" />
+            </StackLayout>
+            
+            <StackLayout x:Name="data" HorizontalOptions="Center" >
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Label Text="Ford Focus" FontSize="Large" FontAttributes="Bold" x:Name="carname"/>
+                    <Label Text="2010" TextColor="Gray" FontSize="Micro" x:Name="year"/>
+                </StackLayout>
+                
+                <Image x:Name="carimage"/>
 
-        <Button Text="Submit" BackgroundColor="Green" TextColor="White" VerticalOptions="EndAndExpand"
-                Clicked="Submit_Button" />
-        <Button Text="Go Back" BackgroundColor="Red" TextColor="White" VerticalOptions="End" />
-    </StackLayout>
+                <Label Text="SUV" x:Name="type"/>
+                <Label Text="Diesel" x:Name="fuel"/>
+                <Label Text="Power" x:Name="power"/>
+
+            
+
+                <Label Text="1600 CC" x:Name="cc"/>
+                <Label Text="100000 KM" x:Name="odometer"/>
+                <Label Text="IS12DGO" x:Name="license"/>
+            
+
+                <Label Text="14 days of ITP left" x:Name="itp"/>
+                <Label Text="3 days of Rovignette left" x:Name="roadtax"/>
+            
+
+                <Label Text="100km left till oil change" x:Name="oilchange"/>
+                <Label Text="Winter tyres are on" x:Name="tyres"/>
+
+            </StackLayout>
+
+            <Button Text="Submit" BackgroundColor="Green" TextColor="White" VerticalOptions="EndAndExpand"
+                    Clicked="Submit_Button" />
+            <Button Text="Go Back" BackgroundColor="Red" TextColor="White" VerticalOptions="End" Clicked="Go_Back_Clicked" />
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

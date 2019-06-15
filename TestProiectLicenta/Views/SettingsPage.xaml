@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="Settings" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.SettingsPage">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="face_id" />
+                                <Label Text="FaceID Login?" />
+                            </StackLayout>
+                            <Switch IsToggled="false" Toggled="Handle_Toggled" x:Name="Fid" />
+                        </StackLayout>
+                        <Button Text="Sign Out" Clicked="SignOutButton" />
+                    </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

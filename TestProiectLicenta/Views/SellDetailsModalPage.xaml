@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    Title="Sell Details"
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.SellDetailsModalPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="0,25,0,0">
+                <Label Text="Preview:" FontSize="40" FontAttributes="Bold" HorizontalOptions="Center"/>
+                <Label Text="Please make sure your details are correct:" HorizontalOptions="Center"/>
+                <BoxView Color="Gray" HeightRequest="1" Margin="0,20,0,0"/>
+                
+                <StackLayout Padding="20">
+                    <Label Text="Title" TextColor="Gray"/>
+                    <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="40" HorizontalOptions="Center"/>
+                </StackLayout>
+                <StackLayout Padding="20">
+                    
+                    <cards:CoverFlowView x:Name="carousel"
+                                         IsCyclical="false"
+                                         PositionShiftValue="60">
+                       <!-- <ContentView>
+                            <Frame
+                                VerticalOptions="Center"
+                                HorizontalOptions="Fill"
+                                HeightRequest="290"
+                                Padding="0"
+                                HasShadow="false"
+                                IsClippedToBounds="true"
+                                CornerRadius="10">
+                                
+                            <Image Source="{Binding CarImage}" Aspect="AspectFill" x:Name="carImage"/>
+                                        
+                            </Frame>
+                        </ContentView>-->
+                        
+                        <cards:CoverFlowView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView Padding="40">
+                                    <Frame 
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Fill"
+                                        HeightRequest="290"
+                                        Padding="0"
+                                        HasShadow="false"
+                                        IsClippedToBounds="true"
+                                        CornerRadius="10">
+                                        
+                                        <Image Source="{Binding CarImage}" Aspect="AspectFill" x:Name="carImage"/>
+                                        
+                                    </Frame>
+                                </ContentView>
+                            </DataTemplate>
+                        </cards:CoverFlowView.ItemTemplate>
+                    </cards:CoverFlowView>
+                    
+                    
+                    <StackLayout Orientation="Horizontal">
+               <!--         <Button Text="Previous" HorizontalOptions="StartAndExpand" Clicked="Previous_Image_Button" x:Name="prev"/>-->
+                        <Button Text="Add New Image" HorizontalOptions="CenterAndExpand" Clicked="Add_New_Image_Button"/>
+<!--                        <Button Text="Next" HorizontalOptions="EndAndExpand" Clicked="Next_Image_Button" x:Name="next"/>-->
+                    </StackLayout>
+                    
+                </StackLayout>
+                <StackLayout Padding="20">
+                    <Label Text="Car Details" TextColor="Gray"/>
+                    <StackLayout Orientation="Horizontal">
+                        <StackLayout Padding="20,0,20,0">
+                            <Label Text="{Binding ModelYear,StringFormat='Model Year: {0}'}"/>
+                            <Label Text="{Binding Fuel, StringFormat='Fuel: {0}'}"/>
+                            <Label Text="{Binding Power, StringFormat='Power: {0}'}"/>
+                        </StackLayout>
+                        <StackLayout>
+                            <Label Text="{Binding Cc, StringFormat='Cubic Centimeters: {0}'}" HorizontalOptions="End"/>
+                            <Label Text="{Binding Odometer, StringFormat='Odometer: {0}'}" HorizontalOptions="End"/>
+                        </StackLayout>
+                    </StackLayout>
+                    <BoxView HeightRequest="1" Color="Gray"/>
+                </StackLayout>
+                <StackLayout Padding="20">
+                    <Label Text="Price" TextColor="Gray"/>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <Label Text="{Binding CarPrice, StringFormat='{0}EUR'}" VerticalOptions="Center"/>
+                        <Button Text="Change?" VerticalOptions="Center" Clicked="Change_Price"/>
+                    </StackLayout>
+                    <BoxView HeightRequest="1" Color="Gray"/>
+                </StackLayout>
+                <StackLayout Padding="20">
+                    <Label Text="Short Description" TextColor="Gray"/>
+                    <Editor Placeholder="Max 20 characters" BackgroundColor="lightgray" MaxLength="20" x:Name="description"/>
+                    <BoxView HeightRequest="1" Color="Gray"/>
+                </StackLayout>
+                <StackLayout Padding="20">
+                    <Label Text="Description" TextColor="Gray"/>
+                    <Editor Placeholder="Max 250 characters" BackgroundColor="lightgray" MaxLength="250" HeightRequest="200" x:Name="longDescription"/>
+                    <BoxView HeightRequest="1" Color="Gray"/>
+                </StackLayout>
+                <StackLayout Padding="20">
+                    <Label Text="User Details" TextColor="Gray"/>
+                    <StackLayout Padding="20,0,20,0">
+                        <Label Text="Your name" x:Name="name"/>
+                        <Label Text="Your phone number" x:Name="phone"/>
+                        <Label Text="Your address" x:Name="address"/>
+                    </StackLayout>
+                </StackLayout>
+                <Button Text="Submit" Clicked="Sell_Car_Button"/>
+                <Button Text="Cancel" Clicked="Cancel_Button"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

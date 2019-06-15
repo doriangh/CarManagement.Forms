@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Plugin.Media.Abstractions;
 using TestProiectLicenta.Models;
 
 namespace TestProiectLicenta.Data.Interfaces
@@ -10,5 +11,6 @@ namespace TestProiectLicenta.Data.Interfaces
         Task<CarVinRequest> GetCarByTakingPictureAsync();
         Task<CarVinRequest> HandleSelectionPicture(CarVinRequest request);
         Task<CarVinRequest> HandleTakingPicture(CarVinRequest request);
+        string UploadImageImgur(MediaFile file);
     }
 }

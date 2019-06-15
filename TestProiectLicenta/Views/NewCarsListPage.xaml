@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    xmlns:refresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh"
+    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.NewCarsListPage">
+    
+      <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+        
+            <ImageButton Source="delete_car_toolbar" Clicked="Handle_Refreshing" VerticalOptions="Center"/>
+            <StackLayout HorizontalOptions="CenterAndExpand">
+                <Label Text="Your Cars" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="EndAndExpand"/>
+            </StackLayout>
+             
+            <ImageButton Source="search_car" Clicked="Search_Car_Button" VerticalOptions="Center"/>
+           
+        </StackLayout>
+    </NavigationPage.TitleView>
+
+    <StackLayout>
+        <SearchBar Placeholder="eg. Ford Focus" IsVisible="false" Keyboard="Default" x:Name="searchBar" TextChanged="Search_Bar_Text" />
+        <cards:CarouselView x:Name="carousel">
+            <cards:CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <ContentView>
+                        <Frame
+                            Padding="0" 
+                            HasShadow="false"
+                            IsClippedToBounds="false"
+                            CornerRadius="10"
+                            BackgroundColor="White">
+                            <ScrollView>
+                                <StackLayout VerticalOptions="CenterAndExpand">
+                                    <Image Source="{Binding CarImage}" HeightRequest="250"/>
+                                    <StackLayout>
+                                        <Label Text="{Binding FullName}" FontSize="30" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                        <Label Text="{Binding ModelYear}" TextColor="Gray" HorizontalOptions="Center"/>
+                                    </StackLayout>
+                                    <BoxView Color="Gray" HeightRequest="1"/>
+                                    <StackLayout Padding="20">
+                                        
+                                        <StackLayout Padding="20" BackgroundColor="green">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="good"/>
+                                                <Label Text="Insurance" FontAttributes="Bold" VerticalOptions="Center"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="Insurance due:" />
+                                                <Label Text="30 days"/>
+                                            </StackLayout>
+                                        </StackLayout>
+                                        
+                                        <StackLayout BackgroundColor="Red" Padding="20">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="bad"/>
+                                                <Label Text="ITP" FontAttributes="Bold" VerticalOptions="Center"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="ITP due:"/>
+                                                <Label Text="{Binding RemainingItp, StringFormat='{0} days'}" />
+                                                <Label Text="ITP Value: " HorizontalOptions="EndAndExpand"/>
+                                                <Label Text="30"/>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    
+                                        <StackLayout BackgroundColor="Green" Padding="20">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="good"/>
+                                                <Label Text="Road Tax" FontAttributes="Bold" VerticalOptions="Center"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="Road tax due:"/>
+                                                <Label Text="{Binding RemainingRoadTax, StringFormat='{0} days'}" />
+                                            </StackLayout>
+                                        </StackLayout>
+                                        
+                                        <StackLayout BackgroundColor="Red" Padding="20">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="bad"/>
+                                                <Label Text="Oil Change" FontAttributes="Bold" VerticalOptions="Center"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="Next oil change due: "/>
+                                                <Label Text="{Binding RemainingOilChange, StringFormat='{0} KM'}" />
+                                            </StackLayout>
+                                        </StackLayout>
+                                        
+                                        <StackLayout Orientation="Horizontal" Padding="20" BackgroundColor="Red">
+                                            <Image Source="bad"/>
+                                            <Label Text="You should change your winter tires"/>
+                                        </StackLayout>
+                                    </StackLayout>
+                                        <BoxView HeightRequest="1" Color="Gray"/>
+                                        <Button Text="View more info" Clicked="MoreInfoClicked"/>
+                                </StackLayout>
+                            </ScrollView>
+                        </Frame>
+                    </ContentView>
+                </DataTemplate>
+            </cards:CarouselView.ItemTemplate>
+        </cards:CarouselView>
+    </StackLayout>
+</ContentPage>

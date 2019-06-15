@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MonkeyCache.FileStore;
 using Newtonsoft.Json;
+using Plugin.Connectivity;
 using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
@@ -65,11 +67,19 @@ namespace TestProiectLicenta.Data.Services
 
         public async Task<User> GetUserById(int id)
         {
+            var url = string.Format(Constants.webAPI + "Users/{0}", id);
+
+            if (!CrossConnectivity.Current.IsConnected && !Barrel.Current.IsExpired(url))
+                return Barrel.Current.Get<User>(key: url);
+
             var response = await _client.GetAsync(string.Format(Constants.webAPI + "Users/{0}", id));
 
             if (!response.IsSuccessStatusCode) return null;
             var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<User>(content);
+            var user = JsonConvert.DeserializeObject<User>(content);
+
+            Barrel.Current.Add(key: url, data: user, expireIn: TimeSpan.FromDays(1));
+            return user;
         }
 
         public async Task<User> GetUserByUsername(string username)
@@ -83,17 +93,20 @@ namespace TestProiectLicenta.Data.Services
 
         public async Task<List<User>> GetUsersAsync()
         {
-            var response = await _client.GetAsync(Constants.webAPI + "Users");
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var users = JsonConvert.DeserializeObject<List<User>>(content);
-                foreach (var user in users) Console.WriteLine(user.Name);
-                return users;
-            }
 
-            Console.WriteLine("Error");
-            return null;
+            var url = Constants.webAPI + "Users";
+
+            if (!CrossConnectivity.Current.IsConnected && !Barrel.Current.IsExpired(url))
+                return Barrel.Current.Get<List<User>>(key: url);
+
+            var response = await _client.GetAsync(Constants.webAPI + "Users");
+            if (!response.IsSuccessStatusCode) return null;
+            var content = await response.Content.ReadAsStringAsync();
+            var users = JsonConvert.DeserializeObject<List<User>>(content);
+
+            Barrel.Current.Add(key: url, data: users, expireIn: TimeSpan.FromDays(1));
+
+            return users;
         }
 
         public async Task UpdateUser(User user)
@@ -108,14 +121,21 @@ namespace TestProiectLicenta.Data.Services
 
         public async Task<bool> CheckLogIn()
         {
+
             var sessionKey = await SecureStorage.GetAsync("session_key");
             var userId = await SecureStorage.GetAsync("UserId");
 
             if (sessionKey == null || userId == null) return false;
 
+            var url = string.Format(Constants.webAPI + "Session?UserId={0}&Key={1}", userId, sessionKey);
+
+            if (!CrossConnectivity.Current.IsConnected && !Barrel.Current.IsExpired(url))
+                return Barrel.Current.Get<bool>(key: url);
+
             var response =
-                await _client.GetAsync(string.Format(Constants.webAPI + "Session?UserId={0}&Key={1}", userId,
-                    sessionKey));
+                await _client.GetAsync(url);
+
+            Barrel.Current.Add(key: url, data: response.IsSuccessStatusCode, expireIn: TimeSpan.FromDays(1));
 
             return response.IsSuccessStatusCode;
         }

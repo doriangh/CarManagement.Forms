@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
+                 x:Class="TestProiectLicenta.Views.AddUserAddressPage">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut="0.8"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="true" />
+    </pages:PopupPage.Animation>
+
+    <StackLayout BackgroundColor="White"
+                 VerticalOptions="Center"
+                 HorizontalOptions="Center"
+                 WidthRequest="200"
+                 Padding="20">
+        <Label HorizontalTextAlignment="Center" FontSize="32" Text="Enter your address" HorizontalOptions="Center"  Margin="0,0,0,50"/>
+        <StackLayout Orientation="Horizontal">
+            <Entry Placeholder="Street" x:Name="street" WidthRequest="110"/>
+            <Entry Placeholder="Number" Keyboard="Numeric" x:Name="number"/>
+        </StackLayout>
+        <Entry Placeholder="ZipCode" x:Name="zip"/>
+        <Entry Placeholder="City" x:Name="city"/>
+        <Entry Placeholder="Country" x:Name="country"/>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="Cancel" BackgroundColor="Transparent" BorderColor="Black" BorderWidth="0.4" TextColor="Black" WidthRequest="100" Clicked="Cancel_Button" />
+            <Button Text="Submit" BackgroundColor="Transparent" BorderColor="Green" BorderWidth="0.4" TextColor="Green" WidthRequest="100" Clicked="Add_Address_Button"/>
+        </StackLayout>
+
+        <Label HorizontalTextAlignment="Center" Font="11" TextColor="Gray" WidthRequest="190"
+               Text="
+Your location will be used to help others
+locate your car.
+       "
+               HorizontalOptions="Center" />
+    </StackLayout>
+</pages:PopupPage>

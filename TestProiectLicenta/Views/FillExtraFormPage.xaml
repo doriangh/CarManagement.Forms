@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TestProiectLicenta.Views.FillExtraFormPage" xmlns:system="clr-namespace:System;assembly=mscorlib">
+             x:Class="TestProiectLicenta.Views.FillExtraFormPage" xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20">
@@ -21,10 +22,10 @@
                     <TableView Intent="Form" BackgroundColor="White" x:Name="table">
                         <TableRoot>
 
-                            <TableSection Title="Car Info">
-                                <EntryCell Label="Make" Placeholder="eg. Ford" x:Name="make" />
-                                <EntryCell Label="Model" Placeholder="eg. Focus" x:Name="model" />
-                                <EntryCell Label="Year" Placeholder="eg. 2010" x:Name="year" />
+                            <TableSection Title="Car Info" x:Name="carInfo">
+                                <EntryCell Label="Make" Placeholder="eg. Ford" x:Name="make"/>
+                                <EntryCell Label="Model" Placeholder="eg. Focus" x:Name="model"/>
+                                <EntryCell Label="Year*" Placeholder="eg. 2010" x:Name="year" Keyboard="Numeric"/>
 
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="15,0,0,0">
@@ -52,14 +53,14 @@
                                                 <x:String>Diesel</x:String>
                                                 <x:String>Hybrid</x:String>
                                                 <x:String>Electric</x:String>
-                                                <x:String>GPL</x:String>
                                             </Picker.Items>
                                         </Picker>
                                     </StackLayout>
                                 </ViewCell>
+                                <EntryCell Label="Power" Placeholder="In HP" x:Name="power" Keyboard="Numeric"/>
+                                <EntryCell Label="CC" Placeholder="eg. 1600" x:Name="cc" Keyboard="Numeric" />
                                 <EntryCell Label="Odometer" Placeholder="eg. 100000KM" x:Name="odometer"
                                            Keyboard="Numeric" />
-                                <EntryCell Label="CC" Placeholder="eg. 1600" x:Name="cc" Keyboard="Numeric" />
                                 <EntryCell Label="License" Placeholder="eg. ISXXABC" x:Name="License" />
 
                             </TableSection>
@@ -69,7 +70,7 @@
                                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
                                         <Label Text="ITP Date" HorizontalOptions="StartAndExpand"
                                                VerticalOptions="Center" />
-                                        <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019"
+                                        <DatePicker MaximumDate="{x:Static system:DateTime.Today}"
                                                     Date="{x:Static system:DateTime.Today}" Format="D"
                                                     HorizontalOptions="CenterAndExpand" WidthRequest="240" x:Name="itp" />
                                     </StackLayout>
@@ -79,23 +80,50 @@
                                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
                                         <Label Text="Road Tax" HorizontalOptions="StartAndExpand"
                                                VerticalOptions="Center" />
-                                        <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019"
+                                        <DatePicker MaximumDate="{x:Static system:DateTime.Today}"
                                                     Date="{x:Static system:DateTime.Today}" Format="D"
                                                     HorizontalOptions="CenterAndExpand" WidthRequest="240"
                                                     x:Name="roadtax" />
                                     </StackLayout>
                                 </ViewCell>
-
+                                
                                 <ViewCell>
-                                    <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
-                                        <Label Text="Oil Change" HorizontalOptions="StartAndExpand"
-                                               VerticalOptions="Center" />
-                                        <DatePicker MaximumDate="01/01/2022" MinimumDate="04/27/2019"
-                                                    Date="{x:Static system:DateTime.Today}" Format="D"
-                                                    HorizontalOptions="CenterAndExpand" WidthRequest="240"
-                                                    x:Name="oilchange" />
+                                    <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="15,0,0,0">
+                                        <Label Text="Road Tax Period" />
+                                        <Picker Title="Select a type" SelectedItem="Select an item" x:Name="roadtaxDuration"
+                                                HorizontalOptions="CenterAndExpand" WidthRequest="240" SelectedIndex="0">
+                                            <Picker.Items>
+                                                <x:String>7 Days</x:String>
+                                                <x:String>30 Days</x:String>
+                                                <x:String>90 Days</x:String>
+                                                <x:String>A Year</x:String>
+                                            </Picker.Items>
+                                        </Picker>
                                     </StackLayout>
                                 </ViewCell>
+                                
+                                 <ViewCell>
+                                    <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="14,0,0,0">
+                                        <Label Text="Insurance" HorizontalOptions="StartAndExpand"
+                                               VerticalOptions="Center" />
+                                        <DatePicker MaximumDate="{x:Static system:DateTime.Today}" 
+                                                    Date="{x:Static system:DateTime.Today}" Format="D"
+                                                    HorizontalOptions="CenterAndExpand" WidthRequest="240"
+                                                    x:Name="insurancedate" />
+                                    </StackLayout>
+                                </ViewCell>
+                                
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" VerticalOptions="Center" Padding="15,0,0,0">
+                                        <Picker Title="Select a type" SelectedItem="Select an item" x:Name="insuranceDuration"
+                                                HorizontalOptions="CenterAndExpand" WidthRequest="240" SelectedIndex="0">
+                                            <Picker.Items>
+                                                <x:String>6 Months</x:String>
+                                                <x:String>12 Months</x:String>
+                                            </Picker.Items>
+                                        </Picker>
+                                    </StackLayout>
+                                </ViewCell> 
 
                                 <SwitchCell Text="Do you have winter tires on?" x:Name="wintertires" />
 

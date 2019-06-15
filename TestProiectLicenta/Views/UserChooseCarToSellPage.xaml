@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    Title="Choose a car"
+    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.UserChooseCarToSellPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView x:Name="list"
+                      RowHeight="200">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="Center">
+                                    <StackLayout Orientation="Horizontal" Padding="0,10,0,0">
+                                        <Label Text="{Binding FullName}" FontSize="Large"
+                                               HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start"/>
+                                        <Label Text="{Binding ModelYear}" FontSize="Small" TextColor="Gray" HorizontalOptions="StartAndExpand"
+                                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+<!--                                        <Label Text="{Binding CarPrice, StringFormat='{0} EUR'}" FontSize="Medium" HorizontalOptions="End" TextColor="Green" VerticalOptions="Center"/>-->
+                                    </StackLayout>
+<!--                                    <Image Source="{Binding CarImage}"/>-->
+                                </StackLayout>
+                                
+                                <Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" HorizontalOptions="Center"
+                                       VerticalOptions="Center" Source="{Binding CarImage}" />
+                                       
+                            
+<!--                                <BoxView Color="Red" Grid.RowSpan="2" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"/>-->
+                                <StackLayout Grid.Column="1" Grid.Row="1" x:Name="first">
+                                    <Label Text="Odometer" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="{Binding Odometer}" TextColor="Red" FontSize="Medium" />
+                                    <Label Text="Cc" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="{Binding Cc}" TextColor="Green" FontSize="Medium" />
+                                </StackLayout>
+
+                                <StackLayout Grid.Column="2" Grid.Row="1" x:Name="second">
+                                    <Label Text="Fuel" FontSize="Micro" TextColor="gray" />
+                                    <Label Text="{Binding Fuel}" FontSize="Medium" />
+                                    <Label Text="Power" FontSize="Micro" TextColor="Gray" />
+                                    <Label Text="{Binding Power}" FontSize="Medium" />
+                                </StackLayout>
+
+                            </Grid>
+
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Delete" IsDestructive="true" />
+                            </ViewCell.ContextActions>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

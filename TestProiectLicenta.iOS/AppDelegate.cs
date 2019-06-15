@@ -1,6 +1,7 @@
 ﻿using FFImageLoading.Forms.Platform;
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
+using PanCardView.iOS;
 using Plugin.InputKit.Platforms.iOS;
 using Refractored.XamForms.PullToRefresh.iOS;
 using Rg.Plugins.Popup;
@@ -32,8 +33,10 @@ namespace TestProiectLicenta.iOS
             CachedImageRenderer.Init();
 
             Forms.Init();
+            CardsViewRenderer.Preserve();
             RoundedBoxViewRenderer.Init();
             ImageCircleRenderer.Init();
+            Xamarin.FormsMaps.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

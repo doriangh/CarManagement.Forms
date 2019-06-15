@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Plugin.Media.Abstractions;
 using TestProiectLicenta.Data.Interfaces;
 using TestProiectLicenta.Models;
 
@@ -36,6 +37,11 @@ namespace TestProiectLicenta.Data.Services
         public Task<CarVinRequest> HandleTakingPicture(CarVinRequest request)
         {
             return _service.HandleTakingPicture(request);
+        }
+
+        public string UploadImageImgur(MediaFile file)
+        {
+            return _service.UploadImageImgur(file);
         }
     }
 }
