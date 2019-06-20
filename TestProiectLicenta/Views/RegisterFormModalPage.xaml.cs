@@ -14,8 +14,8 @@ namespace TestProiectLicenta.Views
 {
     public partial class RegisterFormModalPage : ContentPage
     {
-        private readonly string imgurId = "3998115b75eb6f3";
-        private string imgurSecret = "17246fb9c2e052d96773af41fdf5091b7ba71603";
+        private readonly string _imgurId = "3998115b75eb6f3";
+        private string _imgurSecret = "17246fb9c2e052d96773af41fdf5091b7ba71603";
         private UserService service = new UserService();
 
         private string userPhoto;
@@ -32,7 +32,7 @@ namespace TestProiectLicenta.Views
 
         private async void RegisterUser(object sender, EventArgs e)
         {
-            if (await App.UserManager.GetUserByUsername(user.Text) != null) return;
+            if (await App.UserManager.GetUserByUsername(user.Text, true) != null) return;
 
             var newUser = new User
             {

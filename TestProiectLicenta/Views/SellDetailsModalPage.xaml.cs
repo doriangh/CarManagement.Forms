@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Acr.UserDialogs;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -10,19 +9,20 @@ namespace TestProiectLicenta.Views
 {
     public partial class SellDetailsModalPage : ContentPage
     {
-        private Car car;
+        private readonly Car _car;
 
-        CarVinRequest _carRequest;
+        private CarVinRequest _carRequest;
         List<CarImages> images;
 
         public SellDetailsModalPage(Car usercar)
         {
             InitializeComponent();
-            car = usercar;
-            BindingContext = car;
+            _car = usercar;
+            BindingContext = _car;
+            Task.WhenAll(PopulateCoverFlow());
         }
 
-        protected async override void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
@@ -32,21 +32,25 @@ namespace TestProiectLicenta.Views
                 Errors = new List<string>()
             };
 
-            await PopulateCoverFlow();
         }
 
-        async Task PopulateCoverFlow()
+        private async Task PopulateCoverFlow(bool force = false)
         {
-            images = await App.CarImagesManager.GetCarsImages(car.Id);
+            images = await App.CarImagesManager.GetCarsImages(_car.Id, force);
             carousel.ItemsSource = images;
+            var userId = await SecureStorage.GetAsync("UserId");
+            var user = await App.UserManager.GetUserById(Convert.ToInt32(userId), force);
+            name.Text = user.Name;
+            phone.Text = user.PhoneNumber.ToString();
+            address.Text = user.Address;
         }
 
-        async void Cancel_Button(object sender, System.EventArgs e)
+        private async void Cancel_Button(object sender, System.EventArgs e)
         {
             await Navigation.PopModalAsync();
         }
 
-        async void Add_New_Image_Button(object sender, System.EventArgs e)
+        private async void Add_New_Image_Button(object sender, System.EventArgs e)
         {
             var action = await DisplayActionSheet("How would you like to add the image?", "Cancel", null, "Take Photo",
                "Select Photo");
@@ -61,13 +65,13 @@ namespace TestProiectLicenta.Views
                         {
                             var newImage = new CarImages
                             {
-                                carId = car.Id,
+                                carId = _car.Id,
                                 CarImage = _carRequest.Car.CarImage
                             };
 
                             //images.Add(_carRequest.Car.CarImage);
-                            App.CarImagesManager.AddCarImages(newImage);
-                            await PopulateCoverFlow();
+                            await App.CarImagesManager.AddCarImages(newImage);
+                            await PopulateCoverFlow(true);
                         }
                         else
                             await DisplayAlert("Error", _carRequest.Errors[0], "OK");
@@ -83,13 +87,13 @@ namespace TestProiectLicenta.Views
                         {
                             var newImage = new CarImages
                             {
-                                carId = car.Id,
+                                carId = _car.Id,
                                 CarImage = _carRequest.Car.CarImage
                             };
 
                             //carImages.Add(_carRequest.Car.CarImage);
-                            App.CarImagesManager.AddCarImages(newImage);
-                            await PopulateCoverFlow();
+                            await App.CarImagesManager.AddCarImages(newImage);
+                            await PopulateCoverFlow(true);
                         }
                         else
                             await DisplayAlert("Error", _carRequest.Errors[0], "OK");
@@ -99,38 +103,59 @@ namespace TestProiectLicenta.Views
             }
         }
 
-        async void Sell_Car_Button(object sender, System.EventArgs e)
+        private async void Sell_Car_Button(object sender, System.EventArgs e)
         {
             var userId = await SecureStorage.GetAsync("UserId");
-            var carDetailsId = await App.CarDetailManager.GetCarsDetail(car.Id);
+            var carDetailsId = await App.CarDetailManager.GetCarsDetail(_car.Id);
 
-            var soldCar = new CarsSold
+            if (_car.CarPrice != newPrice.Text && error.Text == "")
             {
-                UserId = Convert.ToInt32(userId),
-                CarId = car.Id,
-                CarDetails = carDetailsId.Id,
-                Details = description.Text,
-                LongDescription = longDescription.Text
-            };
+                _car.CarPrice = newPrice.Text;
+                await App.CarManager.UpdateCar(_car.Id, _car);
+            }
 
-            await App.CarsSoldManager.Add(soldCar);
-            await Navigation.PopToRootAsync();
-        }
-
-        async void Change_Price(object sender, System.EventArgs e)
-        {
-            int newPrice;
-
-            await UserDialogs.Instance.PromptAsync(new PromptConfig
+            if (_car.CarPrice == null)
             {
-                Placeholder = "Enter text",
-                Title = "Please enter a new value",
-                IsCancellable = true,
-                OnTextChanged = args =>
+                await DisplayAlert("No Price", "Please enter a price for car", "OK");
+            }
+            else
+            {
+
+                var soldCar = new CarsSold
                 {
-                    newPrice = Convert.ToInt32(args);
-                }
-            });
+                    UserId = Convert.ToInt32(userId),
+                    CarId = _car.Id,
+                    CarDetail = carDetailsId.Id,
+                    Details = description.Text,
+                    LongDescription = longDescription.Text
+                };
+
+
+                await App.CarsSoldManager.Add(soldCar);
+                await Navigation.PopToRootAsync();
+            }
         }
+
+        void Price_Changed(object sender, TextChangedEventArgs e)
+        {
+            if (_car.CarPrice != null)
+                recommended.Text = string.Format("Recommended sale price is: {0}", _car.CarPrice);
+
+            if (int.TryParse(e.NewTextValue, out int price))
+            {
+                if (price > 999999)
+                    error.Text = "Please enter a smaller value";
+                else if(price <= 0)
+                    error.Text = "Your can't be worth just that";
+                else
+                    error.Text = "";
+            }
+            else
+            {
+                error.Text = "Please enter a numeric value";
+            }
+        }
+
+  
     }
 }

@@ -210,6 +210,9 @@
     <PackageReference Include="Xamarin.Forms.Maps">
       <Version>4.0.0.497661</Version>
     </PackageReference>
+    <PackageReference Include="Xam.Plugins.Messaging">
+      <Version>5.2.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -297,5 +300,14 @@
     <BundleResource Include="Resources\good.png" />
     <BundleResource Include="Resources\good%402x.png" />
     <BundleResource Include="Resources\good%403x.png" />
+    <BundleResource Include="Resources\close_modal.png" />
+    <BundleResource Include="Resources\close_modal%402x.png" />
+    <BundleResource Include="Resources\close_modal%403x.png" />
+    <BundleResource Include="Resources\refresh_cars.png" />
+    <BundleResource Include="Resources\refresh_cars%402x.png" />
+    <BundleResource Include="Resources\refresh_cars%403x.png" />
+    <BundleResource Include="Resources\car_details.png" />
+    <BundleResource Include="Resources\car_details%402x.png" />
+    <BundleResource Include="Resources\car_details%403x.png" />
   </ItemGroup>
 </Project>

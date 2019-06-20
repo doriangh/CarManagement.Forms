@@ -18,13 +18,7 @@ namespace TestProiectLicenta.Views
         public UserLoginPage()
         {
             InitializeComponent();
-        }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-
-            await CheckIfLoggedIn();
+            Task.WhenAll(CheckIfLoggedIn());
         }
 
         private async void RegisterButton(object sender, EventArgs e)
@@ -87,38 +81,40 @@ namespace TestProiectLicenta.Views
 
         private async void UserLogInButton(object sender, EventArgs e)
         {
-            if (User.Text != null && Pass.Text != null)
+            using (UserDialogs.Instance.Loading("Logging you in.\nHold on"))
             {
-                var username = User.Text;
-                var password = Encrypt(Pass.Text);
-
-                _userObj = await App.UserManager.GetUserByUsername(username);
-
-                if (_userObj is null)
+                if (User.Text != null && Pass.Text != null)
                 {
-                    Message.Text = "User not found!";
-                    Message.IsVisible = true;
-                    return;
-                }
+                    var username = User.Text;
+                    var password = Encrypt(Pass.Text);
 
-                if (_userObj.Password == password)
-                {
-                    using (UserDialogs.Instance.Loading("Logging you in.\nHold on"))
+                    _userObj = await App.UserManager.GetUserByUsername(username);
+
+                    if (_userObj is null)
                     {
-                        await App.UserManager.LogIn(_userObj.Username, _userObj.Password);
+                        Message.Text = "User not found!";
+                        Message.IsVisible = true;
+                        return;
                     }
 
-                    await Navigation.PushAsync(new UserPageForm());
+                    if (_userObj.Password == password)
+                    {
+
+                        await App.UserManager.LogIn(_userObj.Username, _userObj.Password);
+
+
+                        await Navigation.PushAsync(new UserPageForm());
+                    }
+                    else
+                    {
+                        Message.Text = "Password incorrect";
+                        Message.IsVisible = true;
+                    }
                 }
                 else
                 {
-                    Message.Text = "Password incorrect";
                     Message.IsVisible = true;
                 }
-            }
-            else
-            {
-                Message.IsVisible = true;
             }
         }
 

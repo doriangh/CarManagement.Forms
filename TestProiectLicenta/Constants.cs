@@ -8,7 +8,7 @@ namespace TestProiectLicenta
         //public static readonly Uri webAPI = new Uri("https://7cc962a6.ngrok.io/api/");
         public static readonly Uri webAPI = new Uri("https://carmanagementapi.appspot.com/api/");
         //public static readonly Uri webAPI = new Uri("https://indux.serveo.net/api/");
-        //public static readonly Uri webAPI = new Uri("https://eb5bbf61.ngrok.io/api/");
+        //public static readonly Uri webAPI = new Uri("https://6a9449c4.ngrok.io/api/");
 
         public const string vinUrl = "https://api.vindecoder.eu/3.0";
         public const string vinApiKey = "b84e3871d2be";

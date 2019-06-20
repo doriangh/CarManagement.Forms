@@ -9,7 +9,7 @@
         public string RemainingRoadTax { get; set; }
         public string RemainingOilChange { get; set; }
         public string RoadTaxValue { get; set; }
-        public string InsuranceValue { get; set; }
+        public string RemainingInsurance { get; set; }
         public string TaxValue { get; set; }
         public string CarImage { get; set; }
         public int Price { get; set; }

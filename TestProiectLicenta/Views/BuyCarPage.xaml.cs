@@ -9,8 +9,8 @@ namespace TestProiectLicenta.Views
 {
     public partial class BuyCarPage : ContentPage
     {
-        private List<CarsSold> AllCarsSold;
-        private List<Car> ListItems;
+        private List<CarsSold> _allCarsSold;
+        private List<Car> _listItems;
 
         public BuyCarPage()
         {
@@ -20,38 +20,41 @@ namespace TestProiectLicenta.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-            using(UserDialogs.Instance.Loading("Loading store data..."))
-                await PopulateList();
+            await Task.WhenAll(PopulateList());
         }
 
-        private async Task PopulateList()
+        private async Task PopulateList(bool force = false)
         {
-            AllCarsSold = await App.CarsSoldManager.GetAll();
-            ListItems = new List<Car>();
+            _allCarsSold = await App.CarsSoldManager.GetAll(force);
+            _listItems = new List<Car>();
 
-            foreach (var carSold in AllCarsSold)
+            foreach (var carSold in _allCarsSold)
             {
-                var car = await App.CarManager.GetCar(carSold.CarId);
+                var car = await App.CarManager.GetCar(carSold.CarId, force);
+                //var image = await App.CarImagesManager.GetCarsImages(car.Id);
 
-                ListItems.Add(car);
+                _listItems.Add(car);
             }
 
-            list.ItemsSource = ListItems;
+            list.ItemsSource = _listItems;
         }
 
-        async void Handle_Refreshing(object sender, System.EventArgs e)
+        private async void Handle_Refreshing(object sender, System.EventArgs e)
         {
-            await PopulateList();
-            list.IsRefreshing = false;
+            using (UserDialogs.Instance.Loading("Loading store data..."))
+            {
+                //Task.WaitAll(PopulateList());
+                await Task.WhenAll(PopulateList(true));
+                list.IsRefreshing = false;
+            }
         }
 
-        async void User_Add_Car_Button(object sender, System.EventArgs e)
+        private async void User_Add_Car_Button(object sender, System.EventArgs e)
         {
             await Navigation.PushAsync(new UserChooseCarToSellPage());
         }
 
-        async void Filter_List_Button(object sender, System.EventArgs e)
+        private async void Filter_List_Button(object sender, System.EventArgs e)
         {
             var action = await DisplayActionSheet("How would you like to add the image?", "Cancel", null, "A -> Z",
                 "Z -> A", "By Power", "By Odometer");
@@ -59,34 +62,54 @@ namespace TestProiectLicenta.Views
             switch (action)
             {
                 case "A -> Z":
-                    list.ItemsSource = ListItems.OrderBy(c => c.FullName);
+                    list.ItemsSource = _listItems.OrderBy(c => c.FullName);
                     break;
                 case "Z -> A":
-                    list.ItemsSource = ListItems.OrderByDescending(c => c.FullName);
+                    list.ItemsSource = _listItems.OrderByDescending(c => c.FullName);
                     break;
                 case "By Power":
-                    list.ItemsSource = ListItems.OrderBy(c => c.Power);
+                    list.ItemsSource = _listItems.OrderBy(c => c.Power);
                     break;
                 case "By Odometer":
-                    list.ItemsSource = ListItems.OrderBy(c => c.Odometer);
+                    list.ItemsSource = _listItems.OrderBy(c => c.Odometer);
                     break;
             }
         }
 
-        void Clear_Button(object sender, System.EventArgs e)
+        private void Clear_Button(object sender, System.EventArgs e)
         {
-            list.ItemsSource = ListItems;
+            list.ItemsSource = _listItems;
             search.Text = null;
         }
 
-        void User_Search_Car_Button(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        private void User_Search_Car_Button(object sender, Xamarin.Forms.TextChangedEventArgs e)
         {
             if (string.IsNullOrEmpty(e.NewTextValue))
             {
-                list.ItemsSource = ListItems;
+                list.ItemsSource = _listItems;
             }
             else
-                list.ItemsSource = ListItems.Where(x => x.FullName.StartsWith(e.NewTextValue));
+                list.ItemsSource = _listItems.Where(x => x.FullName.StartsWith(e.NewTextValue));
+        }
+
+        async void ListItemTapped(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        {
+            if(e.SelectedItem == null) return;
+
+            var listItem = e.SelectedItem as Car;
+            
+            var car = await App.CarManager.GetCar(listItem.Id);
+
+            if (car != null) { 
+                    await Navigation.PushAsync(new CarSoldPage(listItem));
+                    ((ListView)sender).SelectedItem = null;
+            }
+            else
+            {
+                ((ListView)sender).SelectedItem = null;
+                await DisplayAlert("No internet connection", "It appears you have no internet connection.\nPlease try again.", "OK");
+
+            }
         }
     }
 }

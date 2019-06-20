@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
+                 x:Class="TestProiectLicenta.Views.AddPhoneNumberPage">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut="0.8"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="true" />
+    </pages:PopupPage.Animation>
+
+    <StackLayout BackgroundColor="White"
+                 VerticalOptions="Center"
+                 HorizontalOptions="Center"
+                 WidthRequest="200"
+                 Padding="20">
+        <Label HorizontalTextAlignment="Center" FontSize="32" Text="Enter your phone number" HorizontalOptions="Center"  Margin="0,0,0,50"/>
+
+        <Entry Placeholder="07..." x:Name="phoneNumber"/>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="Cancel" BackgroundColor="Transparent" BorderColor="Black" BorderWidth="0.4" TextColor="Black" WidthRequest="100" Clicked="Cancel_Clicked" />
+            <Button Text="Submit" BackgroundColor="Transparent" BorderColor="Green" BorderWidth="0.4" TextColor="Green" WidthRequest="100" Clicked="Confirm_Clicked"/>
+        </StackLayout>
+
+        <Label HorizontalTextAlignment="Center" Font="11" TextColor="Gray" WidthRequest="190"
+               Text="
+Your phone number will be use for buyers
+to be able to contact you
+       "
+               HorizontalOptions="Center" />
+    </StackLayout>
+</pages:PopupPage>

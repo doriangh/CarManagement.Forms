@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -8,7 +8,7 @@
         <ToolbarItem Name="Edit" Icon="edit_car_toolbar" Activated="EditCarButton"/>
         <ToolbarItem Name="Sell" Icon="sell_car_toolbar" Activated="Sell_Car_Button"/>
         <ToolbarItem Name="Delete" Icon="delete_car_toolbar" IsDestructive="true" Activated="DeleteCarButton"/>
-        <ToolbarItem Name="Close" Activated="CloseModalButton"/>
+        <ToolbarItem Name="Close" Icon="close_modal" Activated="CloseModalButton"/>
     </ContentPage.ToolbarItems>
         
     <ContentPage.Content>
@@ -73,9 +73,9 @@
                         <StackLayout Orientation="Horizontal">
                             <Label Text="Estimated Price:" FontAttributes="Bold" FontSize="15" />
                             <StackLayout HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand">
-                                <Label HorizontalOptions="EndAndExpand" FontSize="15" VerticalOptions="CenterAndExpand"
+                                <Label Text="{Binding CarPrice, StringFormat='{0}EUR'}" HorizontalOptions="EndAndExpand" FontSize="15" VerticalOptions="CenterAndExpand"
                                        VerticalTextAlignment="Center" x:Name="price"/>
-                                <ActivityIndicator IsRunning="true" x:Name="priceLoading"/>
+                                <ActivityIndicator IsVisible="false" IsRunning="false" x:Name="priceLoading"/>
                             </StackLayout>
                         </StackLayout>
                     </Frame>

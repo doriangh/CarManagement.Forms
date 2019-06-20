@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +20,7 @@ namespace TestProiectLicenta.Views
 
             using (UserDialogs.Instance.Loading("Getting user details.\nHold on"))
             {
-                InitCars();
+                Task.WhenAll(InitCars());
             }
         }
 
@@ -72,7 +71,7 @@ namespace TestProiectLicenta.Views
             }
         }
 
-        private ListCarAttributes ConvertToListAttribute(Car car, CarDetail carDetail)
+        private static ListCarAttributes ConvertToListAttribute(Car car, CarDetail carDetail)
         {
             //var carDetail = await App.CarDetailManager.GetCarsDetail(car.Id);
             //var carDetail = carDetails.Find(x => x.CarId == car.Id);
@@ -88,7 +87,6 @@ namespace TestProiectLicenta.Views
                 RemainingRoadTax = (carDetail.RoadTax.AddYears(1) - carDetail.RoadTax).Days.ToString(),
                 RemainingOilChange = carDetail.OilChange.ToString(),
                 RoadTaxValue = carDetail.RoadTaxValue.ToString(),
-                InsuranceValue = carDetail.InsuranceValue.ToString(),
                 CarImage = car.CarImage,
                 TaxValue = carDetail.TaxValue == -1 ? "Nu putem calcula" : carDetail.TaxValue.ToString()
             };

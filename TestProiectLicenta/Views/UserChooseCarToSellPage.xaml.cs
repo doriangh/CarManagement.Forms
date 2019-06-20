@@ -14,18 +14,13 @@ namespace TestProiectLicenta.Views
         public UserChooseCarToSellPage()
         {
             InitializeComponent();
-        }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            await PopulateList();
+            Task.WhenAll(PopulateList());
         }
 
         private async Task PopulateList()
         {
             var userId = await SecureStorage.GetAsync("UserId");
-            ListItems = await App.CarManager.GetUserCars(Convert.ToInt32(userId));
+            ListItems = await App.CarManager.GetUserCars(Convert.ToInt32(userId), true);
 
             list.ItemsSource = ListItems;
         }

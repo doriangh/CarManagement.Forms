@@ -123,6 +123,9 @@
     <PackageReference Include="Xamarin.Forms.Maps">
       <Version>4.0.0.497661</Version>
     </PackageReference>
+    <PackageReference Include="Xam.Plugins.Messaging">
+      <Version>5.2.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -191,6 +194,63 @@
     <AndroidResource Include="Resources\drawable-xhdpi\settings_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\user_icon.png" />
     <AndroidResource Include="Resources\drawable\camera_icon.png" />
+    <AndroidResource Include="Resources\drawable\add_image.png" />
+    <AndroidResource Include="Resources\drawable\add_vin_toolbar.png" />
+    <AndroidResource Include="Resources\drawable\back.png" />
+    <AndroidResource Include="Resources\drawable\bad.png" />
+    <AndroidResource Include="Resources\drawable\delete_car_toolbar.png" />
+    <AndroidResource Include="Resources\drawable\edit_car_toolbar.png" />
+    <AndroidResource Include="Resources\drawable\face_id.png" />
+    <AndroidResource Include="Resources\drawable\good.png" />
+    <AndroidResource Include="Resources\drawable\icon_add.png" />
+    <AndroidResource Include="Resources\drawable\market.png" />
+    <AndroidResource Include="Resources\drawable\new_add_icon.png" />
+    <AndroidResource Include="Resources\drawable\new_car_icon.png" />
+    <AndroidResource Include="Resources\drawable\new_settings_icon.png" />
+    <AndroidResource Include="Resources\drawable\new_user_icon.png" />
+    <AndroidResource Include="Resources\drawable\number1.png" />
+    <AndroidResource Include="Resources\drawable\pistons.png" />
+    <AndroidResource Include="Resources\drawable\search_car.png" />
+    <AndroidResource Include="Resources\drawable\sell_car_toolbar.png" />
+    <AndroidResource Include="Resources\drawable\step1.png" />
+    <AndroidResource Include="Resources\drawable\step2.png" />
+    <AndroidResource Include="Resources\drawable\step3.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_vin_toolbar.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\bad.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\delete_car_toolbar.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\edit_car_toolbar.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\good.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\market.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\new_add_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\new_car_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\new_settings_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\new_user_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\search_car.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\sell_car_toolbar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\add_vin_toolbar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\bad.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\delete_car_toolbar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\edit_car_toolbar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\good.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\market.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\new_add_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\new_car_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\new_settings_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\new_user_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\search_car.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\sell_car_toolbar.png" />
+    <AndroidResource Include="Resources\xml\file_paths.xml" />
+    <AndroidResource Include="Resources\drawable\number2.png" />
+    <AndroidResource Include="Resources\drawable\number3.png" />
+    <AndroidResource Include="Resources\drawable\close_modal.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\close_modal.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\close_modal.png" />
+    <AndroidResource Include="Resources\drawable\refresh_cars.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\refresh_cars.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\refresh_cars.png" />
+    <AndroidResource Include="Resources\drawable\car_details.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\car_details.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\car_details.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
@@ -198,6 +258,7 @@
     <Folder Include="Resources\drawable-xhdpi\" />
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
+    <Folder Include="Resources\xml\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestProiectLicenta\TestProiectLicenta.csproj">

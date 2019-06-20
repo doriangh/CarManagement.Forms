@@ -33,6 +33,9 @@ namespace TestProiectLicenta.Views
 
             if (usercar.CarPrice == null)
             {
+                priceLoading.IsRunning = true;
+                priceLoading.IsVisible = true;
+
                 if (CrossConnectivity.Current.IsConnected)
                 {
                     var carPrice = await GetCarPrice(usercar);
@@ -58,12 +61,6 @@ namespace TestProiectLicenta.Views
                     price.Text = "No internet connection";
                     price.TextColor = Color.Red;
                 }
-            }
-            else
-            {
-                priceLoading.IsRunning = false;
-                priceLoading.IsVisible = false;
-                price.Text = usercar.CarPrice + " EUR";
             }
         }
 

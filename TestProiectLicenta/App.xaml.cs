@@ -77,6 +77,10 @@ namespace TestProiectLicenta
                     MainPage = new NavigationPage(new UserPageForm());
                 }
             }
+            else
+            {
+                MainPage = new NavigationPage(new UserLoginPage());
+            }
         
         }
 

@@ -30,9 +30,7 @@ namespace TestProiectLicenta.Views
 
         private async void TakePictureButtonPressed(object sender, EventArgs e)
         {
-            CarVinRequest request; 
-
-            request = await App.ExternalAPIManager.GetCarByTakingPictureAsync();
+            var request = await App.ExternalAPIManager.GetCarByTakingPictureAsync();
 
             if (request.Success)
             {
@@ -57,9 +55,7 @@ namespace TestProiectLicenta.Views
 
         private async void AddPictureButtonPressed(object sender, EventArgs e)
         {
-            CarVinRequest request;
-
-            request = await App.ExternalAPIManager.GetCarBySelectingPicture();
+            var request = await App.ExternalAPIManager.GetCarBySelectingPicture();
 
             if (request.Success)
             {

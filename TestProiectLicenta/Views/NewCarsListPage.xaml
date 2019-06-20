@@ -1,24 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
+    Title="Your Cars"
     xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
     xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
     xmlns:refresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh"
     xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.NewCarsListPage">
     
-      <NavigationPage.TitleView>
-        <StackLayout Orientation="Horizontal">
-        
-            <ImageButton Source="delete_car_toolbar" Clicked="Handle_Refreshing" VerticalOptions="Center"/>
-            <StackLayout HorizontalOptions="CenterAndExpand">
-                <Label Text="Your Cars" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="EndAndExpand"/>
-            </StackLayout>
-             
-            <ImageButton Source="search_car" Clicked="Search_Car_Button" VerticalOptions="Center"/>
-           
-        </StackLayout>
-    </NavigationPage.TitleView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="refresh_cars" Text="Refresh" Clicked="Handle_Refreshing" />
+        <ToolbarItem Icon="search_car" Text="Search" Clicked="Search_Car_Button"/>
+        <ToolbarItem Icon="car_details" Text="Details" Clicked="MoreInfoClicked"/>
+    </ContentPage.ToolbarItems>
 
     <StackLayout>
+        <ActivityIndicator IsVisible="false" IsRunning="false" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" x:Name="loading"/>
+        <Label Text="No cars. Add a car for it to appear here!" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="false" x:Name="nocars"/>
         <SearchBar Placeholder="eg. Ford Focus" IsVisible="false" Keyboard="Default" x:Name="searchBar" TextChanged="Search_Bar_Text" />
         <cards:CarouselView x:Name="carousel">
             <cards:CarouselView.ItemTemplate>
@@ -40,59 +36,59 @@
                                     <BoxView Color="Gray" HeightRequest="1"/>
                                     <StackLayout Padding="20">
                                         
-                                        <StackLayout Padding="20" BackgroundColor="green">
+                                        <StackLayout Padding="20" BackgroundColor="{Binding InsuranceColor}">
                                             <StackLayout Orientation="Horizontal">
-                                                <Image Source="good"/>
+                                                <Image Source="{Binding InsuranceIcon}"/>
                                                 <Label Text="Insurance" FontAttributes="Bold" VerticalOptions="Center"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Insurance due:" />
-                                                <Label Text="30 days"/>
+                                                <Label Text="{Binding RemainingInsurance, StringFormat='{0} days'}" x:Name="insuranceRemaining"/>
                                             </StackLayout>
                                         </StackLayout>
                                         
-                                        <StackLayout BackgroundColor="Red" Padding="20">
+                                        <StackLayout BackgroundColor="{Binding ITPColor}" Padding="20">
                                             <StackLayout Orientation="Horizontal">
-                                                <Image Source="bad"/>
+                                                <Image Source="{Binding ITPIcon}"/>
                                                 <Label Text="ITP" FontAttributes="Bold" VerticalOptions="Center"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="ITP due:"/>
-                                                <Label Text="{Binding RemainingItp, StringFormat='{0} days'}" />
+                                                <Label Text="{Binding RemainingItp, StringFormat='{0} days'}" x:Name="itpRemaining"/>
                                                 <Label Text="ITP Value: " HorizontalOptions="EndAndExpand"/>
                                                 <Label Text="30"/>
                                             </StackLayout>
                                         </StackLayout>
                                     
-                                        <StackLayout BackgroundColor="Green" Padding="20">
+                                        <StackLayout BackgroundColor="{Binding RoadTaxColor}" Padding="20">
                                             <StackLayout Orientation="Horizontal">
-                                                <Image Source="good"/>
+                                                <Image Source="{Binding RoadTaxIcon}"/>
                                                 <Label Text="Road Tax" FontAttributes="Bold" VerticalOptions="Center"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Road tax due:"/>
-                                                <Label Text="{Binding RemainingRoadTax, StringFormat='{0} days'}" />
+                                                <Label Text="{Binding RemainingRoadTax, StringFormat='{0} days'}" x:Name="roadTax"/>
                                             </StackLayout>
                                         </StackLayout>
                                         
-                                        <StackLayout BackgroundColor="Red" Padding="20">
+                                        <StackLayout BackgroundColor="{Binding OilColor}" Padding="20">
                                             <StackLayout Orientation="Horizontal">
-                                                <Image Source="bad"/>
+                                                <Image Source="{Binding OilIcon}"/>
                                                 <Label Text="Oil Change" FontAttributes="Bold" VerticalOptions="Center"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Next oil change due: "/>
-                                                <Label Text="{Binding RemainingOilChange, StringFormat='{0} KM'}" />
+                                                <Label Text="{Binding RemainingOilChange, StringFormat='{0} KM'}" x:Name="oilChange"/>
                                             </StackLayout>
                                         </StackLayout>
                                         
-                                        <StackLayout Orientation="Horizontal" Padding="20" BackgroundColor="Red">
+                                        <StackLayout Orientation="Horizontal" Padding="20" BackgroundColor="#F44336">
                                             <Image Source="bad"/>
                                             <Label Text="You should change your winter tires"/>
                                         </StackLayout>
                                     </StackLayout>
-                                        <BoxView HeightRequest="1" Color="Gray"/>
-                                        <Button Text="View more info" Clicked="MoreInfoClicked"/>
+                                      <!--  <BoxView HeightRequest="1" Color="Gray"/>
+                                        <Button Text="View more info" Clicked="MoreInfoClicked" BackgroundColor="Transparent"/>-->
                                 </StackLayout>
                             </ScrollView>
                         </Frame>

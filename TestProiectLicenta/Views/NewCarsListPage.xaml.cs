@@ -18,100 +18,141 @@ namespace TestProiectLicenta.Views
         public NewCarsListPage()
         {
             InitializeComponent();
-
-            CallPopulate();
-
-        }
-
-        private async void CallPopulate()
-        {
-            UserDialogs.Instance.ShowLoading("Loading");
-            await PopulateView();
-            UserDialogs.Instance.HideLoading();
+            Task.WhenAll(PopulateView());
         }
 
         private async Task PopulateView()
         {
-            using (UserDialogs.Instance.Loading("Getting user details.\nHold on"))
-            {
-                _userId = await SecureStorage.GetAsync("UserId");
+            loading.IsVisible = true;
+            loading.IsRunning = true;
 
-                await RefreshCars();
+            _userId = await SecureStorage.GetAsync("UserId");
+
+            await Task.WhenAll(RefreshCars());
+
+            loading.IsVisible = false;
+            loading.IsRunning = false;
+        }
+
+        private int GetRoadTaxPeriod(CarDetail carDetail)
+        {
+            switch (carDetail.RoadTaxPeriod)
+            {
+                case 0:
+                    return 7;
+                case 1:
+                    return 30;
+                case 2:
+                    return 90;
+                case 3:
+                    return 365;
+                default:
+                    return 0;
             }
         }
 
-        private ListCarAttributes ConvertToListAttribute(Car car, CarDetail carDetail)
+        private int CalculateITPPeriod(Car car)
+        {
+            if (Convert.ToInt32(car.ModelYear) == DateTime.Today.Year){
+                return 3;
+            }
+            else if (Convert.ToInt32(car.ModelYear) > DateTime.Today.AddYears(-12).Year)
+            {
+                return 2;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
+        private async Task<ListCarAttributes> ConvertToListAttribute(Car car, CarDetail carDetail)
         {
             if (carDetail == null) return null;
+
+            var carImage = await App.CarImagesManager.GetCarsImages(car.Id);
 
             var carAttributes = new ListCarAttributes
             {
                 CarId = car.Id,
                 FullName = car.FullName,
                 ModelYear = car.ModelYear,
-                RemainingItp = (carDetail.Itp.AddYears(2) - DateTime.Today).Days.ToString(),
-                RemainingRoadTax = (carDetail.RoadTax.AddYears(1) - DateTime.Today).Days.ToString(),
+                RemainingItp = (carDetail.Itp.AddYears(CalculateITPPeriod(car)) - DateTime.Today).Days.ToString(),
+                RemainingRoadTax = (carDetail.RoadTax.AddDays(carDetail.RoadTaxPeriod) - DateTime.Today).Days.ToString(),
                 RemainingOilChange = carDetail.OilChange.ToString(),
                 RoadTaxValue = carDetail.RoadTaxValue.ToString(),
-                InsuranceValue = carDetail.InsuranceValue.ToString(),
-                CarImage = car.CarImage,
+                RemainingInsurance = (carDetail.Insurance.AddMonths(carDetail.InsurancePeriod) - DateTime.Today).Days.ToString(),
+                CarImage = car.CarImage ?? (carImage?[0].CarImage),
                 TaxValue = carDetail.TaxValue == -1 ? "Nu putem calcula" : carDetail.TaxValue.ToString(),
                 Price = carDetail.Price
             };
 
             if ((carDetail.Itp.AddYears(2) - DateTime.Today).Days > 0){
-                carAttributes.ITPColor = Color.Green.ToString();
+                carAttributes.ITPColor = "#8BC34A";
                 carAttributes.ITPIcon = "good";
             }
             else
             {
-                carAttributes.ITPColor = Color.Red.ToString();
-                carAttributes.ITPColor = "bad";
+                carAttributes.ITPColor = "#F44336";
+                carAttributes.ITPIcon = "bad";
             }
 
-            if ((carDetail.RoadTax.AddYears(1) - DateTime.Today).Days > 0)
+            if ((carDetail.RoadTax.AddDays(carDetail.RoadTaxPeriod) - DateTime.Today).Days > 0)
             {
-                carAttributes.RoadTaxColor = Color.Green.ToString();
+                carAttributes.RoadTaxColor = "#8BC34A";
                 carAttributes.RoadTaxIcon = "good";
             }
             else
             {
-                carAttributes.RoadTaxColor = Color.Red.ToString();
+                carAttributes.RoadTaxColor = "#F44336";
                 carAttributes.RoadTaxIcon = "bad";
             }
 
             if (carDetail.OilChange > 0)
             {
-                carAttributes.OilColor = Color.Green.ToString();
+                carAttributes.OilColor = "#8BC34A";
                 carAttributes.OilIcon = "good";
             }
             else
             {
-                carAttributes.OilColor = Color.Red.ToString();
+                carAttributes.OilColor = "#F44336";
                 carAttributes.OilIcon = "bad";
             }
+            if (Convert.ToInt32(carAttributes.RemainingInsurance) > 0)
+            {
+                carAttributes.InsuranceColor = "#8BC34A";
+                carAttributes.InsuranceIcon = "good";
+            }
+            else
+            {
+                carAttributes.InsuranceColor = "#F44336";
+                carAttributes.InsuranceIcon = "bad";
+            }
+
 
             return carAttributes;
 
         }
 
-        private async Task RefreshCars()
+        private async Task RefreshCars(bool force = false)
         {
-            var lst = await App.CarManager.GetUserCars(Convert.ToInt32(_userId));
-            var lstDetail = await App.CarDetailManager.GetCarDetails();
+            var lst = await App.CarManager.GetUserCars(Convert.ToInt32(_userId), force);
+            var lstDetail = await App.CarDetailManager.GetCarDetails(force);
 
             _listData = new ObservableCollection<ListCarAttributes>();
 
             foreach (var car in lst)
             {
                 var carDetail = lstDetail.Find(x => x.CarId == car.Id);
-                var listItem = ConvertToListAttribute(car, carDetail);
+                var listItem = await ConvertToListAttribute(car, carDetail);
 
                 if (listItem != null) _listData.Add(listItem);
             }
 
             if (_listData.Count > 0)
-                carousel.ItemsSource = _listData;
+                carousel.ItemsSource = _listData.OrderByDescending(c => c.CarId);
+            else
+                nocars.IsVisible = true;
         }
 
         private async void AddCarsWhenNoCarsButton(object sender, EventArgs e)
@@ -165,11 +206,11 @@ namespace TestProiectLicenta.Views
         private async void Handle_Refreshing(object sender, EventArgs e)
         { 
 
-            await RefreshCars();
+            await RefreshCars(true);
 
         }
 
-        void Search_Bar_Text(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        private void Search_Bar_Text(object sender, Xamarin.Forms.TextChangedEventArgs e)
         {
             if (string.IsNullOrEmpty(e.NewTextValue))
             {
@@ -180,7 +221,7 @@ namespace TestProiectLicenta.Views
                 carousel.ItemsSource = _listData.Where(x => x.FullName.StartsWith(e.NewTextValue));
         }
 
-        void Search_Car_Button(object sender, System.EventArgs e)
+        private void Search_Car_Button(object sender, System.EventArgs e)
         {
             var searchbar = new SearchBar
             {
@@ -202,7 +243,7 @@ namespace TestProiectLicenta.Views
             }
         }
 
-        async void MoreInfoClicked(object sender, System.EventArgs e)
+        private async void MoreInfoClicked(object sender, System.EventArgs e)
         {
             using (UserDialogs.Instance.Loading("Please wait..."))
             {

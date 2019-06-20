@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProiectLicenta.Views.FinishAddingFormPage">
     <ScrollView>
         <StackLayout Padding="20">
             <StackLayout Orientation="Horizontal">
-                <Image Source="number3" WidthRequest="100" />
+                <Image Source="number3" WidthRequest="100"/>
                 <Label Text="Verify data" VerticalOptions="Center" FontSize="50" HorizontalOptions="EndAndExpand" />
             </StackLayout>
             
@@ -15,26 +15,61 @@
                     <Label Text="2010" TextColor="Gray" FontSize="Micro" x:Name="year"/>
                 </StackLayout>
                 
-                <Image x:Name="carimage"/>
-
-                <Label Text="SUV" x:Name="type"/>
-                <Label Text="Diesel" x:Name="fuel"/>
-                <Label Text="Power" x:Name="power"/>
-
-            
-
-                <Label Text="1600 CC" x:Name="cc"/>
-                <Label Text="100000 KM" x:Name="odometer"/>
-                <Label Text="IS12DGO" x:Name="license"/>
-            
-
-                <Label Text="14 days of ITP left" x:Name="itp"/>
-                <Label Text="3 days of Rovignette left" x:Name="roadtax"/>
-            
-
-                <Label Text="100km left till oil change" x:Name="oilchange"/>
-                <Label Text="Winter tyres are on" x:Name="tyres"/>
-
+                <Image x:Name="carimage" HeightRequest="200"/>
+                
+                <Frame Padding="20">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Car Type: " FontAttributes="Bold"/>
+                            <Label x:Name="type"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Fuel: " FontAttributes="Bold"/>
+                            <Label x:Name="fuel"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Power: " FontAttributes="Bold"/>
+                            <Label x:Name="power"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Cc: " FontAttributes="Bold"/>
+                            <Label x:Name="cc"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Odometer: " FontAttributes="Bold"/>
+                            <Label x:Name="odometer"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="License: " FontAttributes="Bold"/>
+                            <Label x:Name="license"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="ITP Left: " FontAttributes="Bold"/>
+                            <Label x:Name="itp"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Road Tax left: " FontAttributes="Bold"/>
+                            <Label x:Name="roadtax"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="KM Until Oil Change: " FontAttributes="Bold"/>
+                            <Label x:Name="oilchange"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Your winter tyres are: " FontAttributes="Bold"/>
+                            <Label x:Name="tyres"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
             </StackLayout>
 
             <Button Text="Submit" BackgroundColor="Green" TextColor="White" VerticalOptions="EndAndExpand"

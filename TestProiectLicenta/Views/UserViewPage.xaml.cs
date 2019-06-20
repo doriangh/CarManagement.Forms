@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Rg.Plugins.Popup.Extensions;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
@@ -16,18 +17,16 @@ namespace TestProiectLicenta.Views
         public UserViewPage()
         {
             InitializeComponent();
+            Task.WhenAll(PopulateUserPage());
         }
 
-        protected override async void OnAppearing()
+        private async Task PopulateUserPage(bool force = false)
         {
-            base.OnAppearing();
-
             var userId = await SecureStorage.GetAsync("UserId");
-            user = await App.UserManager.GetUserById(Convert.ToInt32(userId));
-            cars = await App.CarManager.GetUserCars(Convert.ToInt32(userId));
+            user = await App.UserManager.GetUserById(Convert.ToInt32(userId), force);
+            cars = await App.CarManager.GetUserCars(Convert.ToInt32(userId), force);
 
             topAvatar.Source = user.UserImage;
-            //username.Text = user.Name;
 
             BindingContext = user;
 
@@ -39,7 +38,6 @@ namespace TestProiectLicenta.Views
                 value += Convert.ToInt32(car.CarPrice);
 
             carAmount.Text = value.ToString();
-
         }
 
         async void Add_Address_Button(object sender, System.EventArgs e)
@@ -65,17 +63,20 @@ namespace TestProiectLicenta.Views
                 {
                     user.Address = addresslist[0];
                     await App.UserManager.UpdateUser(user);
+                    await PopulateUserPage(true);
                 }
                 else
                 {
                     await Navigation.PushPopupAsync(new AddUserAddressPage(user));
+                    await PopulateUserPage(true);
                 }
             }
         }
 
-        void Add_Phone_Number_Button(object sender, System.EventArgs e)
+        async void Add_Phone_Number_Button(object sender, System.EventArgs e)
         {
-            
+            await Navigation.PushPopupAsync(new AddPhoneNumberPage(user));
+            await PopulateUserPage(true);
         }
     }
 }

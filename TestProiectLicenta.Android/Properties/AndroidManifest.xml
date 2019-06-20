@@ -1,7 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.testproiectlicenta">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="27" />
-	<application android:label="TestProiectLicenta.Android"></application>
+	<application android:label="TestProiectLicenta.Android">
+		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.companyname.testproiectlicenta.fileprovider" android:grantUriPermissions="true" android:exported="false">
+			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
+		</provider>
+		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyA03XsYyfqR9Os7GEtoqW48giPM1vnuWrg" />
+	</application>
 	<uses-permission android:name="android.permission.USE_FINGERPRINT" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

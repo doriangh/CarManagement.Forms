@@ -10,9 +10,9 @@ namespace TestProiectLicenta.Views
 {
     public partial class FillExtraFormPage : ContentPage
     {
-        private List<string> errors = new List<string>();
+        private List<string> _errors = new List<string>();
         private CarVinRequest _carRequest;
-        private CarImages newCarImage;
+        private CarImages _newCarImage;
 
         public FillExtraFormPage(CarVinRequest car = null)
         {
@@ -65,7 +65,7 @@ namespace TestProiectLicenta.Views
                         {
                             UserDialogs.Instance.Toast("Done!");
                             image.Source = _carRequest.Car.CarImage;
-                            newCarImage = new CarImages
+                            _newCarImage = new CarImages
                             {
                                 CarImage = _carRequest.Car.CarImage
                             };
@@ -84,7 +84,7 @@ namespace TestProiectLicenta.Views
                         {
                             UserDialogs.Instance.Toast("Done!");
                             image.Source = _carRequest.Car.CarImage;
-                            newCarImage = new CarImages
+                            _newCarImage = new CarImages
                             {
                                 CarImage = _carRequest.Car.CarImage
                             };
@@ -104,9 +104,12 @@ namespace TestProiectLicenta.Views
 
         private async void ContinueButton(object sender, EventArgs e)
         {
-            _carRequest.Car.Make = make.Text;
-            _carRequest.Car.Model = model.Text;
-            _carRequest.Car.ModelYear = year.Text;
+            if (make.Text == null) { make.Text = "Please enter a car make"; make.LabelColor = Color.Red; }
+            else _carRequest.Car.Make = make.Text;
+            if (model.Text == null) { model.Text = "Please enter a car model"; model.LabelColor = Color.Red; }
+            else _carRequest.Car.Model = model.Text;
+            if (year.Text == null) { year.Text = "Please enter a car model year"; model.LabelColor = Color.Red; }
+            else _carRequest.Car.ModelYear = year.Text;
             _carRequest.Car.Body = type.SelectedItem.ToString();
             _carRequest.Car.Fuel = fuel.SelectedItem.ToString();
             _carRequest.Car.Power = power.Text;
@@ -114,8 +117,10 @@ namespace TestProiectLicenta.Views
             _carRequest.Car.Cc = cc.Text;
             _carRequest.Car.License = License.Text;
 
+            if (_newCarImage == null)
+                _newCarImage = new CarImages();
 
-            if (newCarImage.CarImage == null)
+            if (_newCarImage.CarImage == null)
             {
                 var url = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + _carRequest.Car.Make + "+" +
                           _carRequest.Car.Model + "+" + _carRequest.Car.ModelYear ??
@@ -126,38 +131,57 @@ namespace TestProiectLicenta.Views
                 while (reader.Read())
                     if (reader.Value.Contains("http://"))
                         //carImage.Source = ImageSource.FromUri(new Uri(reader.Value.Trim()));
-                        newCarImage.CarImage = reader.Value.Trim();
+                        _newCarImage.CarImage = reader.Value.Trim();
                 //Console.WriteLine(reader.Value.Trim());
             }
+
+            _carRequest.Car.CarImage = _newCarImage.CarImage;
 
             var carDetail = new CarDetail
             {
                 Itp = itp.Date,
                 RoadTax = roadtax.Date,
+                RoadTaxPeriod = CalculateRoadTaxPeriod(),
+                RoadTaxValue = CalculateRoadTax(),
+                Insurance = insurancedate.Date,
+                InsurancePeriod = CalculateInsurancePeriod(),
                 OilChange = Convert.ToInt32(odometer.Text) % 15000,
                 WinterTires = wintertires.On,
-                TaxValue = CalculateTax(_carRequest)
+                TaxValue = CalculateTax(_carRequest),
+
             };
 
 
-            await Navigation.PushAsync(new FinishAddingFormPage(_carRequest.Car, carDetail, newCarImage));
+            await Navigation.PushAsync(new FinishAddingFormPage(_carRequest.Car, carDetail, _newCarImage));
+        }
 
-            //var userId = await SecureStorage.GetAsync("UserId");
+        private int CalculateRoadTaxPeriod()
+        {
+            switch (roadtaxDuration.SelectedIndex)
+            {
+                case 0:
+                    return 7;
+                case 1:
+                    return 30;
+                case 2:
+                    return 90;
+                default:
+                    return 365;
 
-            //_carRequest.Car.UserId = Convert.ToInt32(userId);
+            }
+        }
 
-            //await App.CarManager.AddCar(_carRequest.Car);
-
-            //var cars = await App.CarManager.GetUserCars(Convert.ToInt32(userId));
-
-            //var carId = cars[cars.Count - 1].Id;
-
-           
-
-            //await App.CarDetailManager.AddCarDetail(carDetail);
-
-
-            //await Navigation.PushAsync(new UserPageForm());
+        private int CalculateInsurancePeriod()
+        {
+            switch (insuranceDuration.SelectedIndex)
+            {
+                case 0:
+                    return 6;
+                case 1:
+                    return 12;
+                default:
+                    return 0;
+            }
         }
 
         private static int CalculateTax(CarVinRequest car)
@@ -176,21 +200,40 @@ namespace TestProiectLicenta.Views
             return -1;
         }
 
+        private int CalculateRoadTax()
+        {
+            switch (roadtaxDuration.SelectedIndex)
+            {
+                case 0:
+                    return 3;
+                case 1:
+                    return 7;
+                case 2:
+                    return 13;
+                case 3:
+                    return 28;
+                default:
+                    return 0;
+            }
+        }
+
         private void Handle_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedItem = fuel.SelectedItem.ToString();
+            if (fuel.SelectedIndex >= 0)
+            {
+                var selectedItem = fuel.Items[fuel.SelectedIndex];
 
-            if (selectedItem == "Electric")
-            {
-                cc.IsEnabled = false;
-                cc.Placeholder = "Not available on electric cars";
-                power.Placeholder = "in KwH";
-            }
-            else
-            {
-                cc.IsEnabled = true;
-                cc.Placeholder = "eg. 1600";
-                power.Placeholder = "in HP";
+                if (selectedItem == "Electric")
+                {
+                    cc.IsEnabled = false;
+                    cc.Placeholder = "Not available on electric cars";
+                    _carRequest.Car.Cc = "0";
+                }
+                else
+                {
+                    cc.IsEnabled = true;
+                    cc.Placeholder = "eg. 1600";
+                }
             }
         }
     }

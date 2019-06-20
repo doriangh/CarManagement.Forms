@@ -9,56 +9,48 @@ namespace TestProiectLicenta.Views
     public partial class UpdateCarPage : ContentPage
     {
         private readonly int _carId;
-        private Car car;
+        private Car _car;
 
         public UpdateCarPage(int id)
         {
             _carId = id;
-
-           
-
             InitializeComponent();
+
+            Task.WhenAll(CreateForm(true));
         }
 
-        protected override async void OnAppearing()
+        private async Task CreateForm(bool force = false)
         {
-            base.OnAppearing();
-
-            await CreateForm();
-        }
-
-        private async Task CreateForm()
-        {
-            car = await App.CarManager.GetCar(_carId);
-            var carDetails = await App.CarDetailManager.GetCarsDetail(_carId);
+            _car = await App.CarManager.GetCar(_carId, force);
+            var carDetails = await App.CarDetailManager.GetCarsDetail(_carId, force);
 
 
             var entryList = new List<EntryCell>
             {
-                new EntryCell { Label = "Make", Text = car.Make, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Manufacturer", Text = car.Manufacturer, Placeholder = "Eg. Ford Werke AG" },
-                new EntryCell { Label = "Plant", Text = car.Plant, Placeholder = "Eg. Koeln-Niehl" },
-                new EntryCell { Label = "Model Year", Text = car.ModelYear, Placeholder = "Eg. 2010" },
-                new EntryCell { Label = "Sequential Number", Text = car.SequentialNumber, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Model", Text = car.Model, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Body", Text = car.Body, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Drive", Text = car.Drive, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Number of Seats", Text = car.NumberofSeats, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Number of Doors", Text = car.NumberofDoors, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Steering", Text = car.Steering, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Engine Displacement", Text = car.EngineDisplacement, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Engine Cylinders", Text = car.EngineCylinders, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Number of Gears", Text = car.NumberofGears, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Engine", Text = car.Engine, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Date of Manufacture", Text = car.Made, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Color", Text = car.Color, Placeholder = "Eg. Blue" },
-                new EntryCell { Label = "Fuel", Text = car.Fuel, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Cubic Centimeters", Text = car.Cc, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Power", Text = car.Power, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Emissions", Text = car.Emissions, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "Odometer", Text = car.Odometer, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "VIN", Text = car.Vin, Placeholder = "Eg. Ford" },
-                new EntryCell { Label = "License Plate", Text = car.License, Placeholder = "Eg. Ford" }
+                new EntryCell { Label = "Make", Text = _car.Make, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Manufacturer", Text = _car.Manufacturer, Placeholder = "Eg. Ford Werke AG" },
+                new EntryCell { Label = "Plant", Text = _car.Plant, Placeholder = "Eg. Koeln-Niehl" },
+                new EntryCell { Label = "Model Year", Text = _car.ModelYear, Placeholder = "Eg. 2010" },
+                new EntryCell { Label = "Sequential Number", Text = _car.SequentialNumber, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Model", Text = _car.Model, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Body", Text = _car.Body, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Drive", Text = _car.Drive, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Number of Seats", Text = _car.NumberofSeats, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Number of Doors", Text = _car.NumberofDoors, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Steering", Text = _car.Steering, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Engine Displacement", Text = _car.EngineDisplacement, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Engine Cylinders", Text = _car.EngineCylinders, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Number of Gears", Text = _car.NumberofGears, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Engine", Text = _car.Engine, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Date of Manufacture", Text = _car.Made, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Color", Text = _car.Color, Placeholder = "Eg. Blue" },
+                new EntryCell { Label = "Fuel", Text = _car.Fuel, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Cubic Centimeters", Text = _car.Cc, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Power", Text = _car.Power, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Emissions", Text = _car.Emissions, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "Odometer", Text = _car.Odometer, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "VIN", Text = _car.Vin, Placeholder = "Eg. Ford" },
+                new EntryCell { Label = "License Plate", Text = _car.License, Placeholder = "Eg. Ford" }
             };
 
             foreach (var item in entryList)
@@ -70,7 +62,7 @@ namespace TestProiectLicenta.Views
             }
         }
 
-        async void SaveDataButton(object sender, System.EventArgs e)
+        private async void SaveDataButton(object sender, System.EventArgs e)
         {
             var updatedCar = new Car();
 
@@ -168,7 +160,7 @@ namespace TestProiectLicenta.Views
                 }
             }
 
-            updatedCar.CarImage = car.CarImage;
+            updatedCar.CarImage = _car.CarImage;
 
             var success = await App.CarManager.UpdateCar(_carId, updatedCar);
             if (success)

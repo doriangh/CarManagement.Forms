@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
     Title="Sell Details"
     xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
@@ -16,25 +16,15 @@
                     <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="40" HorizontalOptions="Center"/>
                 </StackLayout>
                 <StackLayout Padding="20">
-                    
+                    <BoxView Color="Gray" HeightRequest="1" Margin="0,20,0,0"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Car Images" TextColor="Gray"/>
+                    </StackLayout>
                     <cards:CoverFlowView x:Name="carousel"
-                                         IsCyclical="false"
-                                         PositionShiftValue="60">
-                       <!-- <ContentView>
-                            <Frame
-                                VerticalOptions="Center"
-                                HorizontalOptions="Fill"
-                                HeightRequest="290"
-                                Padding="0"
-                                HasShadow="false"
-                                IsClippedToBounds="true"
-                                CornerRadius="10">
-                                
-                            <Image Source="{Binding CarImage}" Aspect="AspectFill" x:Name="carImage"/>
-                                        
-                            </Frame>
-                        </ContentView>-->
-                        
+                                         IsCyclical="true"
+                                         PositionShiftValue="60"
+                                         >
+                
                         <cards:CoverFlowView.ItemTemplate>
                             <DataTemplate>
                                 <ContentView Padding="40">
@@ -47,7 +37,7 @@
                                         IsClippedToBounds="true"
                                         CornerRadius="10">
                                         
-                                        <Image Source="{Binding CarImage}" Aspect="AspectFill" x:Name="carImage"/>
+                                        <Image Source="{Binding CarImage}" Aspect="AspectFit" x:Name="carImage"/>
                                         
                                     </Frame>
                                 </ContentView>
@@ -80,11 +70,10 @@
                 </StackLayout>
                 <StackLayout Padding="20">
                     <Label Text="Price" TextColor="Gray"/>
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                        <Label Text="{Binding CarPrice, StringFormat='{0}EUR'}" VerticalOptions="Center"/>
-                        <Button Text="Change?" VerticalOptions="Center" Clicked="Change_Price"/>
-                    </StackLayout>
-                    <BoxView HeightRequest="1" Color="Gray"/>
+                    <Entry Placeholder="{Binding CarPrice, StringFormat='We recommend {0}EUR'}" x:Name="newPrice" TextChanged="Price_Changed"/>
+                    <Label x:Name="recommended" FontSize="Small"/>
+                    <Label HorizontalOptions="Center" TextColor="Red" FontAttributes="Bold" x:Name="error"/>
+                    <BoxView HeightRequest="1" Color="Gray" />
                 </StackLayout>
                 <StackLayout Padding="20">
                     <Label Text="Short Description" TextColor="Gray"/>
@@ -97,11 +86,22 @@
                     <BoxView HeightRequest="1" Color="Gray"/>
                 </StackLayout>
                 <StackLayout Padding="20">
-                    <Label Text="User Details" TextColor="Gray"/>
+                    <Label Text="Your Details" TextColor="Gray"/>
                     <StackLayout Padding="20,0,20,0">
-                        <Label Text="Your name" x:Name="name"/>
-                        <Label Text="Your phone number" x:Name="phone"/>
-                        <Label Text="Your address" x:Name="address"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Your name"/>
+                            <Label x:Name="name"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Your phone number"/>
+                            <Label x:Name="phone"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Your address" />
+                            <Label x:Name="address"/>
+                        </StackLayout>
+                        
                     </StackLayout>
                 </StackLayout>
                 <Button Text="Submit" Clicked="Sell_Car_Button"/>

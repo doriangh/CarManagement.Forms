@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <ContentPage
     NavigationPage.HasNavigationBar="False"
@@ -21,9 +21,9 @@
                     <StackLayout VerticalOptions="CenterAndExpand">
                         <Label Text="Please Enter Details" TextColor="Red" FontAttributes="Bold" HorizontalOptions="Center"
                                IsVisible="false" x:Name="Message" />
-                        <Entry Placeholder="Username" x:Name="User" HorizontalOptions="Center" WidthRequest="300"
+                        <Entry Placeholder="Username" BackgroundColor="White" x:Name="User" HorizontalOptions="Center" WidthRequest="300"
                                HeightRequest="60" />
-                        <Entry Placeholder="Password" IsPassword="true" x:Name="Pass" HorizontalOptions="Center"
+                        <Entry Placeholder="Password" BackgroundColor="White" IsPassword="true" x:Name="Pass" HorizontalOptions="Center"
                                WidthRequest="300" HeightRequest="60" />
                         <Button Text="Log In" TextColor="White" HorizontalOptions="Center"
                                 BackgroundColor="Green" WidthRequest="300" Clicked="UserLogInButton" />
@@ -33,7 +33,7 @@
                 </StackLayout>
             </ScrollView>
             <StackLayout>
-                <Button Text="Create New Account" Clicked="RegisterButton" HorizontalOptions="StartAndExpand"
+                <Button Text="Create New Account" TextColor="Gray" Clicked="RegisterButton" HorizontalOptions="StartAndExpand"
                         BackgroundColor="Transparent" />
             </StackLayout>
         </StackLayout>

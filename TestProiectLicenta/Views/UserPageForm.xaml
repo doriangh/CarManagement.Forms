@@ -1,31 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <TabbedPage
     NavigationPage.HasBackButton="False"
     NavigationPage.HasNavigationBar="False"
-    BackgroundColor="Black"
     xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="TestProiectLicenta.Views.UserPageForm" xmlns:local="clr-namespace:TestProiectLicenta.Views"
     xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
-    xmlns:refresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh">
+    xmlns:refresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh"
+    xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+    android:TabbedPage.IsSwipePagingEnabled="False">
     
     <TabbedPage.Children>
         
-<!--        <local:CarsListPage Title="Cars" Icon="new_car_icon"/>-->
-<!--        <local:NewCarsListPage Title="New Cars" Icon="new_car_icon"/>-->
-        <NavigationPage Title="New Cars" Icon="new_car_icon">
+        <NavigationPage Title="Cars" Icon="new_car_icon">
             <x:Arguments>
                 <local:NewCarsListPage/>
             </x:Arguments>
         </NavigationPage>
         
-        <NavigationPage Title="Add Car" Icon="new_add_icon">
+        <NavigationPage Title="Add" Icon="new_add_icon">
             <x:Arguments>
                 <local:ChooseMethodFormPage/>
             </x:Arguments>
         </NavigationPage>
-        
-        <!--    <local:CarListPage Title="User" Icon="user_icon.png"/>-->
         
         <NavigationPage Title="Store" Icon="market">
             <x:Arguments>
@@ -43,7 +40,20 @@
         
         <NavigationPage Title="Settings" Icon="new_settings_icon.png">
             <x:Arguments>
-                <local:SettingsPage/>
+                <ContentPage Title="Settings">
+                    <StackLayout>
+                        <TableView Intent="Settings">
+                            <TableRoot>
+                                <TableSection>
+                                    <SwitchCell Text="FaceId" x:Name="Fid" OnChanged="Handle_Toggled"/>
+                                    <ViewCell>
+                                        <Button Text="Sign Out" Clicked="SignOutButton"/>
+                                    </ViewCell>
+                                </TableSection>
+                            </TableRoot>
+                        </TableView>
+                    </StackLayout>
+                </ContentPage>
             </x:Arguments>
         </NavigationPage>
     </TabbedPage.Children>

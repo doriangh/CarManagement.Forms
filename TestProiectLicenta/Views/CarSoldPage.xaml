@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.CarSoldPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                 <cards:CoverFlowView x:Name="carousel"
+                                         IsCyclical="true"
+                                         PositionShiftValue="60">
+                        <cards:CoverFlowView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView Padding="40">
+                                    <Frame 
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Fill"
+                                        HeightRequest="290"
+                                        Padding="0"
+                                        HasShadow="false"
+                                        IsClippedToBounds="true"
+                                        CornerRadius="10">
+                                        
+                                        <Image Source="{Binding CarImage}" Aspect="AspectFit" x:Name="carImage"/>
+                                        
+                                    </Frame>
+                                </ContentView>
+                            </DataTemplate>
+                        </cards:CoverFlowView.ItemTemplate>
+                    </cards:CoverFlowView>
+                <Label Text="{Binding FullName}" HorizontalOptions="StartAndExpand" FontAttributes="Bold" FontSize="Large"/>
+                <Label Text="{Binding CarPrice}" HorizontalOptions="StartAndExpand" FontAttributes="Bold" FontSize="40"/>
+                
+                <BoxView HeightRequest="1" Color="Gray"/>
+                
+                <StackLayout HorizontalOptions="FillAndExpand" Padding="20">
+                    <Label Text="Car Info" FontAttributes="Italic" TextColor="Gray"/>
+                    <Frame HorizontalOptions="FillAndExpand">
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Model Year:" FontAttributes="Bold"/>
+                                <Label Text="{Binding ModelYear}"/>
+                                <Label Text="Fuel:" FontAttributes="Bold" HorizontalOptions="EndAndExpand"/>
+                                <Label Text="{Binding Fuel}"/>
+                            </StackLayout>
+                            
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Power:" FontAttributes="Bold"/>
+                                <Label Text="{Binding Power}"/>
+                                <Label Text="Odometer:" FontAttributes="Bold" HorizontalOptions="EndAndExpand"/>
+                                <Label Text="{Binding Odometer}"/>
+                            </StackLayout>
+                            
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Cubic Centimeters:" FontAttributes="Bold"/>
+                                <Label Text="{Binding Cc}"/>
+                                <Label Text="Color:" HorizontalOptions="EndAndExpand" FontAttributes="Bold"/>
+                                <Label Text="{Binding Color}"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+                
+                <StackLayout Padding="20" HorizontalOptions="FillAndExpand">
+                    <Label Text="Description" TextColor="Gray" FontAttributes="Italic"/>
+                    <Frame MinimumHeightRequest="100">
+                        <Label x:Name="description"/>
+                    </Frame>
+                </StackLayout>
+                
+                <StackLayout Padding="20" HorizontalOptions="FillAndExpand">
+                    <Label Text="User Location" TextColor="Gray" FontAttributes="Italic"/>
+                    <maps:Map x:Name="map" HeightRequest="200" MapType="Street" IsVisible="false"/>
+                </StackLayout>
+                
+                <StackLayout Padding="20" VerticalOptions="EndAndExpand">
+                    <Button Text="Contact Seller" BackgroundColor="Gray" TextColor="White" Clicked="Call_Seller"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

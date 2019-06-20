@@ -9,23 +9,23 @@ namespace TestProiectLicenta.Views
 {
     public partial class AddUserAddressPage : PopupPage
     {
-        User newUser;
+        private readonly User _newUser;
 
         public AddUserAddressPage(User user)
         {
             InitializeComponent();
-            newUser = user;
+            _newUser = user;
         }
 
-        async void Cancel_Button(object sender, System.EventArgs e)
+        private async void Cancel_Button(object sender, System.EventArgs e)
         {
             await Navigation.PopPopupAsync();
         }
 
-        async void Add_Address_Button(object sender, System.EventArgs e)
+        private async void Add_Address_Button(object sender, System.EventArgs e)
         {
-            newUser.Address = street.Text + ' ' + number.Text + ' ' + zip.Text + ' ' + city.Text + ' ' + country.Text;
-            await App.UserManager.UpdateUser(newUser);
+            _newUser.Address = street.Text + ' ' + number.Text + ' ' + zip.Text + ' ' + city.Text + ' ' + country.Text;
+            await App.UserManager.UpdateUser(_newUser);
             await Navigation.PopPopupAsync();
         }
     }

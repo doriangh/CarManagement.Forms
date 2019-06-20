@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace TestProiectLicenta.Views
@@ -10,11 +11,6 @@ namespace TestProiectLicenta.Views
             InitializeComponent();
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-        }
-
         private async void AddCarsWhenNoCarsButton(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new NavigationPage(new ChooseMethodFormPage()));
@@ -23,6 +19,18 @@ namespace TestProiectLicenta.Views
         private async void BackButtonPressed(object sender, EventArgs e)
         {
             await Navigation.PopAsync();
-        }      
+        }
+
+        private async void SignOutButton(object sender, EventArgs e)
+        {
+            SecureStorage.RemoveAll();
+
+            await Navigation.PushAsync(new UserLoginPage());
+        }
+
+        private void Handle_Toggled(object sender, ToggledEventArgs e)
+        {
+            Application.Current.Properties["FaceID"] = Fid.On;
+        }
     }
 }

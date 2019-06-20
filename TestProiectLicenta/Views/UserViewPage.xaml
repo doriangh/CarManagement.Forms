@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
             Title="User Details"
             xmlns="http://xamarin.com/schemas/2014/forms"
@@ -31,7 +31,7 @@
             
         </StackLayout>
         
-        <Label Text="{Binding Address}" HorizontalTextAlignment="Center" x:Name="address"/>
+        <Label Text="{Binding Address}" HorizontalTextAlignment="Center"/>
         
         <BoxView Color="Gray" HeightRequest="1"/>
         
@@ -47,9 +47,21 @@
                     <ViewCell>
                         <StackLayout>
                             <Button Text="Change Password"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout>
                             <Button Text="Change Image"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout>
                             <Button Text="Add Phone Number" Clicked="Add_Phone_Number_Button"/>
-                            <Button Text="Add address" Clicked="Add_Address_Button"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout>
+                            <Button Text="Add Address" Clicked="Add_Address_Button"/>
                         </StackLayout>
                     </ViewCell>
                 </TableSection>
@@ -57,7 +69,5 @@
                 
             </TableRoot>
         </TableView>
-        
-        
     </StackLayout>
 </ContentPage>
