@@ -107,6 +107,7 @@ namespace TestProiectLicenta.Views
         {
             var userId = await SecureStorage.GetAsync("UserId");
             var carDetailsId = await App.CarDetailManager.GetCarsDetail(_car.Id);
+            var doesExist = await App.CarsSoldManager.GetByCarId(_car.Id);
 
             if (_car.CarPrice != newPrice.Text && error.Text == "")
             {
@@ -131,7 +132,14 @@ namespace TestProiectLicenta.Views
                 };
 
 
-                await App.CarsSoldManager.Add(soldCar);
+                if (doesExist == null)
+                {
+                    await App.CarsSoldManager.Add(soldCar);
+                }
+                else
+                {
+                    await App.CarsSoldManager.Update(soldCar);
+                }
                 await Navigation.PopToRootAsync();
             }
         }

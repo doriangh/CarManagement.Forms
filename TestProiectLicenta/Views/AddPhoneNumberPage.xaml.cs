@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Pages;
 using TestProiectLicenta.Models;
@@ -24,9 +25,18 @@ namespace TestProiectLicenta.Views
 
         async void Confirm_Clicked(object sender, System.EventArgs e)
         {
-            _user.PhoneNumber = Convert.ToInt32(phoneNumber.Text);
-            await App.UserManager.UpdateUser(_user);
-            await Navigation.PopPopupAsync();
+            Regex re = new Regex(@"^0[0-9]{9}", RegexOptions.Compiled);
+
+            if (re.IsMatch(phoneNumber.Text))
+            {
+                _user.PhoneNumber = Convert.ToInt32(phoneNumber.Text);
+                await App.UserManager.UpdateUser(_user);
+                await Navigation.PopPopupAsync();
+            }
+            else
+            {
+                await DisplayAlert("Error", "Invalid number", "OK");
+            }
         }
     }
 }

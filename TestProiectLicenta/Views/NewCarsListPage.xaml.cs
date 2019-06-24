@@ -205,9 +205,7 @@ namespace TestProiectLicenta.Views
 
         private async void Handle_Refreshing(object sender, EventArgs e)
         { 
-
             await RefreshCars(true);
-
         }
 
         private void Search_Bar_Text(object sender, Xamarin.Forms.TextChangedEventArgs e)
@@ -237,7 +235,8 @@ namespace TestProiectLicenta.Views
             }
             else
             {
-                searchBar = null;
+                searchBar.IsVisible = false;
+                searchBar.FadeTo(1);
                 
                 carousel.ItemsSource = _listData;
             }

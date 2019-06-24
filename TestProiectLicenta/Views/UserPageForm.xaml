@@ -36,8 +36,6 @@
             </x:Arguments>
         </NavigationPage>
         
-    
-        
         <NavigationPage Title="Settings" Icon="new_settings_icon.png">
             <x:Arguments>
                 <ContentPage Title="Settings">

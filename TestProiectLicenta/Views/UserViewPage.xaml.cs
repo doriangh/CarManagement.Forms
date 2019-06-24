@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using Rg.Plugins.Popup.Extensions;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
@@ -38,6 +42,7 @@ namespace TestProiectLicenta.Views
                 value += Convert.ToInt32(car.CarPrice);
 
             carAmount.Text = value.ToString();
+
         }
 
         async void Add_Address_Button(object sender, System.EventArgs e)
@@ -77,6 +82,81 @@ namespace TestProiectLicenta.Views
         {
             await Navigation.PushPopupAsync(new AddPhoneNumberPage(user));
             await PopulateUserPage(true);
+        }
+
+        async void Add_New_User_Image(object sender, System.EventArgs e)
+        {
+            var result = await DisplayActionSheet("Choose a method", "Cancel", null, "Take Photo", "Select Photo");
+
+            switch (result)
+            {
+                case "Take Photo":
+                    await CrossMedia.Current.Initialize();
+
+                    if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                    {
+                        await DisplayAlert("Error", "No camera available", "OK");
+                        break;
+                    }
+                    var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                    {
+                        Directory = "Sample",
+                        Name = "test.jpg"
+                    });
+
+                    using (UserDialogs.Instance.Loading("Uploading image..."))
+                    {
+
+                        if (file == null)
+                        {
+                            await DisplayAlert("Error", "Could not save photo", "OK");
+                            break;
+                        }
+
+                        var memoryStream = new MemoryStream();
+                        file.GetStream().CopyTo(memoryStream);
+
+                        user.UserImage = App.ExternalAPIManager.UploadImageImgur(file);
+
+                        await App.UserManager.UpdateUser(user);
+
+                        File.Delete(file.Path);
+                    }
+                    await DisplayAlert("Success", "Image updated successfully", "OK");
+                    await PopulateUserPage(true);
+                    break;
+
+                case "Select Photo":
+                    await CrossMedia.Current.Initialize();
+
+                    if (!CrossMedia.Current.IsPickPhotoSupported)
+                    {
+                        await DisplayAlert("Error", "Could not open gallery", "OK");
+                        break;
+                    }
+
+                    using (UserDialogs.Instance.Loading("Uploading image..."))
+                    {
+                        file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions());
+
+                        if (file == null)
+                        {
+                            await DisplayAlert("Error", "Could not read file", "OK");
+                            break;
+                        }
+
+                        var memoryStream = new MemoryStream();
+                        file.GetStream().CopyTo(memoryStream);
+
+                        user.UserImage = App.ExternalAPIManager.UploadImageImgur(file);
+                        await App.UserManager.UpdateUser(user);
+
+                        File.Delete(file.Path);
+                    }
+                    await DisplayAlert("Success", "Image updated successfully", "OK");
+                    await PopulateUserPage(true);
+                    break;
+            }
         }
     }
 }

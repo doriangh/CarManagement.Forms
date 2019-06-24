@@ -15,12 +15,7 @@ namespace TestProiectLicenta.Views
         public BuyCarPage()
         {
             InitializeComponent();
-        }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            await Task.WhenAll(PopulateList());
+            Task.WhenAll(PopulateList());
         }
 
         private async Task PopulateList(bool force = false)
@@ -31,7 +26,6 @@ namespace TestProiectLicenta.Views
             foreach (var carSold in _allCarsSold)
             {
                 var car = await App.CarManager.GetCar(carSold.CarId, force);
-                //var image = await App.CarImagesManager.GetCarsImages(car.Id);
 
                 _listItems.Add(car);
             }
@@ -43,7 +37,6 @@ namespace TestProiectLicenta.Views
         {
             using (UserDialogs.Instance.Loading("Loading store data..."))
             {
-                //Task.WaitAll(PopulateList());
                 await Task.WhenAll(PopulateList(true));
                 list.IsRefreshing = false;
             }

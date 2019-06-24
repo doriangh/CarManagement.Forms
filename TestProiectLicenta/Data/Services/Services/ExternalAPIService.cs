@@ -343,7 +343,6 @@ namespace TestProiectLicenta.Data.Services
 
                 var response = w.UploadValues(Constants.imgurUrl, values);
                 var xml = XDocument.Load(new MemoryStream(response));
-                Console.WriteLine(xml);
 
                 return xml.Root.Element("link").Value;
             }

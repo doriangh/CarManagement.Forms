@@ -51,17 +51,17 @@
                     </ViewCell>
                     <ViewCell>
                         <StackLayout>
-                            <Button Text="Change Image"/>
+                            <Button Text="Change Image" Clicked="Add_New_User_Image"/>
                         </StackLayout>
                     </ViewCell>
                     <ViewCell>
                         <StackLayout>
-                            <Button Text="Add Phone Number" Clicked="Add_Phone_Number_Button"/>
+                            <Button Text="Add Phone Number" Clicked="Add_Phone_Number_Button" x:Name="phone"/>
                         </StackLayout>
                     </ViewCell>
                     <ViewCell>
                         <StackLayout>
-                            <Button Text="Add Address" Clicked="Add_Address_Button"/>
+                            <Button Text="Add Address" Clicked="Add_Address_Button" x:Name="address"/>
                         </StackLayout>
                     </ViewCell>
                 </TableSection>

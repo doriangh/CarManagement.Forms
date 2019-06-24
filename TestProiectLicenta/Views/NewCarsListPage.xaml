@@ -15,7 +15,7 @@
     <StackLayout>
         <ActivityIndicator IsVisible="false" IsRunning="false" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" x:Name="loading"/>
         <Label Text="No cars. Add a car for it to appear here!" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="false" x:Name="nocars"/>
-        <SearchBar Placeholder="eg. Ford Focus" IsVisible="false" Keyboard="Default" x:Name="searchBar" TextChanged="Search_Bar_Text" />
+        <SearchBar Placeholder="eg. Ford Focus" IsVisible="false" Keyboard="Default" x:Name="searchBar" TextChanged="Search_Bar_Text" Margin="0"/>
         <cards:CarouselView x:Name="carousel">
             <cards:CarouselView.ItemTemplate>
                 <DataTemplate>
@@ -87,8 +87,6 @@
                                             <Label Text="You should change your winter tires"/>
                                         </StackLayout>
                                     </StackLayout>
-                                      <!--  <BoxView HeightRequest="1" Color="Gray"/>
-                                        <Button Text="View more info" Clicked="MoreInfoClicked" BackgroundColor="Transparent"/>-->
                                 </StackLayout>
                             </ScrollView>
                         </Frame>

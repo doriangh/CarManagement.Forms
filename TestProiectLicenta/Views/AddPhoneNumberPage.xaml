@@ -24,7 +24,7 @@
                  Padding="20">
         <Label HorizontalTextAlignment="Center" FontSize="32" Text="Enter your phone number" HorizontalOptions="Center"  Margin="0,0,0,50"/>
 
-        <Entry Placeholder="07..." x:Name="phoneNumber"/>
+        <Entry Placeholder="07..." x:Name="phoneNumber" MaxLength="10"/>
 
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
             <Button Text="Cancel" BackgroundColor="Transparent" BorderColor="Black" BorderWidth="0.4" TextColor="Black" WidthRequest="100" Clicked="Cancel_Clicked" />

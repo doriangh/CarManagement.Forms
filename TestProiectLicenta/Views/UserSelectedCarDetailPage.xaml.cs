@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Xml;
+using Acr.UserDialogs;
 using Plugin.Connectivity;
-using Plugin.DialogKit;
 using Rg.Plugins.Popup.Extensions;
 using TestProiectLicenta.Models;
 using Xamarin.Forms;
@@ -77,7 +76,16 @@ namespace TestProiectLicenta.Views
 
         private async void DeleteCarButton(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            var response = await DisplayAlert("Are you sure?", "Are you sure you want to delete this car?", "Yes", "No");
+
+            if (response)
+            {
+                using (UserDialogs.Instance.Loading($"Removing car./nPlease wait!"))
+                {
+                    await App.CarManager.DeleteCar(usercar.Id);
+                    await Navigation.PopModalAsync();
+                }
+            }
         }
 
         private static async Task<CarPriceResponse> GetCarPrice(Car car)

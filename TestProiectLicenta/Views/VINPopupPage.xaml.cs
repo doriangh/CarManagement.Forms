@@ -26,6 +26,13 @@ namespace TestProiectLicenta.Views
         {
             if (_car != null)
             {
+                var car = await App.ExternalAPIManager.GetCarByVin(vinEntry.Text);
+                if (_car.Model == null) _car.Model = car.Car.Model;
+                if (_car.Make == null) _car.Make = car.Car.Make;
+                if (_car.ModelYear == null) _car.ModelYear = car.Car.ModelYear;
+
+                
+
                 _car.Vin = vinEntry.Text;
                 var success = await App.CarManager.UpdateCar(_car.Id, _car);
                 if (success)
