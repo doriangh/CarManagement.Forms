@@ -104,6 +104,12 @@ namespace TestProiectLicenta.Data.Services
                 file.GetStream().CopyTo(memoryStream);
 
                 request.Car = await GetRecognisedCar(memoryStream.ToArray());
+                if (request.Car == null)
+				{
+					request.Success = false;
+					request.Errors.Add("Unable to get car");
+					return request;
+				}
                 request.Car.CarImage = UploadImageImgur(file);
                 request.Success = true;
 
@@ -151,44 +157,25 @@ namespace TestProiectLicenta.Data.Services
             foreach (var item in data["decode"])
             {
                 car.Make = car.Make ?? (item["label"].ToString() == "Make" ? item["value"].ToString() : null);
-                car.Manufacturer = car.Manufacturer ??
-                                   (item["label"].ToString() == "Manufacturer" ? item["value"].ToString() : null);
-                car.Plant = car.Plant ?? (item["label"].ToString() == "Manufacturer Address"
-                                ? item["value"].ToString()
-                                : null);
-                car.ModelYear = car.ModelYear ??
-                                (item["label"].ToString() == "Model Year" ? item["value"].ToString() : null);
+                car.Manufacturer = car.Manufacturer ?? (item["label"].ToString() == "Manufacturer" ? item["value"].ToString() : null);
+                car.Plant = car.Plant ?? (item["label"].ToString() == "Manufacturer Address" ? item["value"].ToString() : null);
+                car.ModelYear = car.ModelYear ?? (item["label"].ToString() == "Model Year" ? item["value"].ToString() : null);
                 car.Model = car.Model ?? (item["label"].ToString() == "Model" ? item["value"].ToString() : null);
                 car.Body = car.Body ?? (item["label"].ToString() == "Body" ? item["value"].ToString() : null);
                 car.Drive = car.Drive ?? (item["label"].ToString() == "Drive" ? item["value"].ToString() : null);
-                car.NumberofSeats = car.NumberofSeats ??
-                                    (item["label"].ToString() == "Number of Seats" ? item["value"].ToString() : null);
-                car.NumberofDoors = car.NumberofDoors ??
-                                    (item["label"].ToString() == "Number of Doors" ? item["value"].ToString() : null);
-                car.Steering = car.Steering ??
-                               (item["label"].ToString() == "Steering" ? item["value"].ToString() : null);
-                car.Cc = car.Cc ?? (item["label"].ToString() == "Engine Displacement (ccm)"
-                             ? item["value"].ToString()
-                             : null);
-                car.EngineCylinders = car.EngineCylinders ??
-                                      (item["label"].ToString() == "Engine Cylinders"
-                                          ? item["value"].ToString()
-                                          : null);
-                car.Transmission = car.Transmission ??
-                                   (item["label"].ToString() == "Transmission" ? item["value"].ToString() : null);
-                car.NumberofGears = car.NumberofGears ??
-                                    (item["label"].ToString() == "Number of Gears" ? item["value"].ToString() : null);
+                car.NumberofSeats = car.NumberofSeats ?? (item["label"].ToString() == "Number of Seats" ? item["value"].ToString() : null);
+                car.NumberofDoors = car.NumberofDoors ?? (item["label"].ToString() == "Number of Doors" ? item["value"].ToString() : null);
+                car.Steering = car.Steering ?? (item["label"].ToString() == "Steering" ? item["value"].ToString() : null);
+                car.Cc = car.Cc ?? (item["label"].ToString() == "Engine Displacement (ccm)" ? item["value"].ToString() : null);
+                car.EngineCylinders = car.EngineCylinders ?? (item["label"].ToString() == "Engine Cylinders" ? item["value"].ToString() : null);
+                car.Transmission = car.Transmission ?? (item["label"].ToString() == "Transmission" ? item["value"].ToString() : null);
+                car.NumberofGears = car.NumberofGears ?? (item["label"].ToString() == "Number of Gears" ? item["value"].ToString() : null);
                 car.Color = car.Color ?? (item["label"].ToString() == "Color" ? item["value"].ToString() : null);
-                car.Engine = car.Engine ??
-                             (item["label"].ToString() == "Engine (full)" ? item["value"].ToString() : null);
-                car.Fuel = car.Fuel ?? (item["label"].ToString() == "Fuel Type - Primary"
-                               ? item["value"].ToString()
-                               : null);
-                car.Power = car.Power ??
-                            (item["label"].ToString() == "Engine Power (kW)" ? item["value"].ToString() : null);
+                car.Engine = car.Engine ?? (item["label"].ToString() == "Engine (full)" ? item["value"].ToString() : null);
+                car.Fuel = car.Fuel ?? (item["label"].ToString() == "Fuel Type - Primary" ? item["value"].ToString() : null);
+                car.Power = car.Power ?? (item["label"].ToString() == "Engine Power (kW)" ? item["value"].ToString() : null);
                 car.Made = car.Made ?? (item["label"].ToString() == "Made" ? item["value"].ToString() : null);
-                car.Emissions = car.Emissions ??
-                                (item["label"].ToString() == "Emission Standard" ? item["value"].ToString() : null);
+                car.Emissions = car.Emissions ?? (item["label"].ToString() == "Emission Standard" ? item["value"].ToString() : null);
                 //Odometer = data["decode"][2]["value"].ToString()
             }
 
@@ -314,18 +301,26 @@ namespace TestProiectLicenta.Data.Services
 
                 var car = JObject.Parse(response);
                 var userId = await SecureStorage.GetAsync("UserId");
+				try
+				{
+					newCar = new Car
+					{
+						UserId = Convert.ToInt32(userId),
+						Make = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["make"]["name"].ToString(),
+						Model = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["model"]["name"].ToString(),
+						Color = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["color"]["name"].ToString(),
+						Body = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["vehicleType"].ToString(),
+						License =
+							car["objects"][0]["vehicleAnnotation"]["licenseplate"]["attributes"]["system"]["string"]["name"]
+								.ToString()
+					};
 
-                newCar = new Car
-                {
-                    UserId = Convert.ToInt32(userId),
-                    Make = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["make"]["name"].ToString(),
-                    Model = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["model"]["name"].ToString(),
-                    Color = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["color"]["name"].ToString(),
-                    Body = car["objects"][0]["vehicleAnnotation"]["attributes"]["system"]["vehicleType"].ToString(),
-                    License =
-                        car["objects"][0]["vehicleAnnotation"]["licenseplate"]["attributes"]["system"]["string"]["name"]
-                            .ToString()
-                };
+					return newCar;
+
+				} catch (ArgumentOutOfRangeException e)
+				{
+					return null;
+				}
             }
 
             return newCar;

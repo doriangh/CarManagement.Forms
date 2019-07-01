@@ -10,6 +10,7 @@ using Xamarin.Forms;
 
 namespace TestProiectLicenta.Views
 {
+
     public partial class UserLoginPage : ContentPage
     {
         private User _userObj;
@@ -18,6 +19,11 @@ namespace TestProiectLicenta.Views
         public UserLoginPage()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
             Task.WhenAll(CheckIfLoggedIn());
         }
 
@@ -88,7 +94,7 @@ namespace TestProiectLicenta.Views
                     var username = User.Text;
                     var password = Encrypt(Pass.Text);
 
-                    _userObj = await App.UserManager.GetUserByUsername(username);
+                    _userObj = await App.UserManager.GetUserByUsername(username, true);
 
                     if (_userObj is null)
                     {

@@ -8,8 +8,8 @@
     
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="refresh_cars" Text="Refresh" Clicked="Handle_Refreshing" />
-        <ToolbarItem Icon="search_car" Text="Search" Clicked="Search_Car_Button"/>
-        <ToolbarItem Icon="car_details" Text="Details" Clicked="MoreInfoClicked"/>
+        <ToolbarItem Icon="search_car" Text="Search" Clicked="Search_Car_Button" x:Name="search"/>
+        <ToolbarItem Icon="car_details" Text="Details" Clicked="MoreInfoClicked" x:Name="details"/>
     </ContentPage.ToolbarItems>
 
     <StackLayout>
@@ -17,6 +17,9 @@
         <Label Text="No cars. Add a car for it to appear here!" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="false" x:Name="nocars"/>
         <SearchBar Placeholder="eg. Ford Focus" IsVisible="false" Keyboard="Default" x:Name="searchBar" TextChanged="Search_Bar_Text" Margin="0"/>
         <cards:CarouselView x:Name="carousel">
+            <controls:IndicatorsControl ToFadeDuration="5000" IsVisible="true"
+                                        SelectedIndicatorStyle="{StaticResource ActiveIndicator}"
+                                        UnselectedIndicatorStyle="{StaticResource InactiveIndicator}"/>
             <cards:CarouselView.ItemTemplate>
                 <DataTemplate>
                     <ContentView>
@@ -40,6 +43,7 @@
                                             <StackLayout Orientation="Horizontal">
                                                 <Image Source="{Binding InsuranceIcon}"/>
                                                 <Label Text="Insurance" FontAttributes="Bold" VerticalOptions="Center"/>
+                                                <ImageButton Source="refresh_dates" Clicked="Update_Insurance_Date" IsVisible="{Binding RefreshInsurance}" HorizontalOptions="EndAndExpand" BackgroundColor="Transparent"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Insurance due:" />
@@ -51,6 +55,7 @@
                                             <StackLayout Orientation="Horizontal">
                                                 <Image Source="{Binding ITPIcon}"/>
                                                 <Label Text="ITP" FontAttributes="Bold" VerticalOptions="Center"/>
+                                               <ImageButton Source="refresh_dates" Clicked="Update_ITP_Date" IsVisible="{Binding RefreshITP}" HorizontalOptions="EndAndExpand" BackgroundColor="Transparent"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="ITP due:"/>
@@ -64,6 +69,7 @@
                                             <StackLayout Orientation="Horizontal">
                                                 <Image Source="{Binding RoadTaxIcon}"/>
                                                 <Label Text="Road Tax" FontAttributes="Bold" VerticalOptions="Center"/>
+                                                <ImageButton Source="refresh_dates" Clicked="Update_Road_Tax" IsVisible="{Binding RefreshRoadTax}" HorizontalOptions="EndAndExpand" BackgroundColor="Transparent"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Road tax due:"/>
@@ -75,16 +81,18 @@
                                             <StackLayout Orientation="Horizontal">
                                                 <Image Source="{Binding OilIcon}"/>
                                                 <Label Text="Oil Change" FontAttributes="Bold" VerticalOptions="Center"/>
+                                                <ImageButton Source="refresh_dates" Clicked="Update_Oil" IsVisible="{Binding RefreshOil}" HorizontalOptions="EndAndExpand" BackgroundColor="Transparent"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Next oil change due: "/>
                                                 <Label Text="{Binding RemainingOilChange, StringFormat='{0} KM'}" x:Name="oilChange"/>
                                             </StackLayout>
                                         </StackLayout>
-                                        
-                                        <StackLayout Orientation="Horizontal" Padding="20" BackgroundColor="#F44336">
-                                            <Image Source="bad"/>
-                                            <Label Text="You should change your winter tires"/>
+
+                                        <StackLayout Orientation="Horizontal" Padding="20" BackgroundColor="{Binding TiresColor}">
+                                            <Image Source="{Binding TiresIcon}"/>
+                                            <Label Text="{Binding TiresText}" FontAttributes="Bold" VerticalOptions="Center"/>
+                                            <ImageButton Source="refresh_dates" Clicked="Change_Tires" IsVisible="{Binding RefreshTires}" HorizontalOptions="EndAndExpand" BackgroundColor="Transparent"/>
                                         </StackLayout>
                                     </StackLayout>
                                 </StackLayout>
@@ -93,6 +101,19 @@
                     </ContentView>
                 </DataTemplate>
             </cards:CarouselView.ItemTemplate>
+            
         </cards:CarouselView>
     </StackLayout>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ActiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Black"/>
+            </Style>
+            <Style x:Key="InactiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="OutlineColor" Value="Black"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 </ContentPage>

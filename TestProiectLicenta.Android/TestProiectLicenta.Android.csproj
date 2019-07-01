@@ -251,6 +251,12 @@
     <AndroidResource Include="Resources\drawable\car_details.png" />
     <AndroidResource Include="Resources\drawable-hdpi\car_details.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\car_details.png" />
+    <AndroidResource Include="Resources\drawable\refresh_dates.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\refresh_dates.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\refresh_dates.png" />
+    <AndroidResource Include="Resources\drawable\icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

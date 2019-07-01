@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Acr.UserDialogs;
 using Plugin.Messaging;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
@@ -23,7 +22,6 @@ namespace TestProiectLicenta.Views
         {
             InitializeComponent();
             _car = car;
-            //Task.WaitAll(PopulateCoverFlow());
             Task.WhenAll(PopulateCoverFlow());
         }
 
@@ -62,7 +60,7 @@ namespace TestProiectLicenta.Views
 
                     if (alert)
                     {
-                        await App.CarsSoldManager.Delete(currentCar.id);
+                        await App.CarsSoldManager.Delete(currentCar.Id);
                         await Navigation.PopAsync();
                     }
 

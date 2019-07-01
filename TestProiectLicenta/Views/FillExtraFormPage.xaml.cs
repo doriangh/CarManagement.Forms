@@ -39,8 +39,8 @@ namespace TestProiectLicenta.Views
             model.Text = _carRequest.Car.Model;
             year.Text = _carRequest.Car.ModelYear;
             type.Items.Add(_carRequest.Car.Body);
-            type.SelectedItem = _carRequest.Car.Body;
-            fuel.SelectedItem = _carRequest.Car.Fuel;
+            type.SelectedItem = _carRequest.Car.Body ?? null;
+            fuel.SelectedItem = _carRequest.Car.Fuel ?? null;
             odometer.Text = _carRequest.Car.Odometer;
             License.Text = _carRequest.Car.License;
             cc.Text = _carRequest.Car.Cc;
@@ -106,22 +106,37 @@ namespace TestProiectLicenta.Views
         {
             if (make.Text == null) { make.Text = "Please enter a car make"; make.LabelColor = Color.Red; }
             else _carRequest.Car.Make = make.Text;
+
             if (model.Text == null) { model.Text = "Please enter a car model"; model.LabelColor = Color.Red; }
             else _carRequest.Car.Model = model.Text;
+
             if (year.Text == null) { year.Text = "Please enter a car model year"; model.LabelColor = Color.Red; }
             else _carRequest.Car.ModelYear = year.Text;
-            _carRequest.Car.Body = type.SelectedItem.ToString();
-            _carRequest.Car.Fuel = fuel.SelectedItem.ToString();
-            _carRequest.Car.Power = power.Text;
-            _carRequest.Car.Odometer = odometer.Text;
-            _carRequest.Car.Cc = cc.Text;
-            _carRequest.Car.License = License.Text;
+
+            if (type.SelectedItem == null) { type.SelectedItem = "Please enter a type"; type.TextColor = Color.Red; }
+            else _carRequest.Car.Body = type.SelectedItem.ToString();
+
+            if (fuel.SelectedItem == null) { fuel.SelectedItem = "Please enter the car's fuel"; fuel.TextColor = Color.Red; }
+            else _carRequest.Car.Fuel = fuel.SelectedItem.ToString();
+
+            if (power.Text == null) { power.Text = "Please enter the power for the car"; model.LabelColor = Color.Red; }
+            else _carRequest.Car.Power = power.Text;
+
+            if (odometer.Text == null) { odometer.Text = "Please enter the odometer"; model.LabelColor = Color.Red; }
+            else _carRequest.Car.Odometer = odometer.Text;
+
+            if (cc.Text == null) { cc.Text = "Please enter the car's cc"; cc.LabelColor = Color.Red; }
+            else _carRequest.Car.Cc = cc.Text;
+
+            if (License.Text == null) { License.Text = "Please enter the car's licence"; License.LabelColor = Color.Red; }
+            else _carRequest.Car.License = License.Text;
 
             if (_newCarImage == null)
                 _newCarImage = new CarImages();
 
-            if (_newCarImage.CarImage == null)
+            if (_carRequest.Car.CarImage == null && _newCarImage.CarImage == null)
             {
+
                 var url = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + _carRequest.Car.Make + "+" +
                           _carRequest.Car.Model + "+" + _carRequest.Car.ModelYear ??
                           null + "+" + _carRequest.Car.Body ?? null;
@@ -133,9 +148,18 @@ namespace TestProiectLicenta.Views
                         //carImage.Source = ImageSource.FromUri(new Uri(reader.Value.Trim()));
                         _newCarImage.CarImage = reader.Value.Trim();
                 //Console.WriteLine(reader.Value.Trim());
+                _carRequest.Car.CarImage = _newCarImage.CarImage;
+            }
+            else if (_carRequest.Car.CarImage == null && _newCarImage.CarImage != null)
+            {
+                _carRequest.Car.CarImage = _newCarImage.CarImage;
+            }
+            else
+            {
+                _newCarImage.CarImage = _carRequest.Car.CarImage;
             }
 
-            _carRequest.Car.CarImage = _newCarImage.CarImage;
+            //_carRequest.Car.CarImage = _newCarImage.CarImage;
 
             var carDetail = new CarDetail
             {
@@ -147,8 +171,7 @@ namespace TestProiectLicenta.Views
                 InsurancePeriod = CalculateInsurancePeriod(),
                 OilChange = Convert.ToInt32(odometer.Text) % 15000,
                 WinterTires = wintertires.On,
-                TaxValue = CalculateTax(_carRequest),
-
+                TaxValue = CalculateTax(_carRequest)
             };
 
 

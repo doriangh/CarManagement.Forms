@@ -9,6 +9,7 @@ namespace TestProiectLicenta.Views
         public UserPageForm()
         {
             InitializeComponent();
+            Fid.On = Convert.ToBoolean(Application.Current.Properties["FaceID"]);
         }
 
         private async void AddCarsWhenNoCarsButton(object sender, EventArgs e)

@@ -13,6 +13,7 @@
         public string TaxValue { get; set; }
         public string CarImage { get; set; }
         public int Price { get; set; }
+        public bool WinterTyres { get; set; }
 
         public string InsuranceColor { get; set; }
         public string InsuranceIcon { get; set; }
@@ -28,5 +29,13 @@
 
         public string TiresColor { get; set; }
         public string TiresIcon { get; set; }
+        public string TiresText { get; set; }
+
+
+        public bool RefreshInsurance { get; set; }
+        public bool RefreshITP { get; set; }
+        public bool RefreshRoadTax { get; set; }
+        public bool RefreshOil { get; set; }
+        public bool RefreshTires { get; set; }
     }
 }

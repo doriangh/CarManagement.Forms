@@ -30,7 +30,8 @@ namespace TestProiectLicenta.Views
             user = await App.UserManager.GetUserById(Convert.ToInt32(userId), force);
             cars = await App.CarManager.GetUserCars(Convert.ToInt32(userId), force);
 
-            topAvatar.Source = user.UserImage;
+            if (user.UserImage != null)
+                topAvatar.Source = user.UserImage;
 
             BindingContext = user;
 
@@ -157,6 +158,11 @@ namespace TestProiectLicenta.Views
                     await PopulateUserPage(true);
                     break;
             }
+        }
+
+        async void Change_Password_Clicked(object sender, System.EventArgs e)
+        {
+            await Navigation.PushPopupAsync(new ChangePasswordPage(user));
         }
     }
 }

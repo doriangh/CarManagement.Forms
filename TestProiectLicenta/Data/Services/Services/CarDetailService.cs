@@ -89,7 +89,7 @@ namespace TestProiectLicenta.Data.Services
             var json = JsonConvert.SerializeObject(carDetail);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PutAsync(Constants.webAPI + "Cars", content);
+            var response = await _client.PutAsync(Constants.webAPI + "CarDetails", content);
             if (response.IsSuccessStatusCode) Debug.WriteLine("Car successfully updated");
         }
     }

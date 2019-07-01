@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
@@ -10,7 +11,7 @@ namespace TestProiectLicenta.Views
     public partial class BuyCarPage : ContentPage
     {
         private List<CarsSold> _allCarsSold;
-        private List<Car> _listItems;
+        private List<CarsSoldListItem> _listItems;
 
         public BuyCarPage()
         {
@@ -21,13 +22,30 @@ namespace TestProiectLicenta.Views
         private async Task PopulateList(bool force = false)
         {
             _allCarsSold = await App.CarsSoldManager.GetAll(force);
-            _listItems = new List<Car>();
+            _listItems = new List<CarsSoldListItem>();
 
             foreach (var carSold in _allCarsSold)
             {
                 var car = await App.CarManager.GetCar(carSold.CarId, force);
 
-                _listItems.Add(car);
+                var carItem = new CarsSoldListItem
+                {
+                    CarId = car.Id,
+                    FullName = car.FullName,
+                    ShortDescription = carSold.Details,
+                    ModelYear = Convert.ToInt32(car.ModelYear),
+                    Odometer = Convert.ToInt32(car.Odometer),
+                    Price = Convert.ToInt32(car.CarPrice),
+                    Cc = Convert.ToInt32(car.Cc),
+                    Power = Convert.ToInt32(car.Power),
+                    Fuel = car.Fuel,
+                    VIN = car.Vin,
+                    Color = car.Color,
+                    LongDescription = carSold.LongDescription,
+                    CarImage = car.CarImage
+                };
+
+                _listItems.Add(carItem);
             }
 
             list.ItemsSource = _listItems;
@@ -35,11 +53,8 @@ namespace TestProiectLicenta.Views
 
         private async void Handle_Refreshing(object sender, System.EventArgs e)
         {
-            using (UserDialogs.Instance.Loading("Loading store data..."))
-            {
-                await Task.WhenAll(PopulateList(true));
-                list.IsRefreshing = false;
-            }
+            await Task.WhenAll(PopulateList(true));
+            list.IsRefreshing = false;
         }
 
         private async void User_Add_Car_Button(object sender, System.EventArgs e)
@@ -87,14 +102,14 @@ namespace TestProiectLicenta.Views
 
         async void ListItemTapped(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
-            if(e.SelectedItem == null) return;
+            if (e.SelectedItem == null) return;
 
-            var listItem = e.SelectedItem as Car;
+            var listItem = e.SelectedItem as CarsSoldListItem;
             
-            var car = await App.CarManager.GetCar(listItem.Id);
+            var car = await App.CarManager.GetCar(listItem.CarId);
 
             if (car != null) { 
-                    await Navigation.PushAsync(new CarSoldPage(listItem));
+                    await Navigation.PushAsync(new CarSoldPage(car));
                     ((ListView)sender).SelectedItem = null;
             }
             else

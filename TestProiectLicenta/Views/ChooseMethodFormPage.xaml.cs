@@ -27,7 +27,6 @@ namespace TestProiectLicenta.Views
             await Navigation.PushPopupAsync(new VinPopupPage());
         }
 
-
         private async void TakePictureButtonPressed(object sender, EventArgs e)
         {
             var request = await App.ExternalAPIManager.GetCarByTakingPictureAsync();
@@ -39,7 +38,6 @@ namespace TestProiectLicenta.Views
                     "Yes", "No");
 
                 if (action)
-                    //await App.CarManager.AddCar(request.Car);
 
                     await Navigation.PushAsync(new FillExtraFormPage(request));
                 else
@@ -64,9 +62,9 @@ namespace TestProiectLicenta.Views
                     "Yes", "No");
 
                 if (action)
-                    //await App.CarManager.AddCar(request.Car);
-
+                {
                     await Navigation.PushAsync(new FillExtraFormPage(request));
+                }
                 else
                     await DisplayAlert("Sorry",
                         "Please try again. For the best results, make sure there is enough light, the License plate is clearly visible, and your car takes up most of the image.",

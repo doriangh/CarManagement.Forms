@@ -309,5 +309,8 @@
     <BundleResource Include="Resources\car_details.png" />
     <BundleResource Include="Resources\car_details%402x.png" />
     <BundleResource Include="Resources\car_details%403x.png" />
+    <BundleResource Include="Resources\refresh_dates.png" />
+    <BundleResource Include="Resources\refresh_dates%402x.png" />
+    <BundleResource Include="Resources\refresh_dates%403x.png" />
   </ItemGroup>
 </Project>

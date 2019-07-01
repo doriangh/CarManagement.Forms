@@ -70,6 +70,7 @@
     <Compile Remove="Views\AddCarMissingDetailsFormPage.xaml.cs" />
     <Compile Remove="Views\CarListPage.xaml.cs" />
     <Compile Remove="Views\MyListViewPage.xaml.cs" />
+    <Compile Remove="Views\SelectKMDriven.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Views\MainPage.xaml" />

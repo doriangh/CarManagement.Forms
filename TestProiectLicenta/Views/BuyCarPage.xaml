@@ -45,7 +45,7 @@
                             </StackLayout>
                             
                             <StackLayout Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4" HorizontalOptions="Center">
-                                <Label x:Name="shortDescription" TextColor="Gray" FontAttributes="Italic"/>
+                                <Label Text="{Binding ShortDescription}" TextColor="Gray" FontAttributes="Italic"/>
                             </StackLayout>
                             
                             <Image Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0" HorizontalOptions="Center"

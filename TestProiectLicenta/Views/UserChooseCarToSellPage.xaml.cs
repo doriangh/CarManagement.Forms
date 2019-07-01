@@ -24,5 +24,16 @@ namespace TestProiectLicenta.Views
 
             list.ItemsSource = ListItems;
         }
+
+        async void Sell_Car_Tap(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem == null) return;
+
+            var listItem = e.SelectedItem as Car;
+
+            await Navigation.PushModalAsync(new SellDetailsModalPage(listItem));
+
+            ((ListView)sender).SelectedItem = null;
+        }
     }
 }

@@ -39,14 +39,14 @@
             <TableRoot>
 
                 <TableSection Title="Usage info">
-                    <EntryCell Label="Cars entered" Text="10" HorizontalTextAlignment="End" x:Name="carCount"/>
-                    <EntryCell Label="Total amount of cars in garage" Text="100.000" HorizontalTextAlignment="End" x:Name="carAmount"/>
+                    <EntryCell Label="Cars entered" Text="10" HorizontalTextAlignment="End" x:Name="carCount" IsEnabled="false"/>
+                    <EntryCell Label="Total amount of cars in garage" Text="100.000" HorizontalTextAlignment="End" x:Name="carAmount" IsEnabled="false"/>
                 </TableSection>
                 
                 <TableSection Title="Account Settings">
                     <ViewCell>
                         <StackLayout>
-                            <Button Text="Change Password"/>
+                            <Button Text="Change Password" Clicked="Change_Password_Clicked"/>
                         </StackLayout>
                     </ViewCell>
                     <ViewCell>

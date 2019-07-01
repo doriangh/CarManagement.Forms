@@ -47,9 +47,7 @@
                     
                     
                     <StackLayout Orientation="Horizontal">
-               <!--         <Button Text="Previous" HorizontalOptions="StartAndExpand" Clicked="Previous_Image_Button" x:Name="prev"/>-->
                         <Button Text="Add New Image" HorizontalOptions="CenterAndExpand" Clicked="Add_New_Image_Button"/>
-<!--                        <Button Text="Next" HorizontalOptions="EndAndExpand" Clicked="Next_Image_Button" x:Name="next"/>-->
                     </StackLayout>
                     
                 </StackLayout>
@@ -98,14 +96,15 @@
                         </StackLayout>
                         
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Your address" />
+                            <Label Text="Your address" VerticalOptions="Center"/>
                             <Label x:Name="address"/>
                         </StackLayout>
                         
                     </StackLayout>
+                    <Button Text="Submit" Clicked="Sell_Car_Button" TextColor="White" BackgroundColor="Green"/>
+                    <Button Text="Cancel" Clicked="Cancel_Button" TextColor="White" BackgroundColor="Red"/>
                 </StackLayout>
-                <Button Text="Submit" Clicked="Sell_Car_Button"/>
-                <Button Text="Cancel" Clicked="Cancel_Button"/>
+                
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

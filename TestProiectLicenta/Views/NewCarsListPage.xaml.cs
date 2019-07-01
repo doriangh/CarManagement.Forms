@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
+using Plugin.Connectivity;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -83,29 +83,34 @@ namespace TestProiectLicenta.Views
                 RoadTaxValue = carDetail.RoadTaxValue.ToString(),
                 RemainingInsurance = (carDetail.Insurance.AddMonths(carDetail.InsurancePeriod) - DateTime.Today).Days.ToString(),
                 CarImage = car.CarImage ?? (carImage?[0].CarImage),
-                TaxValue = carDetail.TaxValue == -1 ? "Nu putem calcula" : carDetail.TaxValue.ToString(),
-                Price = carDetail.Price
+                TaxValue = carDetail.TaxValue == -1 ? "Could not calculate" : carDetail.TaxValue.ToString(),
+                Price = carDetail.Price,
+                WinterTyres = carDetail.WinterTires
             };
 
             if ((carDetail.Itp.AddYears(2) - DateTime.Today).Days > 0){
                 carAttributes.ITPColor = "#8BC34A";
                 carAttributes.ITPIcon = "good";
+                carAttributes.RefreshITP = false;
             }
             else
             {
                 carAttributes.ITPColor = "#F44336";
                 carAttributes.ITPIcon = "bad";
+                carAttributes.RefreshITP = true;
             }
 
             if ((carDetail.RoadTax.AddDays(carDetail.RoadTaxPeriod) - DateTime.Today).Days > 0)
             {
                 carAttributes.RoadTaxColor = "#8BC34A";
                 carAttributes.RoadTaxIcon = "good";
+                carAttributes.RefreshRoadTax = false;
             }
             else
             {
                 carAttributes.RoadTaxColor = "#F44336";
                 carAttributes.RoadTaxIcon = "bad";
+                carAttributes.RefreshRoadTax = true;
             }
 
             if (carDetail.OilChange > 0)
@@ -118,17 +123,41 @@ namespace TestProiectLicenta.Views
                 carAttributes.OilColor = "#F44336";
                 carAttributes.OilIcon = "bad";
             }
+
             if (Convert.ToInt32(carAttributes.RemainingInsurance) > 0)
             {
                 carAttributes.InsuranceColor = "#8BC34A";
                 carAttributes.InsuranceIcon = "good";
+                carAttributes.RefreshInsurance = false;
             }
             else
             {
                 carAttributes.InsuranceColor = "#F44336";
                 carAttributes.InsuranceIcon = "bad";
+                carAttributes.RefreshInsurance = true;
             }
 
+            if (!carAttributes.WinterTyres && DateTime.Today.Month > 4 && DateTime.Today.Month < 10)
+            {
+                carAttributes.TiresIcon = "good";
+                carAttributes.TiresColor = "#8BC34A";
+                carAttributes.TiresText = "You don't need to change your tires";
+                carAttributes.WinterTyres = false;
+            }
+            else if (carAttributes.WinterTyres && DateTime.Today.Month > 10 && DateTime.Today.Month < 4)
+            {
+                carAttributes.TiresIcon = "good";
+                carAttributes.TiresColor = "#8BC34A";
+                carAttributes.TiresText = "You don't need tochange your tires!";
+                carAttributes.WinterTyres = false;
+            }
+            else
+            {
+                carAttributes.TiresIcon = "bad";
+                carAttributes.TiresColor = "#F44336";
+                carAttributes.TiresText = "You should change your tires!";
+                carAttributes.RefreshTires = true;
+            }
 
             return carAttributes;
 
@@ -150,9 +179,18 @@ namespace TestProiectLicenta.Views
             }
 
             if (_listData.Count > 0)
+            {
                 carousel.ItemsSource = _listData.OrderByDescending(c => c.CarId);
+                search.IsEnabled = true;
+                details.IsEnabled = true;
+                nocars.IsVisible = false;
+            }
             else
+            {
                 nocars.IsVisible = true;
+                search.IsEnabled = false;
+                details.IsEnabled = false;
+            }
         }
 
         private async void AddCarsWhenNoCarsButton(object sender, EventArgs e)
@@ -166,7 +204,7 @@ namespace TestProiectLicenta.Views
 
             var listItem = e.SelectedItem as ListCarAttributes;
 
-            var car = await App.CarManager.GetCar(listItem.CarId);
+            var car = await App.CarManager.GetCar(listItem.CarId, true);
             if (car != null)
             {
                 await Navigation.PushAsync(new UserSelectedCarDetailPage(car));
@@ -247,8 +285,13 @@ namespace TestProiectLicenta.Views
             using (UserDialogs.Instance.Loading("Please wait..."))
             {
                 var item = (ListCarAttributes)carousel[carousel.SelectedIndex];
+                Car car;
 
-                var car = await App.CarManager.GetCar(item.CarId);
+                if (CrossConnectivity.Current.IsConnected)
+                    car = await App.CarManager.GetCar(item.CarId, true);
+                else
+                    car = await App.CarManager.GetCar(item.CarId);
+                
                 if (car != null)
                 {
                     await Navigation.PushModalAsync(new NavigationPage(new UserSelectedCarDetailPage(car)));
@@ -259,6 +302,101 @@ namespace TestProiectLicenta.Views
                     await DisplayAlert("No internet connection", "It appears you have no internet connection.\nPlease try again.", "OK");
 
                 }
+            }
+        }
+
+        async void Update_Insurance_Date(object sender, System.EventArgs e)
+        {
+            if (await DisplayAlert("Are you sure?", "Are you sure you want to update your insurance period?", "Yes", "No"))
+            {
+
+                var result = await DisplayActionSheet("Choose new insurance period", "Cancel", null, "6 Months", "A Year");
+
+                var car = (ListCarAttributes)carousel[carousel.SelectedIndex];
+                var updateCar = await App.CarDetailManager.GetCarsDetail(car.CarId);
+
+                switch (result)
+                {
+                    case "6 Months":
+                        updateCar.InsurancePeriod = 6;
+                        updateCar.Insurance = DateTime.Today;
+                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                        break;
+                    case "A Year":
+                        updateCar.InsurancePeriod = 12;
+                        updateCar.Insurance = DateTime.Today;
+                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                        break;
+                }
+            }
+        }
+
+        async void Update_ITP_Date(object sender, System.EventArgs e)
+        {
+            var car = (ListCarAttributes)carousel[carousel.SelectedIndex];
+            var updateCar = await App.CarDetailManager.GetCarsDetail(car.CarId);
+            updateCar.Itp = DateTime.Today;
+            await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+        }
+
+        async void Update_Road_Tax(object sender, System.EventArgs e)
+        {
+            if (await DisplayAlert("Are you sure?", "Are you sure you want to update your road tax period?", "Yes", "No"))
+            {
+                var result = await DisplayActionSheet("Choose your new road tax period", "Cancel", null, "6 Days", "30 Days", "90 Days", "A Year");
+
+                var car = (ListCarAttributes)carousel[carousel.SelectedIndex];
+                var updateCar = await App.CarDetailManager.GetCarsDetail(car.CarId);
+
+                switch (result)
+                {
+                    case "6 Days":
+                        updateCar.RoadTaxPeriod = 6;
+                        updateCar.RoadTax = DateTime.Today;
+                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                        break;
+                    case "30 Days":
+                        updateCar.RoadTaxPeriod = 30;
+                        updateCar.RoadTax = DateTime.Today;
+                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                        break;
+                    case "90 Days":
+                        updateCar.RoadTaxPeriod = 90;
+                        updateCar.RoadTax = DateTime.Today;
+                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                        break;
+                    case "A Year":
+                        updateCar.RoadTaxPeriod = 365;
+                        updateCar.RoadTax = DateTime.Today;
+                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                        break;
+                }
+            }
+        }
+
+        async void Change_Tires(object sender, System.EventArgs e)
+        {
+            if (await DisplayAlert("Are you sure?", "Are you sure you have changed your tires?", "Yes", "No"))
+            {
+                var car = (ListCarAttributes)carousel[carousel.SelectedIndex];
+                var updateCar = await App.CarDetailManager.GetCarsDetail(car.CarId);
+
+                updateCar.WinterTires = !updateCar.WinterTires;
+                await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+            }
+        }
+
+        async void Update_Oil(object sender, System.EventArgs e)
+        {
+            var result = await DisplayAlert("Are you sure?", "Are you sure you've changed your oil?", "Yes", "No");
+
+            if (result)
+            {
+                var car = (ListCarAttributes)carousel[carousel.SelectedIndex];
+                var updateCar = await App.CarDetailManager.GetCarsDetail(car.CarId);
+
+                updateCar.OilChange = 15000;
+                await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
             }
         }
     }

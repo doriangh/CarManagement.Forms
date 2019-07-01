@@ -13,27 +13,28 @@
             <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="Center">
 
                 <StackLayout VerticalOptions="Center" Orientation="Horizontal" HorizontalOptions="End">
-                    <!--                <Label Text="Name" TextColor="White" VerticalOptions="Center"/>-->
                     <Entry Keyboard="Default" Placeholder="Name" x:Name="name" WidthRequest="300" HeightRequest="50"
                            BackgroundColor="White" />
 
                 </StackLayout>
 
                 <StackLayout VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
-                    <!--                <Label Text="Age" TextColor="White" VerticalOptions="Center"/>-->
                     <Entry Keyboard="Numeric" Placeholder="Age" IsPassword="false" x:Name="age" WidthRequest="300"
                            HeightRequest="50" BackgroundColor="White" />
                 </StackLayout>
 
                 <StackLayout VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
-                    <!--                <Label Text="Username" TextColor="White" VerticalOptions="Center"/>-->
                     <Entry Keyboard="Default" Placeholder="Username" IsPassword="false" x:Name="user"
                            WidthRequest="300" HeightRequest="50" BackgroundColor="White" />
                 </StackLayout>
 
                 <StackLayout VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
-                    <!--                <Label Text="Password" TextColor="White" VerticalOptions="Center"/>-->
                     <Entry Keyboard="Default" Placeholder="Password" IsPassword="true" x:Name="pass" WidthRequest="300"
+                           HeightRequest="50" BackgroundColor="White" />
+                </StackLayout>
+                
+                <StackLayout VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
+                    <Entry Keyboard="Default" Placeholder="Re-enter Password" IsPassword="true" x:Name="rePass" WidthRequest="300"
                            HeightRequest="50" BackgroundColor="White" />
                 </StackLayout>
 

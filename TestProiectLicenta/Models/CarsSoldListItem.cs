@@ -2,6 +2,7 @@
 {
     public class CarsSoldListItem
     {
+        public int CarId { get; set; }
         public string FullName { get; set; }
         public string ShortDescription { get; set; }
         public int ModelYear { get; set; }
