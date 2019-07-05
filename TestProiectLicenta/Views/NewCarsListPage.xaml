@@ -81,7 +81,7 @@
                                             <StackLayout Orientation="Horizontal">
                                                 <Image Source="{Binding OilIcon}"/>
                                                 <Label Text="Oil Change" FontAttributes="Bold" VerticalOptions="Center"/>
-                                                <ImageButton Source="refresh_dates" Clicked="Update_Oil" IsVisible="{Binding RefreshOil}" HorizontalOptions="EndAndExpand" BackgroundColor="Transparent"/>
+                                                <ImageButton Source="refresh_dates" Clicked="Update_Oil" IsVisible="true" HorizontalOptions="EndAndExpand" BackgroundColor="Transparent"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Next oil change due: "/>

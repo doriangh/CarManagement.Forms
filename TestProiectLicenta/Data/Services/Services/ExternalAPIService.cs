@@ -69,52 +69,51 @@ namespace TestProiectLicenta.Data.Services
             return request;
         }
 
-        public async Task<CarVinRequest> GetCarByTakingPictureAsync()
+        public async Task<CarVinRequest> GetCarByTakingPictureAsync(MediaFile file)
         {
             var request = new CarVinRequest
             {
                 Errors = new List<string>()
             };
 
-            await CrossMedia.Current.Initialize();
+            //await CrossMedia.Current.Initialize();
 
-            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
-            {
-                request.Errors.Add("No camera");
+            //if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            //{
+            //    request.Errors.Add("No camera");
+            //    request.Success = false;
+            //    return request;
+            //}
+
+            //var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+            //{
+            //    Directory = "Sample",
+            //    Name = "test.jpg"
+            //});
+
+            
+            if (file == null)
+            {   
+                request.Errors.Add("Couldn't save/find file");
                 request.Success = false;
                 return request;
             }
 
-            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
-            {
-                Directory = "Sample",
-                Name = "test.jpg"
-            });
+            var memoryStream = new MemoryStream();
+            file.GetStream().CopyTo(memoryStream);
 
-            using (UserDialogs.Instance.Loading("Finding out what car you have..."))
-            {
-                if (file == null)
-                {   
-                    request.Errors.Add("Couldn't save/find file");
-                    request.Success = false;
-                    return request;
-                }
+            request.Car = await GetRecognisedCar(memoryStream.ToArray());
+            if (request.Car == null)
+			{
+				request.Success = false;
+				request.Errors.Add("Unable to get car");
+				return request;
+			}
+            request.Car.CarImage = UploadImageImgur(file);
+            request.Success = true;
 
-                var memoryStream = new MemoryStream();
-                file.GetStream().CopyTo(memoryStream);
-
-                request.Car = await GetRecognisedCar(memoryStream.ToArray());
-                if (request.Car == null)
-				{
-					request.Success = false;
-					request.Errors.Add("Unable to get car");
-					return request;
-				}
-                request.Car.CarImage = UploadImageImgur(file);
-                request.Success = true;
-
-                File.Delete(file.Path);
-            }
+            File.Delete(file.Path);
+            
 
             return request;
         }

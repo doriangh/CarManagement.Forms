@@ -68,7 +68,7 @@ namespace TestProiectLicenta.Data.Services
             if (!response.IsSuccessStatusCode) return null;
             var content = await response.Content.ReadAsStringAsync();
             var car = JsonConvert.DeserializeObject<CarsSold>(content);
-            Barrel.Current.Add(url, car, TimeSpan.FromDays(7));
+            if (car != null) Barrel.Current.Add(url, car, TimeSpan.FromDays(7));
             return car;
         }
 

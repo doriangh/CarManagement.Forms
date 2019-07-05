@@ -19,9 +19,9 @@ namespace TestProiectLicenta.Data.Services
             return _service.GetCarByVin(vin);
         }
 
-        public Task<CarVinRequest> GetCarByTakingPictureAsync()
+        public Task<CarVinRequest> GetCarByTakingPictureAsync(MediaFile file)
         {
-            return _service.GetCarByTakingPictureAsync();
+            return _service.GetCarByTakingPictureAsync(file);
         }
 
         public Task<CarVinRequest> GetCarBySelectingPicture()

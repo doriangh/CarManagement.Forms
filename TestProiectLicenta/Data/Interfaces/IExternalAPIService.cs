@@ -8,7 +8,7 @@ namespace TestProiectLicenta.Data.Interfaces
     {
         Task<CarVinRequest> GetCarByVin(string vin);
         Task<CarVinRequest> GetCarBySelectingPicture();
-        Task<CarVinRequest> GetCarByTakingPictureAsync();
+        Task<CarVinRequest> GetCarByTakingPictureAsync(MediaFile file);
         Task<CarVinRequest> HandleSelectionPicture(CarVinRequest request);
         Task<CarVinRequest> HandleTakingPicture(CarVinRequest request);
         string UploadImageImgur(MediaFile file);

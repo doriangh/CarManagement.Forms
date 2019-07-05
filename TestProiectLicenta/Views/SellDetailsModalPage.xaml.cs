@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using TestProiectLicenta.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -19,7 +20,7 @@ namespace TestProiectLicenta.Views
             InitializeComponent();
             _car = usercar;
             BindingContext = _car;
-            Task.WhenAll(PopulateCoverFlow());
+            Task.WhenAll(PopulateCoverFlow(false));
         }
 
         protected override void OnAppearing()
@@ -107,7 +108,7 @@ namespace TestProiectLicenta.Views
         {
             var userId = await SecureStorage.GetAsync("UserId");
             var carDetailsId = await App.CarDetailManager.GetCarsDetail(_car.Id);
-            var doesExist = await App.CarsSoldManager.GetByCarId(_car.Id);
+            var doesExist = await App.CarsSoldManager.GetByCarId(_car.Id, true);
 
             if (_car.CarPrice != newPrice.Text && error.Text == "")
             {
@@ -130,17 +131,20 @@ namespace TestProiectLicenta.Views
                     Details = description.Text,
                     LongDescription = longDescription.Text
                 };
-
-
-                if (doesExist == null)
+                using (UserDialogs.Instance.Loading("Adding car"))
                 {
-                    await App.CarsSoldManager.Add(soldCar);
+
+                    if (doesExist == null)
+                    {
+                        await App.CarsSoldManager.Add(soldCar);
+                    }
+                    else
+                    {
+                        await App.CarsSoldManager.Update(soldCar);
+                    }
                 }
-                else
-                {
-                    await App.CarsSoldManager.Update(soldCar);
-                }
-                await Navigation.PopToRootAsync();
+
+                await Navigation.PopModalAsync();
             }
         }
 

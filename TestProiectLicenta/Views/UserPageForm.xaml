@@ -43,7 +43,7 @@
                         <TableView Intent="Settings">
                             <TableRoot>
                                 <TableSection>
-                                    <SwitchCell Text="FaceId" x:Name="Fid" OnChanged="Handle_Toggled"/>
+                                    <SwitchCell Text="Biometrics" x:Name="Fid" OnChanged="Handle_Toggled"/>
                                     <ViewCell>
                                         <Button Text="Sign Out" Clicked="SignOutButton"/>
                                     </ViewCell>

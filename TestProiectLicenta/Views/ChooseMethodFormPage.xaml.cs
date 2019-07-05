@@ -1,4 +1,7 @@
 ﻿using System;
+using Acr.UserDialogs;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using Rg.Plugins.Popup.Extensions;
 using TestProiectLicenta.Models;
 using Xamarin.Forms;
@@ -29,7 +32,26 @@ namespace TestProiectLicenta.Views
 
         private async void TakePictureButtonPressed(object sender, EventArgs e)
         {
-            var request = await App.ExternalAPIManager.GetCarByTakingPictureAsync();
+            CarVinRequest request;
+
+            await CrossMedia.Current.Initialize();
+
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            {
+                await DisplayAlert("Error", "Cannot take picture.", "OK");
+                return;
+            }
+
+            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+            {
+                Directory = "Sample",
+                Name = "test.jpg"
+            });
+
+            using (UserDialogs.Instance.Loading("Finding that car"))
+            {
+                request = await App.ExternalAPIManager.GetCarByTakingPictureAsync(file);
+            }
 
             if (request.Success)
             {

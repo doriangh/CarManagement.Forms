@@ -180,6 +180,7 @@ namespace TestProiectLicenta.Views
 
             if (_listData.Count > 0)
             {
+                carousel.IsVisible = true;
                 carousel.ItemsSource = _listData.OrderByDescending(c => c.CarId);
                 search.IsEnabled = true;
                 details.IsEnabled = true;
@@ -190,6 +191,7 @@ namespace TestProiectLicenta.Views
                 nocars.IsVisible = true;
                 search.IsEnabled = false;
                 details.IsEnabled = false;
+                carousel.IsVisible = false;
             }
         }
 
@@ -319,15 +321,21 @@ namespace TestProiectLicenta.Views
                 {
                     case "6 Months":
                         updateCar.InsurancePeriod = 6;
-                        updateCar.Insurance = DateTime.Today;
-                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
                         break;
                     case "A Year":
                         updateCar.InsurancePeriod = 12;
-                        updateCar.Insurance = DateTime.Today;
-                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
                         break;
+                    default:
+                        return;
                 }
+
+                var day = await UserDialogs.Instance.DatePromptAsync("When did you pay your insurance?", DateTime.Today);
+                if (day.Ok)
+                {
+                    updateCar.Insurance = day.SelectedDate;
+                    await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                }
+
             }
         }
 
@@ -335,41 +343,54 @@ namespace TestProiectLicenta.Views
         {
             var car = (ListCarAttributes)carousel[carousel.SelectedIndex];
             var updateCar = await App.CarDetailManager.GetCarsDetail(car.CarId);
-            updateCar.Itp = DateTime.Today;
-            await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+
+            var response = await DisplayAlert("Are you sure?", "Are you sure you want to update your ITP?", "Yes", "No");
+
+            if (response)
+            {
+                var date = await UserDialogs.Instance.DatePromptAsync("Choose ITP Date", DateTime.Today);
+
+                if (date.Ok)
+                {
+                    updateCar.Itp = DateTime.Today;
+                    await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                }
+            }
         }
 
         async void Update_Road_Tax(object sender, System.EventArgs e)
         {
             if (await DisplayAlert("Are you sure?", "Are you sure you want to update your road tax period?", "Yes", "No"))
             {
-                var result = await DisplayActionSheet("Choose your new road tax period", "Cancel", null, "6 Days", "30 Days", "90 Days", "A Year");
+                var result = await DisplayActionSheet("Choose your new road tax period", "Cancel", null, "7 Days", "30 Days", "90 Days", "A Year");
 
                 var car = (ListCarAttributes)carousel[carousel.SelectedIndex];
                 var updateCar = await App.CarDetailManager.GetCarsDetail(car.CarId);
 
+
                 switch (result)
                 {
-                    case "6 Days":
-                        updateCar.RoadTaxPeriod = 6;
-                        updateCar.RoadTax = DateTime.Today;
-                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                    case "7 Days":
+                        updateCar.RoadTaxPeriod = 7;    
                         break;
                     case "30 Days":
                         updateCar.RoadTaxPeriod = 30;
-                        updateCar.RoadTax = DateTime.Today;
-                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
                         break;
                     case "90 Days":
                         updateCar.RoadTaxPeriod = 90;
-                        updateCar.RoadTax = DateTime.Today;
-                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
                         break;
                     case "A Year":
                         updateCar.RoadTaxPeriod = 365;
-                        updateCar.RoadTax = DateTime.Today;
-                        await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
                         break;
+                    default:
+                        return;
+                }
+
+                var day = await UserDialogs.Instance.DatePromptAsync("When did you pay your road tax?", DateTime.Today);
+                if (day.Ok)
+                {
+                    updateCar.RoadTax = day.SelectedDate;
+                    await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
                 }
             }
         }
@@ -388,15 +409,65 @@ namespace TestProiectLicenta.Views
 
         async void Update_Oil(object sender, System.EventArgs e)
         {
-            var result = await DisplayAlert("Are you sure?", "Are you sure you've changed your oil?", "Yes", "No");
 
-            if (result)
+            var car = (ListCarAttributes)carousel[carousel.SelectedIndex];
+            var userCar = await App.CarManager.GetCar(car.CarId);
+            var updateCar = await App.CarDetailManager.GetCarsDetail(car.CarId);
+
+            if (updateCar.OilChange > 0)
             {
-                var car = (ListCarAttributes)carousel[carousel.SelectedIndex];
-                var updateCar = await App.CarDetailManager.GetCarsDetail(car.CarId);
 
-                updateCar.OilChange = 15000;
-                await Task.WhenAll(App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                var newOdometer = await UserDialogs.Instance.PromptAsync(new PromptConfig
+                {
+                    Title = "Please enter the current odometer",
+                    Placeholder = string.Format("Currently: {0}KM", userCar.Odometer),
+                    OkText = "OK",
+                    CancelText = "Cancel",
+                    MaxLength = 7,
+                    InputType = InputType.Number,
+                });
+
+                if (newOdometer.Ok)
+                {
+                    userCar.Odometer = newOdometer.Text;
+
+                    updateCar.OilChange = Convert.ToInt32(newOdometer.Text) % 15000;
+
+                    await Task.WhenAll(App.CarManager.UpdateCar(userCar.Id, userCar), App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                }
+                else
+                {
+                    await DisplayAlert("Could not update oil change", "We need the new odometer value in order to show how many KM until the next oil change.", "OK");
+                }
+            }
+            else
+            {
+                var result = await DisplayAlert("Change now!", "Did you change your oil?", "Yes", "No");
+                if (result)
+                {
+                    var newOdometer = await UserDialogs.Instance.PromptAsync(new PromptConfig
+                    {
+                        Title = "Please enter the current odometer",
+                        Placeholder = string.Format("Currently: {0}KM", userCar.Odometer),
+                        OkText = "OK",
+                        CancelText = "Cancel",
+                        MaxLength = 7,
+                        InputType = InputType.Number,
+                    });
+
+                    if (newOdometer.Ok)
+                    {
+                        userCar.Odometer = newOdometer.Text;
+
+                        updateCar.OilChange = Convert.ToInt32(newOdometer.Text) % 15000;
+
+                        await Task.WhenAll(App.CarManager.UpdateCar(userCar.Id, userCar), App.CarDetailManager.UpdateCarDetail(updateCar), RefreshCars(true));
+                    }
+                    else
+                    {
+                        await DisplayAlert("Could not update oil change", "We need the new odometer value in order to show how many KM until the next oil change.", "OK");
+                    }
+                }
             }
         }
     }

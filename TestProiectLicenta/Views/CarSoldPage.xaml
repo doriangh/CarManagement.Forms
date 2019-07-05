@@ -3,6 +3,7 @@
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
              xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+             xmlns:local="clr-namespace:TestProiectLicenta;assembly=TestProiectLicenta"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TestProiectLicenta.Views.CarSoldPage">
     <ContentPage.Content>
         <ScrollView>
@@ -28,9 +29,10 @@
                                 </ContentView>
                             </DataTemplate>
                         </cards:CoverFlowView.ItemTemplate>
+                        <controls:IndicatorsControl IsVisible="true"/>
                     </cards:CoverFlowView>
                 <Label Text="{Binding FullName}" HorizontalOptions="StartAndExpand" FontAttributes="Bold" FontSize="Large"/>
-                <Label Text="{Binding CarPrice}" HorizontalOptions="StartAndExpand" FontAttributes="Bold" FontSize="40"/>
+                <Label Text="{Binding CarPrice, StringFormat='{0}€'}" HorizontalOptions="StartAndExpand" FontAttributes="Bold" FontSize="40"/>
                 
                 <BoxView HeightRequest="1" Color="Gray"/>
                 
@@ -69,9 +71,9 @@
                     </Frame>
                 </StackLayout>
                 
-                <StackLayout Padding="20" HorizontalOptions="FillAndExpand">
+                <StackLayout Padding="20" HorizontalOptions="FillAndExpand" >
                     <Label Text="User Location" TextColor="Gray" FontAttributes="Italic"/>
-                    <maps:Map x:Name="map" HeightRequest="200" MapType="Street" IsVisible="false"/>
+                    <maps:Map x:Name="map" HeightRequest="200" MapType="Street" IsVisible="false" HasScrollEnabled="false"/>
                 </StackLayout>
                 
                 <StackLayout Padding="20" VerticalOptions="EndAndExpand">
